@@ -1,0 +1,16 @@
+# Secrets: real env files and keypairs never get committed
+.env*
+!.env.example
+keys/
+id.json
+*-keypair.json
+
+# Personal agent notes
+CLAUDE.local.md
+
+node_modules/
+.next/
+target/
+.anchor/
+test-ledger/
+.DS_Store
