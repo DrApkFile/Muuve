@@ -1,0 +1,4 @@
+$ tsx scripts/verify-devnet.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+{"state":"blocked","missing_configuration_names":["SOLANA_CLUSTER","SOLANA_RPC_URL","MUUVE_PROGRAM_ID","USDT_MINT","TOKEN_PROGRAM_ID","TREASURY_TOKEN_ACCOUNT","ADMIN_PUBLIC_KEY","ATTESTOR_PUBLIC_KEY","FEE_PAYER_PUBLIC_KEY","TREASURY_OWNER_PUBLIC_KEY","TEST_MINT_AUTHORITY_PUBLIC_KEY"]}
+[ELIFECYCLE] Command failed with exit code 1.

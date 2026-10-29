@@ -14,3 +14,8 @@ target/
 .anchor/
 test-ledger/
 .DS_Store
+.cache/
+coverage/
+evidence/local-db/
+*.tsbuildinfo
+__pycache__/

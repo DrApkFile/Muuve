@@ -239,6 +239,11 @@ There's no public "Sign in with Cleva" for outside apps today, so the hackathon 
 
 ## 10. Security model (summary)
 
+Owner clarification: phone numbers, labels and bank details stay off-chain. Payment
+allocations and slot statuses are public on-chain; recipient API privacy does not
+make those values confidential. Recipient priority starts at confirmed on-chain
+claim intent and is bounded; see [approved decisions](backend-decisions.md).
+
 Claiming needs **two independent proofs**:
 1. **The link secret** — the `#k=` part of the URL. It's never sent to Muuve's servers, so Muuve itself can't claim the money.
 2. **A verified code to a number on the payment** — the backend co-signs a claim only for the share belonging to the number that was just verified, and only to the destination the recipient chose (their own Muuve wallet, or the payout treasury for a cash-out with a recorded bank account).

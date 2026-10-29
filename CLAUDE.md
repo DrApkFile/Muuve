@@ -8,15 +8,17 @@ their wallet). Unclaimed slots return to the sender after 48 hours. Sign-up is M
 account or "Continue with Cleva" (a partnership preview, mock only). Hackathon MVP on devnet.
 
 ## Read first
+- docs/backend-decisions.md (owner-approved decisions override conflicting v0.2 examples)
 - docs/muuve-prd.md, docs/muuve-frontend-guide.md, docs/muuve-backend-guide.md
 - docs/muuve-ai-agent-practices.md (how agents work on this repo)
 
 ## Commands
 - Install: pnpm i
 - Dev: pnpm dev
-- Program tests: pnpm test:program   (anchor test)
+- Program tests: pnpm test:program (native local runtime); pnpm test:sbf (compiled artifact)
 - API tests: pnpm test:api
-- E2E: pnpm test:e2e
+- Database/API integration: pnpm test:db (disposable local Postgres)
+- Production HTTP smoke: pnpm test:http (run pnpm build first)
 - Typecheck + lint: pnpm check
 
 ## Hard rules

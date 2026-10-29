@@ -1,0 +1,52 @@
+{
+  "name": "muuve",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@12.15.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build:idl": "node scripts/build-idl.mjs",
+    "build:sbf": "node scripts/build-sbf.mjs",
+    "test:sbf": "node scripts/test-sbf.mjs",
+    "test:devnet:transactions": "tsx scripts/devnet-integration.ts",
+    "test:http": "node scripts/smoke-api.mjs",
+    "dev": "next dev apps/web",
+    "build": "next build apps/web",
+    "check": "tsc --noEmit && prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:api": "vitest run tests/api tests/unit",
+    "test:db": "node scripts/test-db.mjs",
+    "test:program": "cargo test --manifest-path programs/muuve_escrow/Cargo.toml",
+    "test:devnet": "tsx scripts/verify-devnet.ts",
+    "db:migrate": "tsx scripts/migrate.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "0.31.1",
+    "@privy-io/node": "0.37.0",
+    "@solana/spl-token": "0.4.14",
+    "@solana/web3.js": "1.98.4",
+    "bs58": "6.0.0",
+    "jose": "6.1.3",
+    "libphonenumber-js": "1.12.40",
+    "next": "16.4.3",
+    "pg": "8.23.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/pg": "8.23.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

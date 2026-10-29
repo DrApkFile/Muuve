@@ -1,0 +1,16 @@
+node_modules
+.cache
+target
+.next
+pnpm-lock.yaml
+Cargo.lock
+*.rs
+*.sql
+*.toml
+evidence
+CLAUDE.md
+README.md
+docs/muuve-ai-agent-practices.md
+docs/muuve-backend-guide.md
+docs/muuve-frontend-guide.md
+docs/muuve-prd.md

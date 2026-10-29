@@ -1,0 +1,2 @@
+$ node scripts/smoke-api.mjs
+Production HTTP smoke: health, session, Origin and webhook guards passed. No external service contacted.

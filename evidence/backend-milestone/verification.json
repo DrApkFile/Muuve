@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-10-29T05:40:32.729550+00:00",
+  "scope": "backend only; local and fault-injected verification; no live blockchain transactions",
+  "checks": {
+    "unit_tests": {
+      "passed": 19,
+      "command": "pnpm test",
+      "note": "Database/API suites skipped here and run separately against disposable Postgres."
+    },
+    "database_api_tests": {
+      "passed": 32,
+      "command": "pnpm test:db",
+      "migrations_applied": 4
+    },
+    "native_contract": {
+      "unit_passed": 4,
+      "runtime_passed": 12,
+      "runtime_ignored": 1,
+      "note": "Upgradeable-loader bootstrap requires SBF and is included in the SBF run."
+    },
+    "sbf_contract": {
+      "passed": 13,
+      "command": "pnpm test:sbf",
+      "fixture_only": true
+    },
+    "production_build": "passed",
+    "http_smoke": "passed",
+    "typescript_and_prettier": "passed",
+    "rust_format": "passed",
+    "python_syntax": "passed",
+    "git_diff_check": "passed",
+    "idl": {
+      "generated_instructions": 11,
+      "generated_accounts": 3
+    }
+  },
+  "sbf_artifact": {
+    "program_id": "Fg6PaFpoGXkYsidMpWxTWqkZ7FEfcYkgMQhgV7tTqKpP",
+    "fixture": true,
+    "toolchain": "platform-tools-v1.58",
+    "target": "sbpf-solana-solana",
+    "source_sha256": "ea5957d59ebe66f0cab87c69e5b162dcea74ef5c4d7017d015acc271cdcf8dd0",
+    "artifact_sha256": "0472783084991195432a71b9f00e7227cb25b6508b9abb45ede1a489c4b7d943",
+    "deployment_verified": false
+  },
+  "external_verification": {
+    "devnet": "blocked: public RPC/program/mint/treasury and five role identities not supplied",
+    "devnet_transactions": "not run; explicit consent, deployed program, funded test accounts and operator keys required",
+    "twilio": "adapter implemented; live delivery not verified",
+    "privy": "adapter and JWT boundary implemented; live wallet linking not verified",
+    "fiat": "mock only; no real payout adapter or real-money transaction",
+    "remote_ci": "workflow authored; not executed remotely",
+    "human_security_review": "operator release prerequisite; not represented as completed"
+  }
+}

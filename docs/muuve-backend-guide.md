@@ -1,5 +1,13 @@
 # Muuve — Backend Guide
 
+> Implementation update: the owner-approved [backend decisions](backend-decisions.md)
+> supersede conflicting v0.2 examples below. In particular, recall stops at expiry;
+> link IDs/PDA seeds are sender-scoped; both token programs use an explicit extension
+> allowlist; claims have an on-chain bounded-priority intent; fiat dispatch waits for
+> finalized evidence; operations and payouts have durable retry identities. The
+> executable schema is in `supabase/migrations`, not this historical SQL sketch.
+> See [setup and recovery](backend-runbook.md) for the current backend interface.
+
 **Version:** 0.2. Read `muuve-prd.md` first. This guide covers auth and phone verification, the Solana escrow program, data model, API, providers, and security rules.
 
 ---

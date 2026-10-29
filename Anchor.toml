@@ -1,0 +1,16 @@
+[toolchain]
+anchor_version = "0.31.1"
+
+[features]
+resolution = true
+skip-lint = false
+
+[provider]
+cluster = "devnet"
+wallet = "keys/operator.json"
+
+# Operator supplies MUUVE_PROGRAM_ID and adds [programs.devnet] after provisioning.
+# No deployable program address or wallet is fabricated by the application.
+
+[scripts]
+test = "pnpm test:program"
