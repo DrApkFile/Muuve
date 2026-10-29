@@ -1,0 +1,14 @@
+{
+  "name": "test-funding",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/fund-test-sender.ts"
+  ],
+  "started_at": "2026-10-29T08:24:10.530Z",
+  "duration_ms": 7479,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

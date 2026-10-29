@@ -4,6 +4,7 @@
 keys/
 id.json
 *-keypair.json
+*.pem
 
 # Personal agent notes
 CLAUDE.local.md

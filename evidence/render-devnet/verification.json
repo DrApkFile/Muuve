@@ -1,0 +1,493 @@
+{
+  "recorded_at": "2026-10-29T09:43:15.039Z",
+  "state": "local_and_basic_devnet_verified_external_completion_pending",
+  "scope": "Backend only; devnet test assets; mocked fiat. No hosted or real-money success claimed.",
+  "checks": {
+    "checks": {
+      "name": "checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T09:42:28.088Z",
+      "duration_ms": 19170,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/checks.log"
+    },
+    "unit": {
+      "name": "unit",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T08:54:24.789Z",
+      "duration_ms": 15883,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/unit.log"
+    },
+    "database": {
+      "name": "database",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T09:32:10.884Z",
+      "duration_ms": 54228,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/database.log"
+    },
+    "native-tests": {
+      "name": "native-tests",
+      "command": [
+        "pnpm",
+        "test:program",
+        "--",
+        "--test-threads=1"
+      ],
+      "started_at": "2026-10-29T07:57:52.280Z",
+      "duration_ms": 211093,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/native-tests.log"
+    },
+    "loader-sdk": {
+      "name": "loader-sdk",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "programs/muuve_escrow/Cargo.toml",
+        "--test",
+        "loader_layout",
+        "--",
+        "--test-threads=1"
+      ],
+      "started_at": "2026-10-29T08:11:22.565Z",
+      "duration_ms": 86560,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/loader-sdk.log"
+    },
+    "sbf-build": {
+      "name": "sbf-build",
+      "command": [
+        "node",
+        "scripts/build-sbf.mjs"
+      ],
+      "started_at": "2026-10-29T06:56:30.987Z",
+      "duration_ms": 114134,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/sbf-build.log"
+    },
+    "sbf-tests": {
+      "name": "sbf-tests",
+      "command": [
+        "pnpm",
+        "test:sbf"
+      ],
+      "started_at": "2026-10-29T07:57:14.050Z",
+      "duration_ms": 184090,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/sbf-tests.log"
+    },
+    "idl": {
+      "name": "idl",
+      "command": [
+        "node",
+        "scripts/build-idl.mjs"
+      ],
+      "started_at": "2026-10-29T07:57:54.385Z",
+      "duration_ms": 258969,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/idl.log"
+    },
+    "production-build": {
+      "name": "production-build",
+      "command": [
+        "pnpm",
+        "build"
+      ],
+      "started_at": "2026-10-29T09:35:23.302Z",
+      "duration_ms": 58972,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/production-build.log"
+    },
+    "http": {
+      "name": "http",
+      "command": [
+        "node",
+        "--env-file=.env.local",
+        "scripts/smoke-api.mjs"
+      ],
+      "started_at": "2026-10-29T09:36:22.343Z",
+      "duration_ms": 6873,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/http.log"
+    },
+    "blueprint": {
+      "name": "blueprint",
+      "command": [
+        "pnpm",
+        "check:render"
+      ],
+      "started_at": "2026-10-29T09:37:53.340Z",
+      "duration_ms": 1054,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/blueprint.log"
+    },
+    "auth": {
+      "name": "auth",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-auth.ts"
+      ],
+      "started_at": "2026-10-29T09:37:54.478Z",
+      "duration_ms": 2069,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/auth.log"
+    },
+    "render-worker-build": {
+      "name": "render-worker-build",
+      "command": [
+        "node",
+        "scripts/render-build.mjs",
+        "worker"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "execution": "observed successful command outside the filesystem sandbox after its pnpm store-lock restriction",
+      "note": "Frozen install and TypeScript check passed; no hosted service was created.",
+      "log": "evidence/render-devnet/render-worker-build.log"
+    },
+    "secret-audit": {
+      "name": "secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T09:42:47.340Z",
+      "duration_ms": 585,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/secret-audit.log"
+    },
+    "rust-format": {
+      "name": "rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "programs/muuve_escrow/Cargo.toml",
+        "--check"
+      ],
+      "started_at": "2026-10-29T09:40:56.903Z",
+      "duration_ms": 1403,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/rust-format.log"
+    },
+    "diff-check": {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-10-29T09:42:48.019Z",
+      "duration_ms": 19,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/diff-check.log"
+    },
+    "expiry-deadline-guard": {
+      "name": "expiry-deadline-guard",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {spawnSync} from \"node:child_process\";import {existsSync} from \"node:fs\";const pda=\"Hg9tsPmCdDBMbWcUEwepRGcNyUfxGubSaFBPYzxdFtde\";const r=spawnSync(process.execPath,[\"--import\",\"tsx\",\"scripts/verify-expiry.ts\"],{env:{...process.env,OPERATOR_APPROVED_DEVNET:\"1\",MUUVE_RUN_DEVNET_TRANSACTIONS:\"1\",MUUVE_DEVNET_EXPIRED_LINK_PDA:pda},encoding:\"utf8\",timeout:45000});const line=r.stdout.trim().split(\"\\n\").find(x=>x.startsWith(\"{\"));const x=line?JSON.parse(line):null;if(r.status!==1||x?.state!==\"waiting_for_actual_deadline\"||x.transaction_submitted!==false||existsSync(`evidence/devnet/expiry-${pda}.json`)){console.error(\"Expiry guard did not establish a safe pre-deadline stop\");process.exit(1)}console.info(JSON.stringify({...x,guard_passed:true,post_expiry_verification:false}));"
+      ],
+      "started_at": "2026-10-29T09:40:36.093Z",
+      "duration_ms": 11913,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/expiry-deadline-guard.log"
+    },
+    "devnet-readiness": {
+      "name": "devnet-readiness",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-devnet.ts"
+      ],
+      "started_at": "2026-10-29T08:22:13.025Z",
+      "duration_ms": 2470,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/devnet-readiness.log"
+    },
+    "devnet-evidence": {
+      "name": "devnet-evidence",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-devnet-evidence.ts"
+      ],
+      "started_at": "2026-10-29T08:54:21.686Z",
+      "duration_ms": 26282,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/devnet-evidence.log"
+    },
+    "provider-check": {
+      "name": "provider-check",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/provider-readiness.ts"
+      ],
+      "started_at": "2026-10-29T08:24:11.748Z",
+      "duration_ms": 17029,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/provider-check.log"
+    },
+    "hosted-migrations": {
+      "name": "hosted-migrations",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/migrate.ts"
+      ],
+      "started_at": "2026-10-29T09:35:22.142Z",
+      "duration_ms": 5487,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "log": "evidence/render-devnet/hosted-migrations.log"
+    },
+    "hosted-database": {
+      "name": "hosted-database",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/database-status.ts"
+      ],
+      "started_at": "2026-10-29T09:37:56.621Z",
+      "duration_ms": 5321,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "log": "evidence/render-devnet/hosted-database.log"
+    }
+  },
+  "test_counts": {
+    "javascript_unit": {
+      "passed": 48,
+      "skipped_database_cases_run_separately": 42,
+      "failed": 0
+    },
+    "postgres_api_worker": {
+      "passed": 42,
+      "skipped": 0,
+      "failed": 0
+    },
+    "native_contract": {
+      "unit_passed": 4,
+      "runtime_passed": 12,
+      "runtime_ignored": 1,
+      "reason": "Upgradeable-loader bootstrap requires compiled SBF and passed there."
+    },
+    "independent_loader_sdk": {
+      "passed": 1
+    },
+    "compiled_sbf": {
+      "passed": 13,
+      "failed": 0,
+      "fixture_only": false
+    }
+  },
+  "database": {
+    "target": "disposable loopback PostgreSQL",
+    "migrations": 5,
+    "tables": 17,
+    "constraints": 232,
+    "indexes": 47,
+    "all_tables_rls": true,
+    "public_schema_and_table_access_blocked": true,
+    "hosted_supabase": "unverified; direct IPv6 endpoint ENETUNREACH; exact session-pooler SQL URI required"
+  },
+  "authentication": {
+    "local_signing_key_generated": true,
+    "algorithm": "ES256",
+    "curve": "P-256",
+    "private_encoding": "PKCS8 PEM",
+    "private_key_values_in_report": false,
+    "jwks_and_local_verification_passed": true,
+    "privy_live_wallet_linking_verified": false
+  },
+  "deployment": {
+    "network": "devnet",
+    "state": "deployed_verified",
+    "program_id": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+    "signature": "ba7R5Yw4CiZms7DT8hU3XikCt5GHrMywRNpgLuGNMhpvTPGnYwbbmgrrdzSQuJoaoFzsXXKJaRkXFyq6GHCSoCy",
+    "upgrade_authority": "8QdwEAfREtpycxbCLEm8YhAC8CE5D941sqEmrXLx5HnD",
+    "artifact_sha256": "af668ad308f2e0cb8d018e8b6b770422af13a1a66c121876381c0ec273582680",
+    "verified_at": "2026-10-29T08:18:19.122Z"
+  },
+  "devnet_lifecycle": {
+    "network": "devnet",
+    "state": "basic_contract_lifecycle_verified",
+    "checked_at": "2026-10-29T08:54:47.935Z",
+    "program": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+    "finalized_transactions": 10,
+    "negative_rejection_observations": 17,
+    "links": [
+      {
+        "pda": "HaH7AuS3k3AXFE2BgaUAmpvQDdzzTdL8i25ASVHZo5eA",
+        "open_slots": 0,
+        "allocations": [
+          "1000000"
+        ],
+        "statuses": [
+          2
+        ],
+        "vault_closed": true,
+        "expires_at": "2026-10-31T08:27:06.000Z"
+      },
+      {
+        "pda": "7CrJQwE8T7svEfCNDrgoiSuTERpnL1bq2AkmUcgR54DN",
+        "open_slots": 0,
+        "allocations": [
+          "1000000",
+          "2000000",
+          "3000000"
+        ],
+        "statuses": [
+          2,
+          2,
+          3
+        ],
+        "vault_closed": true,
+        "expires_at": "2026-10-31T08:32:43.000Z"
+      },
+      {
+        "pda": "Hg9tsPmCdDBMbWcUEwepRGcNyUfxGubSaFBPYzxdFtde",
+        "open_slots": 1,
+        "allocations": [
+          "1000000"
+        ],
+        "statuses": [
+          1
+        ],
+        "vault_closed": false,
+        "expires_at": "2026-10-31T08:39:30.000Z"
+      }
+    ],
+    "balances_base_units": {
+      "sender": "2000000",
+      "recipient": "2000000",
+      "treasury": "2000000",
+      "expiry_vault": "1000000"
+    },
+    "mint_supply_base_units": "7000000",
+    "expiry_refund_verified": false,
+    "expiry_due": "2026-10-31T08:39:30.000Z",
+    "expiry_pda": "Hg9tsPmCdDBMbWcUEwepRGcNyUfxGubSaFBPYzxdFtde",
+    "scope": "deployed contract only; no fiat payout or live Privy wallet linking"
+  },
+  "providers": {
+    "checked_at": "2026-10-29T08:24:16.282Z",
+    "scope": "read-only provider configuration; no SMS, wallet creation or payout",
+    "privy": {
+      "state": "credentials_verified",
+      "privileged_api_authenticated": true,
+      "app_matches": true,
+      "custom_jwt_auth_enabled": false,
+      "canonical_origin_allowed": false
+    },
+    "twilio": {
+      "state": "credentials_verified",
+      "service_matches": true,
+      "account_matches": true,
+      "code_length": 6,
+      "otp_provider": "mock",
+      "live_sms_sent": false
+    }
+  },
+  "render": {
+    "blueprint_schema_verified": true,
+    "api_build_command_observed_passed": "node scripts/render-build.mjs api",
+    "worker_build_command_observed_passed": "node scripts/render-build.mjs worker",
+    "services_created": false,
+    "hosted_health_verified": false
+  },
+  "remaining": [
+    "Actual Supabase session-pooler URI and hosted migrations/schema verification",
+    "Render account/repository setup, secrets and stable HTTPS APP_BASE_URL",
+    "Enable Privy custom JWT authentication, published JWKS and approved origin; verify real wallet linking",
+    "Authorize a recipient number before live Twilio SMS testing",
+    "Verify genuinely aged expiry fixture after 2026-10-31T08:39:30Z",
+    "Hosted combined API/Privy/devnet payment and worker integration",
+    "Token-2022 devnet verification requires a separate deployment because the mint is immutable",
+    "Remote CI and human security review"
+  ],
+  "historical_evidence": "evidence/backend-milestone/verification.json predates actual devnet deployment; not the current deployment record",
+  "secret_audit": {
+    "state": "passed",
+    "checks": [
+      "private file permissions",
+      "Git exclusion",
+      "no local secret values in reviewable source or evidence",
+      "no local secret values in Next build artifacts"
+    ],
+    "artifact_files_scanned": 191,
+    "repository_files_scanned": 202,
+    "external_dependency_links_checked": 2
+  },
+  "expiry_deadline_guard": {
+    "state": "waiting_for_actual_deadline",
+    "pda": "Hg9tsPmCdDBMbWcUEwepRGcNyUfxGubSaFBPYzxdFtde",
+    "expires_at": "2026-10-31T08:39:30.000Z",
+    "transaction_submitted": false,
+    "guard_passed": true,
+    "post_expiry_verification": false
+  }
+}

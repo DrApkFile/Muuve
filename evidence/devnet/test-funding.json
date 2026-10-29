@@ -1,0 +1,10 @@
+{
+  "network": "devnet",
+  "state": "finalized",
+  "operation_id": "a9ecb2a5-7ea7-4a26-b60d-b8d45be832f4",
+  "signature": "4iaGH1dUdgsKsEzoc59hTrqV18LAGZU1Cov8pkkP2Y5zTmpk9kTq1fGKrw4e6WqQGGu7DhJTRfXY1YzcxnryFWyr",
+  "sender": "BrMxuBfhPhXfyzpX8Hpnv1xo6W6nMyomKh8gXt4acT85",
+  "amount_base_units": "7000000",
+  "balance_base_units": "7000000",
+  "verified_at": "2026-10-29T08:24:17.971Z"
+}

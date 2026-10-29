@@ -9,12 +9,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .node-version
       - run: npm install --global pnpm@12.15.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      - run: pnpm check:render
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm test:http
   database:
     runs-on: ubuntu-latest
     services:
@@ -35,7 +37,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .node-version
       - run: npm install --global pnpm@12.15.0
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:migrate
@@ -57,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .node-version
       - uses: dtolnay/rust-toolchain@stable
       - run: npm install --global pnpm@12.15.0
       - run: pnpm install --frozen-lockfile

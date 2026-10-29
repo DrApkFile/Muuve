@@ -23,7 +23,12 @@ account or "Continue with Cleva" (a partnership preview, mock only). Hackathon M
 
 ## Hard rules
 - Never read, print, or edit .env files. Use .env.example for names only.
-- Never deploy programs or run anything against mainnet.
+- Owner-authorized exception for this milestone: local secret provisioning, environment
+  loading and devnet operator scripts are permitted. Never print secret values, overwrite
+  existing keys, commit keys/env files, or deploy to mainnet. This explicit authorization
+  does not authorize unrelated credentials, production funds, or hosting charges.
+- Deployment requires explicit current owner authorization and must target devnet.
+  Never run anything against mainnet.
 - Never commit keypairs (keys/, *.json keypairs, id.json).
 - Amounts are integer base-unit strings (USDT = 6 decimals). No floats for money.
 - Status strings and limits come from packages/shared.

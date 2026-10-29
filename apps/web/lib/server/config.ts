@@ -2,12 +2,16 @@ import { z } from "zod";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
 import { assert } from "./errors";
+import { secretValue } from "./secrets";
 const envSchema = z.object({
   APP_ENV: z.enum(["local", "preview", "production"]),
   APP_BASE_URL: z.string().url(),
   SOLANA_CLUSTER: z.literal("devnet"),
   SOLANA_RPC_URL: z.string().url(),
-  SOLANA_RPC_URL_FALLBACK: z.string().url().optional(),
+  SOLANA_RPC_URL_FALLBACK: z.preprocess(
+    (value) => (value === "" ? undefined : value),
+    z.string().url().optional(),
+  ),
   MUUVE_PROGRAM_ID: z.string().min(32),
   USDT_MINT: z.string().min(32),
   TOKEN_PROGRAM_ID: z.string().min(32),
@@ -26,9 +30,22 @@ const envSchema = z.object({
     .default("1520"),
 });
 export type Config = z.infer<typeof envSchema>;
-export function config(input: NodeJS.ProcessEnv = process.env): Config {
-  const c = envSchema.parse(input);
-  assert(c.OTP_PROVIDER !== "mock" || c.APP_ENV === "local", "mock_otp_local_only");
+const chainSchema = envSchema.pick({
+  SOLANA_CLUSTER: true,
+  SOLANA_RPC_URL: true,
+  SOLANA_RPC_URL_FALLBACK: true,
+  MUUVE_PROGRAM_ID: true,
+  USDT_MINT: true,
+  TOKEN_PROGRAM_ID: true,
+  TREASURY_TOKEN_ACCOUNT: true,
+  CLAIM_WINDOW_SECS: true,
+});
+export function chainConfig(input: NodeJS.ProcessEnv = process.env) {
+  const c = chainSchema.parse(input);
+  validateChain(c);
+  return c;
+}
+function validateChain(c: z.infer<typeof chainSchema>) {
   const token = new PublicKey(c.TOKEN_PROGRAM_ID);
   assert(
     token.equals(TOKEN_PROGRAM_ID) || token.equals(TOKEN_2022_PROGRAM_ID),
@@ -36,10 +53,15 @@ export function config(input: NodeJS.ProcessEnv = process.env): Config {
   );
   for (const key of [c.MUUVE_PROGRAM_ID, c.USDT_MINT, c.TREASURY_TOKEN_ACCOUNT])
     assert(!new PublicKey(key).equals(PublicKey.default), "invalid_chain_address");
+}
+export function config(input: NodeJS.ProcessEnv = process.env): Config {
+  const c = envSchema.parse(input);
+  assert(c.OTP_PROVIDER !== "mock" || c.APP_ENV === "local", "mock_otp_local_only");
+  validateChain(c);
   return c;
 }
 export function keypair(name: string): Keypair {
-  const raw = process.env[name];
+  const raw = secretValue(name);
   assert(raw, `missing_${name}`, 503);
   let secret: unknown;
   try {

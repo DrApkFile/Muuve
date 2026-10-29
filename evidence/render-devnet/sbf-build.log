@@ -1,0 +1,14 @@
+SBF artifact built without deployment or keypair generation.
+    Blocking waiting for file lock on package cache
+   Compiling muuve_escrow v0.1.0 (/home/kingghidorah/Documents/projects/bounties/Muuve/programs/muuve_escrow)
+warning: use of deprecated method `anchor_lang::prelude::AccountInfo::<'a>::realloc`: Use AccountInfo::resize() instead
+  --> programs/muuve_escrow/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+   = note: this warning originates in the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: `muuve_escrow` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 1m 48s

@@ -8,6 +8,9 @@ Cargo.lock
 *.sql
 *.toml
 evidence
+keys
+.env*
+config/render.schema.json
 CLAUDE.md
 README.md
 docs/muuve-ai-agent-practices.md

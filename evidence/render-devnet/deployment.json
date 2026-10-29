@@ -1,0 +1,9 @@
+{
+  "network": "devnet",
+  "state": "deployed_verified",
+  "program_id": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+  "signature": "ba7R5Yw4CiZms7DT8hU3XikCt5GHrMywRNpgLuGNMhpvTPGnYwbbmgrrdzSQuJoaoFzsXXKJaRkXFyq6GHCSoCy",
+  "upgrade_authority": "8QdwEAfREtpycxbCLEm8YhAC8CE5D941sqEmrXLx5HnD",
+  "artifact_sha256": "af668ad308f2e0cb8d018e8b6b770422af13a1a66c121876381c0ec273582680",
+  "verified_at": "2026-10-29T08:18:19.122Z"
+}

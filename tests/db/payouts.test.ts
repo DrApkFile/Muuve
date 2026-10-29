@@ -70,6 +70,39 @@ describe.skipIf(process.env.MUUVE_TEST_DB !== "1")("durable mock payouts and rec
   beforeEach(reset);
   afterEach(() => vi.restoreAllMocks());
   afterAll(closeDatabase);
+  it.each([false, true])(
+    "worker advances durable provider and webhook jobs (failure=%s)",
+    async (fail) => {
+      const f = await fixture(fail);
+      await transaction((c) =>
+        c.query("INSERT INTO jobs(kind,entity_id,dedupe_key) VALUES('payout',$1,$2)", [
+          f.payout.id,
+          `worker-payout:${f.payout.id}`,
+        ]),
+      );
+      await runJobs();
+      expect(
+        (await one("SELECT provider_ref FROM payouts WHERE id=$1", [f.payout.id]))?.provider_ref,
+      ).toBeTruthy();
+      await transaction(async (c) => {
+        await c.query(
+          "UPDATE mock_provider_transfers SET ready_at=now()-interval '1 second' WHERE payout_id=$1",
+          [f.payout.id],
+        );
+        await c.query(
+          "UPDATE jobs SET run_after=now()-interval '1 second' WHERE entity_id=$1 AND kind='mock_webhook'",
+          [f.payout.id],
+        );
+      });
+      await Promise.all([runJobs(), runJobs()]);
+      expect((await one("SELECT status FROM payouts WHERE id=$1", [f.payout.id]))?.status).toBe(
+        fail ? "failed" : "paid",
+      );
+      expect(
+        (await one("SELECT count(*) FROM webhook_inbox WHERE payout_id=$1", [f.payout.id]))?.count,
+      ).toBe("1");
+    },
+  );
   function resolutionRpc(f: Awaited<ReturnType<typeof fixture>>) {
     vi.spyOn(Chain.prototype, "readiness").mockResolvedValue({} as never);
     const tx = { ...prepared(payer), expectedSigners: [] };

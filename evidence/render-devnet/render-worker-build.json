@@ -1,0 +1,12 @@
+{
+  "name": "render-worker-build",
+  "command": [
+    "node",
+    "scripts/render-build.mjs",
+    "worker"
+  ],
+  "exit_code": 0,
+  "passed": true,
+  "execution": "observed successful command outside the filesystem sandbox after its pnpm store-lock restriction",
+  "note": "Frozen install and TypeScript check passed; no hosted service was created."
+}

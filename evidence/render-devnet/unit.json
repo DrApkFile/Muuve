@@ -1,0 +1,12 @@
+{
+  "name": "unit",
+  "command": [
+    "pnpm",
+    "test"
+  ],
+  "started_at": "2026-10-29T08:54:24.789Z",
+  "duration_ms": 15883,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -4,6 +4,8 @@ import { Chain } from "./solana/chain";
 import { insertOperation, reconcileOperation, prepareReplacement } from "./operations";
 import { dispatchPayout, receiveWebhook, resolvePrincipal } from "./payouts";
 import { payoutProvider, signWebhook } from "./providers/payout";
+import { randomUUID } from "node:crypto";
+import { safeLog } from "./log";
 
 export async function submitServerOperation(id: string, chain = new Chain()) {
   const a = await one(
@@ -35,7 +37,7 @@ export async function submitServerOperation(id: string, chain = new Chain()) {
   }
   return reconcileOperation(id, chain);
 }
-export async function expireLinks(chain = new Chain()) {
+export async function expireLinks(chain = new Chain(), options: { signal?: AbortSignal } = {}) {
   const links = (
     await database().query(
       "SELECT * FROM links WHERE status='open' AND expires_at<=now() AND EXISTS(SELECT 1 FROM link_slots WHERE link_id=links.id AND status='funded') LIMIT 50",
@@ -43,6 +45,7 @@ export async function expireLinks(chain = new Chain()) {
   ).rows;
   let count = 0;
   for (const link of links) {
+    if (options.signal?.aborted) break;
     const state = await chain.link(link.pda);
     if (!state || state.openSlots === 0) continue;
     const prepared = await chain.settle(link.pda, state, "expire");
@@ -62,9 +65,10 @@ export async function expireLinks(chain = new Chain()) {
     await submitServerOperation(op, chain);
     count++;
   }
+  if (count > 0) safeLog({ event: "worker.expirations_processed", state: String(count) });
   return { processed: count };
 }
-export async function failedPayouts() {
+export async function failedPayouts(options: { signal?: AbortSignal } = {}) {
   const rows = (
     await database()
       .query(`SELECT r.id,s.link_id FROM principals r JOIN payouts p ON p.id=r.active_payout_id
@@ -72,6 +76,7 @@ export async function failedPayouts() {
  AND (r.source='wallet' OR p.failed_at<=now()-interval '48 hours') LIMIT 50`)
   ).rows;
   for (const row of rows) {
+    if (options.signal?.aborted) break;
     try {
       await resolvePrincipal(null, row.link_id ?? null, "refund", undefined, row.id);
     } catch (error) {
@@ -80,13 +85,14 @@ export async function failedPayouts() {
   }
   return { processed: rows.length };
 }
-export async function reconcileAll(chain = new Chain()) {
+export async function reconcileAll(chain = new Chain(), options: { signal?: AbortSignal } = {}) {
   const ops = (
     await database().query(
       "SELECT id,expected_signers FROM operations WHERE state IN ('prepared','submitted','confirmed','unknown','held') ORDER BY updated_at LIMIT 100",
     )
   ).rows;
   for (const op of ops) {
+    if (options.signal?.aborted) break;
     try {
       const state = await reconcileOperation(op.id, chain);
       if (state.state === "prepared" && op.expected_signers.length === 0)
@@ -95,22 +101,40 @@ export async function reconcileAll(chain = new Chain()) {
       await transaction((c) => audit(c, "operation", op.id, "operation.reconciliation_deferred"));
     }
   }
-  await runJobs();
+  await runJobs(options);
   return { processed: ops.length };
 }
-export async function runJobs() {
+export async function runJobs(options: { signal?: AbortSignal; maxJobs?: number } = {}) {
   let count = 0;
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < Math.min(options.maxJobs ?? 50, 50); i++) {
+    if (options.signal?.aborted) break;
+    const token = randomUUID();
     const job = await transaction(async (c) =>
       one(
-        `UPDATE jobs SET state='running',lease_until=now()+interval '60 seconds',attempts=attempts+1 WHERE id=(
+        `UPDATE jobs SET state='running',lease_until=now()+interval '60 seconds',lease_token=$1,attempts=attempts+1 WHERE id=(
    SELECT id FROM jobs WHERE (state='pending' OR (state='running' AND lease_until<now())) AND run_after<=now()
    ORDER BY run_after FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`,
-        [],
+        [token],
         c,
       ),
     );
     if (!job) break;
+    let renewing = false;
+    const heartbeat = setInterval(() => {
+      if (renewing) return;
+      renewing = true;
+      void transaction((c) =>
+        c.query(
+          "UPDATE jobs SET lease_until=now()+interval '60 seconds' WHERE id=$1 AND lease_token=$2 AND state='running'",
+          [job.id, token],
+        ),
+      )
+        .catch(() => safeLog({ event: "worker.job_lease_failed", code: "retry_required" }))
+        .finally(() => {
+          renewing = false;
+        });
+    }, 15_000);
+    heartbeat.unref();
     try {
       if (job.kind === "payout") {
         const p = await one("SELECT status FROM payouts WHERE id=$1", [job.entity_id]);
@@ -134,17 +158,23 @@ export async function runJobs() {
       else if (job.kind === "prepare_replacement") await prepareReplacement(job.entity_id);
       else throw new Error("unknown_job");
       await transaction((c) =>
-        c.query("UPDATE jobs SET state='done',lease_until=NULL WHERE id=$1", [job.id]),
+        c.query(
+          "UPDATE jobs SET state='done',lease_until=NULL,lease_token=NULL WHERE id=$1 AND lease_token=$2",
+          [job.id, token],
+        ),
       );
       count++;
     } catch {
       await transaction((c) =>
         c.query(
-          "UPDATE jobs SET state=CASE WHEN attempts>=10 THEN 'quarantined' ELSE 'pending' END,lease_until=NULL,run_after=now()+interval '30 seconds',last_error='retry_required' WHERE id=$1",
-          [job.id],
+          "UPDATE jobs SET state=CASE WHEN attempts>=10 THEN 'quarantined' ELSE 'pending' END,lease_until=NULL,lease_token=NULL,run_after=now()+interval '30 seconds',last_error='retry_required' WHERE id=$1 AND lease_token=$2",
+          [job.id, token],
         ),
       );
+    } finally {
+      clearInterval(heartbeat);
     }
   }
+  if (count > 0) safeLog({ event: "worker.jobs_processed", state: String(count) });
   return { processed: count };
 }

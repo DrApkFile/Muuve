@@ -1,0 +1,13 @@
+{
+  "name": "http",
+  "command": [
+    "node",
+    "--env-file=.env.local",
+    "scripts/smoke-api.mjs"
+  ],
+  "started_at": "2026-10-29T09:36:22.343Z",
+  "duration_ms": 6873,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

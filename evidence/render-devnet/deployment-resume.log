@@ -1,0 +1,17 @@
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+{"event":"deployment.upload_resume","missing_chunks":558,"total_chunks":587}
+{"event":"deployment.upload_progress","completed":40,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":80,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":120,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":160,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":200,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":240,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":280,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":320,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":360,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":400,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":440,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":480,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":520,"missing_chunks":558}
+{"event":"deployment.upload_progress","completed":558,"missing_chunks":558}
+{"network":"devnet","state":"deployed_verified","program_id":"147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe","signature":"ba7R5Yw4CiZms7DT8hU3XikCt5GHrMywRNpgLuGNMhpvTPGnYwbbmgrrdzSQuJoaoFzsXXKJaRkXFyq6GHCSoCy","upgrade_authority":"8QdwEAfREtpycxbCLEm8YhAC8CE5D941sqEmrXLx5HnD","artifact_sha256":"af668ad308f2e0cb8d018e8b6b770422af13a1a66c121876381c0ec273582680","verified_at":"2026-10-29T08:18:19.122Z"}

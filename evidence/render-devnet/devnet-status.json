@@ -1,0 +1,14 @@
+{
+  "name": "devnet-status",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/devnet-status.ts"
+  ],
+  "started_at": "2026-10-29T08:45:20.159Z",
+  "duration_ms": 3848,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

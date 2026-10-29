@@ -1,0 +1,12 @@
+{
+  "name": "checks",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-29T09:42:28.088Z",
+  "duration_ms": 19170,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

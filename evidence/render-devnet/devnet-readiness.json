@@ -1,0 +1,14 @@
+{
+  "name": "devnet-readiness",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-devnet.ts"
+  ],
+  "started_at": "2026-10-29T08:22:13.025Z",
+  "duration_ms": 2470,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

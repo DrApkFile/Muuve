@@ -1,0 +1,2 @@
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+{"evidence":"evidence/devnet/2026-10-29T08-27-04.679Z.json","completed_transactions":10,"expiry_verified":false,"provider":"none; contract integration only"}

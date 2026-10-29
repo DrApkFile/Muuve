@@ -25,8 +25,20 @@ pnpm test:program -- --test-threads=1
 pnpm build
 ```
 
-Local tests do not establish devnet deployment or live Twilio/Privy integration.
-Keys, deployment, funding and external service setup remain operator steps.
+The program is deployed and verified on devnet. Local tests and deployed-contract
+evidence do not establish live Privy wallet linking, SMS delivery or hosted Render
+operation. See the [latest milestone report](docs/handoff/2026-10-29-render-devnet.md)
+for actual results and the remaining Supabase, Render and Privy configuration.
+
+Render API and continuous-worker setup: [deployment guide](docs/render-deployment.md).
+Public devnet funding addresses: [wallets.md](wallets.md).
+`pnpm setup:local` provisions local keys when no saved identity exists. Restore the
+protected key backup on a new machine; missing keys for saved identities are never
+silently regenerated. Never commit local secrets. Load root configuration explicitly:
+
+```sh
+node --env-file=.env.local --import tsx scripts/verify-auth.ts
+```
 
 ## Docs
 - [Product requirements](docs/muuve-prd.md)

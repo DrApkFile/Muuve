@@ -1,213 +1,82 @@
 {
-  "address": "Fg6PaFpoGXkYsidMpWxTWqkZ7FEfcYkgMQhgV7tTqKpP",
-  "metadata": {
-    "name": "muuve_escrow",
-    "version": "0.1.0",
-    "spec": "0.1.0"
-  },
+  "address": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+  "metadata": { "name": "muuve_escrow", "version": "0.1.0", "spec": "0.1.0" },
   "instructions": [
     {
       "name": "init_config",
       "discriminator": [23, 235, 115, 232, 168, 96, 1, 231],
       "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "admin",
-          "signer": true
-        },
-        {
-          "name": "deployment_authority",
-          "signer": true
-        },
-        {
-          "name": "program"
-        },
-        {
-          "name": "program_data"
-        },
-        {
-          "name": "config",
-          "writable": true
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "treasury"
-        },
-        {
-          "name": "treasury_owner"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "admin", "signer": true },
+        { "name": "deployment_authority", "signer": true },
+        { "name": "program" },
+        { "name": "program_data" },
+        { "name": "config", "writable": true },
+        { "name": "mint" },
+        { "name": "treasury" },
+        { "name": "treasury_owner" },
+        { "name": "token_program" },
+        { "name": "system_program" }
       ],
       "args": [
-        {
-          "name": "attestor",
-          "type": "pubkey"
-        },
-        {
-          "name": "fee_payer",
-          "type": "pubkey"
-        },
-        {
-          "name": "max_slot",
-          "type": "u64"
-        },
-        {
-          "name": "max_link",
-          "type": "u64"
-        }
+        { "name": "attestor", "type": "pubkey" },
+        { "name": "fee_payer", "type": "pubkey" },
+        { "name": "max_slot", "type": "u64" },
+        { "name": "max_link", "type": "u64" }
       ]
     },
     {
       "name": "update_config",
       "discriminator": [29, 158, 252, 191, 10, 83, 219, 99],
       "accounts": [
-        {
-          "name": "admin",
-          "signer": true
-        },
-        {
-          "name": "config",
-          "writable": true
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "treasury_owner"
-        },
-        {
-          "name": "treasury"
-        }
+        { "name": "admin", "signer": true },
+        { "name": "config", "writable": true },
+        { "name": "mint" },
+        { "name": "token_program" },
+        { "name": "treasury_owner" },
+        { "name": "treasury" }
       ],
       "args": [
-        {
-          "name": "attestor",
-          "type": "pubkey"
-        },
-        {
-          "name": "max_slot",
-          "type": "u64"
-        },
-        {
-          "name": "max_link",
-          "type": "u64"
-        }
+        { "name": "attestor", "type": "pubkey" },
+        { "name": "max_slot", "type": "u64" },
+        { "name": "max_link", "type": "u64" }
       ]
     },
     {
       "name": "create_link",
       "discriminator": [103, 114, 207, 84, 216, 71, 234, 61],
       "accounts": [
-        {
-          "name": "sender",
-          "signer": true
-        },
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "config"
-        },
-        {
-          "name": "link",
-          "writable": true
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "sender_ata",
-          "writable": true
-        },
-        {
-          "name": "vault",
-          "writable": true
-        },
-        {
-          "name": "associated_token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "sender", "signer": true },
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "config" },
+        { "name": "link", "writable": true },
+        { "name": "mint" },
+        { "name": "token_program" },
+        { "name": "sender_ata", "writable": true },
+        { "name": "vault", "writable": true },
+        { "name": "associated_token_program" },
+        { "name": "system_program" }
       ],
       "args": [
-        {
-          "name": "link_id",
-          "type": {
-            "array": ["u8", 16]
-          }
-        },
-        {
-          "name": "claim_pubkey",
-          "type": "pubkey"
-        },
-        {
-          "name": "amounts",
-          "type": {
-            "vec": "u64"
-          }
-        }
+        { "name": "link_id", "type": { "array": ["u8", 16] } },
+        { "name": "claim_pubkey", "type": "pubkey" },
+        { "name": "amounts", "type": { "vec": "u64" } }
       ]
     },
     {
       "name": "start_claim",
       "discriminator": [189, 230, 7, 126, 6, 10, 120, 92],
       "accounts": [
-        {
-          "name": "link",
-          "writable": true
-        },
-        {
-          "name": "claim_key",
-          "signer": true
-        },
-        {
-          "name": "attestor",
-          "signer": true
-        }
+        { "name": "link", "writable": true },
+        { "name": "claim_key", "signer": true },
+        { "name": "attestor", "signer": true }
       ],
       "args": [
-        {
-          "name": "slot_index",
-          "type": "u8"
-        },
-        {
-          "name": "intent_id",
-          "type": {
-            "array": ["u8", 16]
-          }
-        },
-        {
-          "name": "expected_version",
-          "type": "u64"
-        },
-        {
-          "name": "destination",
-          "type": "pubkey"
-        },
-        {
-          "name": "to_treasury",
-          "type": "bool"
-        }
+        { "name": "slot_index", "type": "u8" },
+        { "name": "intent_id", "type": { "array": ["u8", 16] } },
+        { "name": "expected_version", "type": "u64" },
+        { "name": "destination", "type": "pubkey" },
+        { "name": "to_treasury", "type": "bool" }
       ]
     },
     {
@@ -217,75 +86,27 @@
         {
           "name": "settlement",
           "accounts": [
-            {
-              "name": "payer",
-              "writable": true,
-              "signer": true
-            },
-            {
-              "name": "link",
-              "writable": true
-            },
-            {
-              "name": "sender"
-            },
-            {
-              "name": "mint"
-            },
-            {
-              "name": "token_program"
-            },
-            {
-              "name": "vault",
-              "writable": true
-            },
-            {
-              "name": "sender_ata",
-              "writable": true
-            },
-            {
-              "name": "destination_owner"
-            },
-            {
-              "name": "destination",
-              "writable": true
-            },
-            {
-              "name": "rent_beneficiary",
-              "writable": true
-            },
-            {
-              "name": "associated_token_program"
-            },
-            {
-              "name": "system_program"
-            }
+            { "name": "payer", "writable": true, "signer": true },
+            { "name": "link", "writable": true },
+            { "name": "sender" },
+            { "name": "mint" },
+            { "name": "token_program" },
+            { "name": "vault", "writable": true },
+            { "name": "sender_ata", "writable": true },
+            { "name": "destination_owner" },
+            { "name": "destination", "writable": true },
+            { "name": "rent_beneficiary", "writable": true },
+            { "name": "associated_token_program" },
+            { "name": "system_program" }
           ]
         },
-        {
-          "name": "claim_key",
-          "signer": true
-        },
-        {
-          "name": "attestor",
-          "signer": true
-        }
+        { "name": "claim_key", "signer": true },
+        { "name": "attestor", "signer": true }
       ],
       "args": [
-        {
-          "name": "slot_index",
-          "type": "u8"
-        },
-        {
-          "name": "intent_id",
-          "type": {
-            "array": ["u8", 16]
-          }
-        },
-        {
-          "name": "version",
-          "type": "u64"
-        }
+        { "name": "slot_index", "type": "u8" },
+        { "name": "intent_id", "type": { "array": ["u8", 16] } },
+        { "name": "version", "type": "u64" }
       ]
     },
     {
@@ -295,179 +116,64 @@
         {
           "name": "settlement",
           "accounts": [
-            {
-              "name": "payer",
-              "writable": true,
-              "signer": true
-            },
-            {
-              "name": "link",
-              "writable": true
-            },
-            {
-              "name": "sender"
-            },
-            {
-              "name": "mint"
-            },
-            {
-              "name": "token_program"
-            },
-            {
-              "name": "vault",
-              "writable": true
-            },
-            {
-              "name": "sender_ata",
-              "writable": true
-            },
-            {
-              "name": "destination_owner"
-            },
-            {
-              "name": "destination",
-              "writable": true
-            },
-            {
-              "name": "rent_beneficiary",
-              "writable": true
-            },
-            {
-              "name": "associated_token_program"
-            },
-            {
-              "name": "system_program"
-            }
+            { "name": "payer", "writable": true, "signer": true },
+            { "name": "link", "writable": true },
+            { "name": "sender" },
+            { "name": "mint" },
+            { "name": "token_program" },
+            { "name": "vault", "writable": true },
+            { "name": "sender_ata", "writable": true },
+            { "name": "destination_owner" },
+            { "name": "destination", "writable": true },
+            { "name": "rent_beneficiary", "writable": true },
+            { "name": "associated_token_program" },
+            { "name": "system_program" }
           ]
         },
-        {
-          "name": "claim_key",
-          "signer": true
-        },
-        {
-          "name": "attestor",
-          "signer": true
-        }
+        { "name": "claim_key", "signer": true },
+        { "name": "attestor", "signer": true }
       ],
       "args": [
-        {
-          "name": "slot_index",
-          "type": "u8"
-        },
-        {
-          "name": "intent_id",
-          "type": {
-            "array": ["u8", 16]
-          }
-        },
-        {
-          "name": "version",
-          "type": "u64"
-        }
+        { "name": "slot_index", "type": "u8" },
+        { "name": "intent_id", "type": { "array": ["u8", 16] } },
+        { "name": "version", "type": "u64" }
       ]
     },
     {
       "name": "recall_slot",
       "discriminator": [224, 57, 151, 106, 67, 52, 182, 171],
       "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "link",
-          "writable": true
-        },
-        {
-          "name": "sender"
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "vault",
-          "writable": true
-        },
-        {
-          "name": "sender_ata",
-          "writable": true
-        },
-        {
-          "name": "destination_owner"
-        },
-        {
-          "name": "destination",
-          "writable": true
-        },
-        {
-          "name": "rent_beneficiary",
-          "writable": true
-        },
-        {
-          "name": "associated_token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "link", "writable": true },
+        { "name": "sender" },
+        { "name": "mint" },
+        { "name": "token_program" },
+        { "name": "vault", "writable": true },
+        { "name": "sender_ata", "writable": true },
+        { "name": "destination_owner" },
+        { "name": "destination", "writable": true },
+        { "name": "rent_beneficiary", "writable": true },
+        { "name": "associated_token_program" },
+        { "name": "system_program" }
       ],
-      "args": [
-        {
-          "name": "slot_index",
-          "type": "u8"
-        }
-      ]
+      "args": [{ "name": "slot_index", "type": "u8" }]
     },
     {
       "name": "recall_all",
       "discriminator": [52, 40, 45, 25, 140, 87, 181, 197],
       "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "link",
-          "writable": true
-        },
-        {
-          "name": "sender"
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "vault",
-          "writable": true
-        },
-        {
-          "name": "sender_ata",
-          "writable": true
-        },
-        {
-          "name": "destination_owner"
-        },
-        {
-          "name": "destination",
-          "writable": true
-        },
-        {
-          "name": "rent_beneficiary",
-          "writable": true
-        },
-        {
-          "name": "associated_token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "link", "writable": true },
+        { "name": "sender" },
+        { "name": "mint" },
+        { "name": "token_program" },
+        { "name": "vault", "writable": true },
+        { "name": "sender_ata", "writable": true },
+        { "name": "destination_owner" },
+        { "name": "destination", "writable": true },
+        { "name": "rent_beneficiary", "writable": true },
+        { "name": "associated_token_program" },
+        { "name": "system_program" }
       ],
       "args": []
     },
@@ -475,49 +181,18 @@
       "name": "expire",
       "discriminator": [243, 83, 205, 58, 57, 201, 247, 146],
       "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "link",
-          "writable": true
-        },
-        {
-          "name": "sender"
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "vault",
-          "writable": true
-        },
-        {
-          "name": "sender_ata",
-          "writable": true
-        },
-        {
-          "name": "destination_owner"
-        },
-        {
-          "name": "destination",
-          "writable": true
-        },
-        {
-          "name": "rent_beneficiary",
-          "writable": true
-        },
-        {
-          "name": "associated_token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "link", "writable": true },
+        { "name": "sender" },
+        { "name": "mint" },
+        { "name": "token_program" },
+        { "name": "vault", "writable": true },
+        { "name": "sender_ata", "writable": true },
+        { "name": "destination_owner" },
+        { "name": "destination", "writable": true },
+        { "name": "rent_beneficiary", "writable": true },
+        { "name": "associated_token_program" },
+        { "name": "system_program" }
       ],
       "args": []
     },
@@ -525,123 +200,47 @@
       "name": "transfer_once",
       "discriminator": [86, 97, 106, 145, 210, 177, 132, 181],
       "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "authority",
-          "signer": true
-        },
-        {
-          "name": "config"
-        },
-        {
-          "name": "receipt",
-          "writable": true
-        },
-        {
-          "name": "mint"
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "source",
-          "writable": true
-        },
-        {
-          "name": "destination_owner"
-        },
-        {
-          "name": "destination",
-          "writable": true
-        },
-        {
-          "name": "associated_token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "authority", "signer": true },
+        { "name": "config" },
+        { "name": "receipt", "writable": true },
+        { "name": "mint" },
+        { "name": "token_program" },
+        { "name": "source", "writable": true },
+        { "name": "destination_owner" },
+        { "name": "destination", "writable": true },
+        { "name": "associated_token_program" },
+        { "name": "system_program" }
       ],
       "args": [
-        {
-          "name": "operation_id",
-          "type": {
-            "array": ["u8", 16]
-          }
-        },
-        {
-          "name": "amount",
-          "type": "u64"
-        }
+        { "name": "operation_id", "type": { "array": ["u8", 16] } },
+        { "name": "amount", "type": "u64" }
       ]
     },
     {
       "name": "mint_test_once",
       "discriminator": [24, 8, 252, 139, 153, 93, 31, 155],
       "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "authority",
-          "signer": true
-        },
-        {
-          "name": "config"
-        },
-        {
-          "name": "receipt",
-          "writable": true
-        },
-        {
-          "name": "mint",
-          "writable": true
-        },
-        {
-          "name": "token_program"
-        },
-        {
-          "name": "destination_owner"
-        },
-        {
-          "name": "destination",
-          "writable": true
-        },
-        {
-          "name": "associated_token_program"
-        },
-        {
-          "name": "system_program"
-        }
+        { "name": "payer", "writable": true, "signer": true },
+        { "name": "authority", "signer": true },
+        { "name": "config" },
+        { "name": "receipt", "writable": true },
+        { "name": "mint", "writable": true },
+        { "name": "token_program" },
+        { "name": "destination_owner" },
+        { "name": "destination", "writable": true },
+        { "name": "associated_token_program" },
+        { "name": "system_program" }
       ],
       "args": [
-        {
-          "name": "operation_id",
-          "type": {
-            "array": ["u8", 16]
-          }
-        },
-        {
-          "name": "amount",
-          "type": "u64"
-        }
+        { "name": "operation_id", "type": { "array": ["u8", 16] } },
+        { "name": "amount", "type": "u64" }
       ]
     }
   ],
   "accounts": [
-    {
-      "name": "muuve_escrow::Config",
-      "discriminator": [155, 12, 170, 224, 30, 250, 204, 130]
-    },
-    {
-      "name": "muuve_escrow::Link",
-      "discriminator": [90, 57, 179, 207, 13, 91, 161, 190]
-    },
+    { "name": "muuve_escrow::Config", "discriminator": [155, 12, 170, 224, 30, 250, 204, 130] },
+    { "name": "muuve_escrow::Link", "discriminator": [90, 57, 179, 207, 13, 91, 161, 190] },
     {
       "name": "muuve_escrow::OperationReceipt",
       "discriminator": [85, 164, 198, 182, 71, 51, 54, 103]
@@ -652,24 +251,10 @@
       "name": "muuve_escrow::ClaimStarted",
       "type": {
         "fields": [
-          {
-            "name": "link",
-            "type": "pubkey"
-          },
-          {
-            "name": "slot_index",
-            "type": "u8"
-          },
-          {
-            "name": "intent_id",
-            "type": {
-              "array": ["u8", 16]
-            }
-          },
-          {
-            "name": "priority_until",
-            "type": "i64"
-          }
+          { "name": "link", "type": "pubkey" },
+          { "name": "slot_index", "type": "u8" },
+          { "name": "intent_id", "type": { "array": ["u8", 16] } },
+          { "name": "priority_until", "type": "i64" }
         ],
         "kind": "struct"
       }
@@ -679,54 +264,18 @@
       "type": {
         "kind": "struct",
         "fields": [
-          {
-            "name": "admin",
-            "type": "pubkey"
-          },
-          {
-            "name": "attestor",
-            "type": "pubkey"
-          },
-          {
-            "name": "fee_payer",
-            "type": "pubkey"
-          },
-          {
-            "name": "mint",
-            "type": "pubkey"
-          },
-          {
-            "name": "token_program",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasury",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasury_owner",
-            "type": "pubkey"
-          },
-          {
-            "name": "mint_authority",
-            "type": "pubkey"
-          },
-          {
-            "name": "max_slot",
-            "type": "u64"
-          },
-          {
-            "name": "max_link",
-            "type": "u64"
-          },
-          {
-            "name": "claim_window",
-            "type": "i64"
-          },
-          {
-            "name": "bump",
-            "type": "u8"
-          }
+          { "name": "admin", "type": "pubkey" },
+          { "name": "attestor", "type": "pubkey" },
+          { "name": "fee_payer", "type": "pubkey" },
+          { "name": "mint", "type": "pubkey" },
+          { "name": "token_program", "type": "pubkey" },
+          { "name": "treasury", "type": "pubkey" },
+          { "name": "treasury_owner", "type": "pubkey" },
+          { "name": "mint_authority", "type": "pubkey" },
+          { "name": "max_slot", "type": "u64" },
+          { "name": "max_link", "type": "u64" },
+          { "name": "claim_window", "type": "i64" },
+          { "name": "bump", "type": "u8" }
         ]
       }
     },
@@ -735,81 +284,25 @@
       "type": {
         "kind": "struct",
         "fields": [
-          {
-            "name": "link_id",
-            "type": {
-              "array": ["u8", 16]
-            }
-          },
-          {
-            "name": "sender",
-            "type": "pubkey"
-          },
-          {
-            "name": "rent_payer",
-            "type": "pubkey"
-          },
-          {
-            "name": "claim_pubkey",
-            "type": "pubkey"
-          },
-          {
-            "name": "mint",
-            "type": "pubkey"
-          },
-          {
-            "name": "token_program",
-            "type": "pubkey"
-          },
-          {
-            "name": "attestor",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasury",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasury_owner",
-            "type": "pubkey"
-          },
-          {
-            "name": "created_at",
-            "type": "i64"
-          },
-          {
-            "name": "expires_at",
-            "type": "i64"
-          },
-          {
-            "name": "total",
-            "type": "u64"
-          },
-          {
-            "name": "slot_count",
-            "type": "u8"
-          },
-          {
-            "name": "open_slots",
-            "type": "u8"
-          },
+          { "name": "link_id", "type": { "array": ["u8", 16] } },
+          { "name": "sender", "type": "pubkey" },
+          { "name": "rent_payer", "type": "pubkey" },
+          { "name": "claim_pubkey", "type": "pubkey" },
+          { "name": "mint", "type": "pubkey" },
+          { "name": "token_program", "type": "pubkey" },
+          { "name": "attestor", "type": "pubkey" },
+          { "name": "treasury", "type": "pubkey" },
+          { "name": "treasury_owner", "type": "pubkey" },
+          { "name": "created_at", "type": "i64" },
+          { "name": "expires_at", "type": "i64" },
+          { "name": "total", "type": "u64" },
+          { "name": "slot_count", "type": "u8" },
+          { "name": "open_slots", "type": "u8" },
           {
             "name": "slots",
-            "type": {
-              "array": [
-                {
-                  "defined": {
-                    "name": "muuve_escrow::Slot"
-                  }
-                },
-                10
-              ]
-            }
+            "type": { "array": [{ "defined": { "name": "muuve_escrow::Slot" } }, 10] }
           },
-          {
-            "name": "bump",
-            "type": "u8"
-          }
+          { "name": "bump", "type": "u8" }
         ]
       }
     },
@@ -817,26 +310,11 @@
       "name": "muuve_escrow::LinkCreated",
       "type": {
         "fields": [
-          {
-            "name": "link",
-            "type": "pubkey"
-          },
-          {
-            "name": "sender",
-            "type": "pubkey"
-          },
-          {
-            "name": "total",
-            "type": "u64"
-          },
-          {
-            "name": "slot_count",
-            "type": "u8"
-          },
-          {
-            "name": "expires_at",
-            "type": "i64"
-          }
+          { "name": "link", "type": "pubkey" },
+          { "name": "sender", "type": "pubkey" },
+          { "name": "total", "type": "u64" },
+          { "name": "slot_count", "type": "u8" },
+          { "name": "expires_at", "type": "i64" }
         ],
         "kind": "struct"
       }
@@ -845,18 +323,9 @@
       "name": "muuve_escrow::LinkExpired",
       "type": {
         "fields": [
-          {
-            "name": "link",
-            "type": "pubkey"
-          },
-          {
-            "name": "refunded_slots",
-            "type": "u8"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
-          }
+          { "name": "link", "type": "pubkey" },
+          { "name": "refunded_slots", "type": "u8" },
+          { "name": "amount", "type": "u64" }
         ],
         "kind": "struct"
       }
@@ -866,28 +335,11 @@
       "type": {
         "kind": "struct",
         "fields": [
-          {
-            "name": "operation_id",
-            "type": {
-              "array": ["u8", 16]
-            }
-          },
-          {
-            "name": "authority",
-            "type": "pubkey"
-          },
-          {
-            "name": "destination",
-            "type": "pubkey"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
-            "name": "kind",
-            "type": "u8"
-          }
+          { "name": "operation_id", "type": { "array": ["u8", 16] } },
+          { "name": "authority", "type": "pubkey" },
+          { "name": "destination", "type": "pubkey" },
+          { "name": "amount", "type": "u64" },
+          { "name": "kind", "type": "u8" }
         ]
       }
     },
@@ -896,40 +348,13 @@
       "type": {
         "kind": "struct",
         "fields": [
-          {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
-            "name": "status",
-            "type": {
-              "defined": {
-                "name": "muuve_escrow::SlotStatus"
-              }
-            }
-          },
-          {
-            "name": "intent_id",
-            "type": {
-              "array": ["u8", 16]
-            }
-          },
-          {
-            "name": "version",
-            "type": "u64"
-          },
-          {
-            "name": "priority_until",
-            "type": "i64"
-          },
-          {
-            "name": "destination",
-            "type": "pubkey"
-          },
-          {
-            "name": "to_treasury",
-            "type": "bool"
-          }
+          { "name": "amount", "type": "u64" },
+          { "name": "status", "type": { "defined": { "name": "muuve_escrow::SlotStatus" } } },
+          { "name": "intent_id", "type": { "array": ["u8", 16] } },
+          { "name": "version", "type": "u64" },
+          { "name": "priority_until", "type": "i64" },
+          { "name": "destination", "type": "pubkey" },
+          { "name": "to_treasury", "type": "bool" }
         ]
       }
     },
@@ -937,26 +362,11 @@
       "name": "muuve_escrow::SlotClaimed",
       "type": {
         "fields": [
-          {
-            "name": "link",
-            "type": "pubkey"
-          },
-          {
-            "name": "slot_index",
-            "type": "u8"
-          },
-          {
-            "name": "destination",
-            "type": "pubkey"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
-            "name": "to_treasury",
-            "type": "bool"
-          }
+          { "name": "link", "type": "pubkey" },
+          { "name": "slot_index", "type": "u8" },
+          { "name": "destination", "type": "pubkey" },
+          { "name": "amount", "type": "u64" },
+          { "name": "to_treasury", "type": "bool" }
         ],
         "kind": "struct"
       }
@@ -965,18 +375,9 @@
       "name": "muuve_escrow::SlotRecalled",
       "type": {
         "fields": [
-          {
-            "name": "link",
-            "type": "pubkey"
-          },
-          {
-            "name": "slot_index",
-            "type": "u8"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
-          }
+          { "name": "link", "type": "pubkey" },
+          { "name": "slot_index", "type": "u8" },
+          { "name": "amount", "type": "u64" }
         ],
         "kind": "struct"
       }
@@ -986,21 +387,11 @@
       "type": {
         "kind": "enum",
         "variants": [
-          {
-            "name": "Empty"
-          },
-          {
-            "name": "Funded"
-          },
-          {
-            "name": "Claimed"
-          },
-          {
-            "name": "Recalled"
-          },
-          {
-            "name": "Expired"
-          }
+          { "name": "Empty" },
+          { "name": "Funded" },
+          { "name": "Claimed" },
+          { "name": "Recalled" },
+          { "name": "Expired" }
         ]
       }
     },
@@ -1008,18 +399,9 @@
       "name": "muuve_escrow::SurplusReturned",
       "type": {
         "fields": [
-          {
-            "name": "link",
-            "type": "pubkey"
-          },
-          {
-            "name": "amount",
-            "type": "u64"
-          },
-          {
-            "name": "sender",
-            "type": "pubkey"
-          }
+          { "name": "link", "type": "pubkey" },
+          { "name": "amount", "type": "u64" },
+          { "name": "sender", "type": "pubkey" }
         ],
         "kind": "struct"
       }
@@ -1030,14 +412,8 @@
       "discriminator": [120, 169, 163, 50, 247, 184, 250, 198],
       "name": "muuve_escrow::ClaimStarted"
     },
-    {
-      "discriminator": [23, 29, 22, 108, 76, 67, 153, 254],
-      "name": "muuve_escrow::LinkCreated"
-    },
-    {
-      "discriminator": [43, 23, 56, 165, 205, 14, 140, 109],
-      "name": "muuve_escrow::LinkExpired"
-    },
+    { "discriminator": [23, 29, 22, 108, 76, 67, 153, 254], "name": "muuve_escrow::LinkCreated" },
+    { "discriminator": [43, 23, 56, 165, 205, 14, 140, 109], "name": "muuve_escrow::LinkExpired" },
     {
       "discriminator": [100, 230, 68, 178, 203, 212, 207, 30],
       "name": "muuve_escrow::SlotClaimed"
@@ -1052,116 +428,28 @@
     }
   ],
   "errors": [
-    {
-      "code": 6000,
-      "name": "InvalidSlotCount",
-      "msg": "Invalid slot count"
-    },
-    {
-      "code": 6001,
-      "name": "InvalidAmount",
-      "msg": "Invalid allocation or limit"
-    },
-    {
-      "code": 6002,
-      "name": "LinkTooLarge",
-      "msg": "Link exceeds maximum"
-    },
-    {
-      "code": 6003,
-      "name": "WrongMint",
-      "msg": "Wrong mint or unsupported authority/decimals"
-    },
-    {
-      "code": 6004,
-      "name": "BadSlotIndex",
-      "msg": "Invalid slot index"
-    },
-    {
-      "code": 6005,
-      "name": "SlotNotFunded",
-      "msg": "Slot no longer funded"
-    },
-    {
-      "code": 6006,
-      "name": "LinkExpired",
-      "msg": "Link expired"
-    },
-    {
-      "code": 6007,
-      "name": "NotExpired",
-      "msg": "Link has not expired"
-    },
-    {
-      "code": 6008,
-      "name": "NothingToRefund",
-      "msg": "No eligible principal to refund"
-    },
-    {
-      "code": 6009,
-      "name": "BadClaimKey",
-      "msg": "Wrong claim key"
-    },
-    {
-      "code": 6010,
-      "name": "BadAttestor",
-      "msg": "Wrong attestor"
-    },
-    {
-      "code": 6011,
-      "name": "NotSender",
-      "msg": "Sender signature required"
-    },
-    {
-      "code": 6012,
-      "name": "WrongTreasury",
-      "msg": "Wrong treasury"
-    },
-    {
-      "code": 6013,
-      "name": "MathOverflow",
-      "msg": "Arithmetic overflow"
-    },
-    {
-      "code": 6014,
-      "name": "BadAdmin",
-      "msg": "Unauthorized configuration authority"
-    },
-    {
-      "code": 6015,
-      "name": "RoleCollision",
-      "msg": "Roles must be distinct"
-    },
-    {
-      "code": 6016,
-      "name": "WrongTokenProgram",
-      "msg": "Unsupported token program"
-    },
-    {
-      "code": 6017,
-      "name": "UnsupportedExtension",
-      "msg": "Unsupported token extension"
-    },
-    {
-      "code": 6018,
-      "name": "WrongDestination",
-      "msg": "Wrong token destination"
-    },
-    {
-      "code": 6019,
-      "name": "WrongRentPayer",
-      "msg": "Wrong rent beneficiary"
-    },
-    {
-      "code": 6020,
-      "name": "BadIntent",
-      "msg": "Stale or invalid claim intent"
-    },
-    {
-      "code": 6021,
-      "name": "ClaimInProgress",
-      "msg": "Recipient currently has priority"
-    }
+    { "code": 6000, "name": "InvalidSlotCount", "msg": "Invalid slot count" },
+    { "code": 6001, "name": "InvalidAmount", "msg": "Invalid allocation or limit" },
+    { "code": 6002, "name": "LinkTooLarge", "msg": "Link exceeds maximum" },
+    { "code": 6003, "name": "WrongMint", "msg": "Wrong mint or unsupported authority/decimals" },
+    { "code": 6004, "name": "BadSlotIndex", "msg": "Invalid slot index" },
+    { "code": 6005, "name": "SlotNotFunded", "msg": "Slot no longer funded" },
+    { "code": 6006, "name": "LinkExpired", "msg": "Link expired" },
+    { "code": 6007, "name": "NotExpired", "msg": "Link has not expired" },
+    { "code": 6008, "name": "NothingToRefund", "msg": "No eligible principal to refund" },
+    { "code": 6009, "name": "BadClaimKey", "msg": "Wrong claim key" },
+    { "code": 6010, "name": "BadAttestor", "msg": "Wrong attestor" },
+    { "code": 6011, "name": "NotSender", "msg": "Sender signature required" },
+    { "code": 6012, "name": "WrongTreasury", "msg": "Wrong treasury" },
+    { "code": 6013, "name": "MathOverflow", "msg": "Arithmetic overflow" },
+    { "code": 6014, "name": "BadAdmin", "msg": "Unauthorized configuration authority" },
+    { "code": 6015, "name": "RoleCollision", "msg": "Roles must be distinct" },
+    { "code": 6016, "name": "WrongTokenProgram", "msg": "Unsupported token program" },
+    { "code": 6017, "name": "UnsupportedExtension", "msg": "Unsupported token extension" },
+    { "code": 6018, "name": "WrongDestination", "msg": "Wrong token destination" },
+    { "code": 6019, "name": "WrongRentPayer", "msg": "Wrong rent beneficiary" },
+    { "code": 6020, "name": "BadIntent", "msg": "Stale or invalid claim intent" },
+    { "code": 6021, "name": "ClaimInProgress", "msg": "Recipient currently has priority" }
   ],
   "constants": []
 }

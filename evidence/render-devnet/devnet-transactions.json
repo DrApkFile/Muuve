@@ -1,0 +1,14 @@
+{
+  "name": "devnet-transactions",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/devnet-integration.ts"
+  ],
+  "started_at": "2026-10-29T08:37:45.984Z",
+  "duration_ms": 115327,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

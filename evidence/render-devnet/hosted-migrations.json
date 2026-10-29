@@ -1,0 +1,14 @@
+{
+  "name": "hosted-migrations",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/migrate.ts"
+  ],
+  "started_at": "2026-10-29T09:35:22.142Z",
+  "duration_ms": 5487,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

@@ -7,10 +7,11 @@ skip-lint = false
 
 [provider]
 cluster = "devnet"
-wallet = "keys/operator.json"
+wallet = "keys/devnet/deployment-authority.json"
 
-# Operator supplies MUUVE_PROGRAM_ID and adds [programs.devnet] after provisioning.
-# No deployable program address or wallet is fabricated by the application.
+# Stable local deployment identity. This entry alone is not deployment evidence.
+[programs.devnet]
+muuve_escrow = "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe"
 
 [scripts]
 test = "pnpm test:program"

@@ -13,6 +13,22 @@ export const payer = Keypair.generate(),
   mint = Keypair.generate().publicKey,
   program = Keypair.generate().publicKey;
 export function setupEnv() {
+  // Tests use ephemeral in-memory keys, never the owner's local key files/keyrings.
+  for (const name of [
+    "FEE_PAYER_SECRET_FILE",
+    "ATTESTOR_SECRET_FILE",
+    "TREASURY_SECRET_FILE",
+    "TEST_MINT_AUTHORITY_SECRET_FILE",
+    "AUTH_JWT_PRIVATE_KEY_FILE",
+    "ATTESTOR_KEYRING",
+    "TREASURY_KEYRING",
+  ])
+    delete process.env[name];
+  if (process.env.MUUVE_TEST_DB === "1") {
+    const url = new URL(process.env.DATABASE_URL ?? "");
+    if (!["127.0.0.1", "localhost", "[::1]"].includes(url.hostname))
+      throw new Error("Destructive test reset is restricted to the disposable loopback database");
+  }
   Object.assign(process.env, {
     APP_ENV: "local",
     APP_BASE_URL: "https://muuve.test",
@@ -40,7 +56,7 @@ export function setupEnv() {
 }
 export async function reset() {
   await database().query(
-    "TRUNCATE users,otp_challenges,events,jobs,webhook_inbox,mock_provider_transfers RESTART IDENTITY CASCADE",
+    "TRUNCATE users,otp_challenges,events,jobs,worker_schedules,webhook_inbox,mock_provider_transfers RESTART IDENTITY CASCADE",
   );
 }
 export async function seed(

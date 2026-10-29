@@ -19,12 +19,12 @@ import {
   createTransferCheckedInstruction,
   createMintToCheckedInstruction,
 } from "@solana/spl-token";
-import { config, runtimeKeys, keypair, historicalKey } from "../config";
+import { chainConfig, runtimeKeys, keypair, historicalKey } from "../config";
 import { randomUUID } from "node:crypto";
 import bs58 from "bs58";
 import { assert } from "../errors";
 import { bytes16, decodeLink, decodeConfig, ix, meta, u64, type ChainLink } from "./codec";
-export const DEVNET_GENESIS = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1";
+export const DEVNET_GENESIS = "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG";
 export const ata = (
   owner: string | PublicKey,
   mint: string | PublicKey,
@@ -39,7 +39,7 @@ export const ata = (
 export function linkPda(sender: string, id: string) {
   return PublicKey.findProgramAddressSync(
     [Buffer.from("link"), new PublicKey(sender).toBuffer(), bytes16(id)],
-    new PublicKey(config().MUUVE_PROGRAM_ID),
+    new PublicKey(chainConfig().MUUVE_PROGRAM_ID),
   )[0];
 }
 export function assertExtensions(types: ExtensionType[], account = false) {
@@ -50,7 +50,7 @@ export function assertExtensions(types: ExtensionType[], account = false) {
   );
 }
 export class Chain {
-  readonly c = config();
+  readonly c = chainConfig();
   readonly program = new PublicKey(this.c.MUUVE_PROGRAM_ID);
   readonly keys = runtimeKeys();
   readonly connections = [
@@ -62,6 +62,7 @@ export class Chain {
         commitment: "finalized",
         confirmTransactionInitialTimeout: 15000,
         disableRetryOnRateLimit: true,
+        fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(15000) }),
       }),
   );
   async rpc<T>(fn: (c: Connection) => Promise<T>): Promise<T> {

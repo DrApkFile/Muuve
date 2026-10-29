@@ -108,6 +108,58 @@ describe.skipIf(process.env.MUUVE_TEST_DB !== "1")(
           .status,
       ).toBe(200);
     });
+    it("logs an existing account in and revokes its session on logout", async () => {
+      const f = await seed();
+      const sent = await (
+        await request("auth/otp/send", "POST", {
+          phone_e164: f.user.phone_e164,
+          purpose: "account",
+          channel: "sms",
+        })
+      ).json();
+      const verified = await request("auth/otp/verify", "POST", {
+        challenge_id: sent.challenge_id,
+        code: "000000",
+      });
+      const cookie = verified.headers.getSetCookie()[0]!.split(";")[0];
+      expect((await request("me", "GET", undefined, cookie)).status).toBe(200);
+      expect((await request("auth/logout", "POST", {}, cookie)).status).toBe(200);
+      expect((await request("me", "GET", undefined, cookie)).status).toBe(401);
+    });
+    it("rejects expired challenges and exhausts invalid-code attempts", async () => {
+      const input = { phone_e164: "+2348030000002", purpose: "account", channel: "sms" };
+      const expired = await (await request("auth/otp/send", "POST", input)).json();
+      await database().query(
+        "UPDATE otp_challenges SET expires_at=now()-interval '1 second' WHERE id=$1",
+        [expired.challenge_id],
+      );
+      expect(
+        (
+          await request("auth/otp/verify", "POST", {
+            challenge_id: expired.challenge_id,
+            code: "000000",
+          })
+        ).status,
+      ).toBe(401);
+      const challenge = await (await request("auth/otp/send", "POST", input)).json();
+      for (let i = 0; i < 5; i++)
+        expect(
+          (
+            await request("auth/otp/verify", "POST", {
+              challenge_id: challenge.challenge_id,
+              code: "111111",
+            })
+          ).status,
+        ).toBe(401);
+      expect(
+        (
+          await request("auth/otp/verify", "POST", {
+            challenge_id: challenge.challenge_id,
+            code: "000000",
+          })
+        ).status,
+      ).toBe(401);
+    });
     it("exposes only the verified recipient share and denies another sender", async () => {
       const f = await seed(),
         s = await makeSession("claim", f.slot.recipient_phone_e164, null, f.link.id);

@@ -1,0 +1,21 @@
+warning: use of deprecated method `anchor_lang::prelude::AccountInfo::<'a>::realloc`: Use AccountInfo::resize() instead
+  --> programs/muuve_escrow/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+   = note: this warning originates in the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: `muuve_escrow` (lib) generated 1 warning
+   Compiling muuve_escrow v0.1.0 (/home/kingghidorah/Documents/projects/bounties/Muuve/programs/muuve_escrow)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 25s
+warning: the following packages contain code that will be rejected by a future version of Rust: proc-macro-error2 v2.0.1
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running tests/loader_layout.rs (target/debug/deps/loader_layout-d073b75b1638791f)
+
+running 1 test
+test typescript_loader_encoding_and_accounts_match_pinned_rust_sdk ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

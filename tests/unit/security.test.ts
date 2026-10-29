@@ -3,7 +3,12 @@ import { Transaction, Keypair } from "@solana/web3.js";
 import { ExtensionType } from "@solana/spl-token";
 import { LIMITS, totalAllocations, ngnKobo, schemas } from "@muuve/shared";
 import { config } from "../../apps/web/lib/server/config";
-import { Chain, assertExtensions, linkPda } from "../../apps/web/lib/server/solana/chain";
+import {
+  Chain,
+  assertExtensions,
+  linkPda,
+  DEVNET_GENESIS,
+} from "../../apps/web/lib/server/solana/chain";
 import { verifyMessage } from "../../apps/web/lib/server/operations";
 import { signWebhook, verifyWebhook } from "../../apps/web/lib/server/providers/payout";
 import { safeLog } from "../../apps/web/lib/server/log";
@@ -14,6 +19,14 @@ import { privyToken, jwks } from "../../apps/web/lib/server/auth";
 setupEnv();
 afterEach(() => vi.restoreAllMocks());
 describe("amount and configuration boundaries", () => {
+  it("accepts the complete genesis hash returned by the official devnet RPC", async () => {
+    expect(DEVNET_GENESIS).toBe("EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG");
+    const chain = new Chain();
+    vi.spyOn(chain.connections[0]!, "getGenesisHash").mockResolvedValue(
+      "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+    );
+    await expect(chain.rpc(async () => "devnet_verified")).resolves.toBe("devnet_verified");
+  });
   it("verifies RPC genesis rather than trusting the cluster label", async () => {
     const chain = new Chain();
     vi.spyOn(chain.connections[0]!, "getGenesisHash").mockResolvedValue("mainnet-genesis");
@@ -91,12 +104,12 @@ describe("webhooks and logging", () => {
     process.env.AUTH_JWT_KID = "test-key";
     process.env.NEXT_PUBLIC_PRIVY_APP_ID = "test-app";
     const publicKeys = await jwks(),
-      token = await privyToken("verified-user-id");
+      token = await privyToken("00112233-4455-4677-8899-aabbccddeeff");
     const verified = await jwtVerify(token, createLocalJWKSet(publicKeys), {
       issuer: "https://muuve.test",
       audience: "test-app",
     });
-    expect(verified.payload.sub).toBe("verified-user-id");
+    expect(verified.payload.sub).toBe("00112233-4455-4677-8899-aabbccddeeff");
     expect(publicKeys.keys[0]).not.toHaveProperty("d");
   });
   it("authenticates raw payload and bounds replay time", () => {

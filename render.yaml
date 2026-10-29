@@ -1,0 +1,122 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+services:
+  - type: web
+    name: muuve-api
+    runtime: node
+    plan: starter
+    rootDir: .
+    autoDeployTrigger: off
+    buildCommand: node scripts/render-build.mjs api
+    startCommand: node scripts/start-api.mjs
+    healthCheckPath: /api/health
+    maxShutdownDelaySeconds: 120
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: NODE_ENV
+        value: production
+      - key: APP_ENV
+        value: preview
+      - key: APP_BASE_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: CRON_SECRET
+        generateValue: true
+      - key: MOCK_WEBHOOK_SECRET
+        generateValue: true
+      - key: SOLANA_CLUSTER
+        value: devnet
+      - key: SOLANA_RPC_URL
+        value: https://api.devnet.solana.com
+      - key: MUUVE_PROGRAM_ID
+        value: 147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe
+      - key: USDT_MINT
+        value: H9d97DiVPydaxKTWFxVYfAg3FLSsicqx9u2boCoMksQJ
+      - key: TOKEN_PROGRAM_ID
+        value: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+      - key: TREASURY_TOKEN_ACCOUNT
+        value: 29vE2HKDM5MLmDytaFQXDCp4ejSBam8FrGqZhTC85XuC
+      - key: CLAIM_WINDOW_SECS
+        value: "172800"
+      - key: FEE_PAYER_SECRET
+        sync: false
+      - key: ATTESTOR_SECRET
+        sync: false
+      - key: TREASURY_SECRET
+        sync: false
+      - key: TEST_MINT_AUTHORITY_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_PRIVY_APP_ID
+        value: cmvt5381d00ls0hjn44zaoz69
+      - key: PRIVY_APP_SECRET
+        sync: false
+      - key: AUTH_JWT_KID
+        value: ed86a909-f90c-4a96-bb04-6e9b7a9697fe
+      - key: AUTH_JWT_PRIVATE_KEY
+        sync: false
+      - key: OTP_PROVIDER
+        value: twilio
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_VERIFY_SERVICE_SID
+        sync: false
+      - key: WHATSAPP_OTP_ENABLED
+        value: "false"
+      - key: PAYOUT_PROVIDER
+        value: mock
+      - key: RATE_PROVIDER
+        value: mock
+      - key: MOCK_NGN_PER_USD
+        value: "1520"
+      - key: TRUSTED_PROXY
+        value: "false"
+  - type: worker
+    name: muuve-worker
+    runtime: node
+    plan: starter
+    rootDir: .
+    autoDeployTrigger: off
+    buildCommand: node scripts/render-build.mjs worker
+    startCommand: node --import tsx scripts/worker.ts
+    maxShutdownDelaySeconds: 120
+    envVars:
+      - key: NODE_VERSION
+        value: 24.19.0
+      - key: NODE_ENV
+        value: production
+      - key: WORKER_POLL_MS
+        value: "2000"
+      - key: PAYOUT_PROVIDER
+        value: mock
+      - key: DATABASE_URL
+        fromService: { type: web, name: muuve-api, envVarKey: DATABASE_URL }
+      - key: MOCK_WEBHOOK_SECRET
+        fromService: { type: web, name: muuve-api, envVarKey: MOCK_WEBHOOK_SECRET }
+      - key: SOLANA_CLUSTER
+        value: devnet
+      - key: SOLANA_RPC_URL
+        fromService: { type: web, name: muuve-api, envVarKey: SOLANA_RPC_URL }
+      - key: MUUVE_PROGRAM_ID
+        fromService: { type: web, name: muuve-api, envVarKey: MUUVE_PROGRAM_ID }
+      - key: USDT_MINT
+        fromService: { type: web, name: muuve-api, envVarKey: USDT_MINT }
+      - key: TOKEN_PROGRAM_ID
+        fromService: { type: web, name: muuve-api, envVarKey: TOKEN_PROGRAM_ID }
+      - key: TREASURY_TOKEN_ACCOUNT
+        fromService: { type: web, name: muuve-api, envVarKey: TREASURY_TOKEN_ACCOUNT }
+      - key: CLAIM_WINDOW_SECS
+        value: "172800"
+      - key: FEE_PAYER_SECRET
+        fromService: { type: web, name: muuve-api, envVarKey: FEE_PAYER_SECRET }
+      - key: ATTESTOR_SECRET
+        fromService: { type: web, name: muuve-api, envVarKey: ATTESTOR_SECRET }
+      - key: TREASURY_SECRET
+        fromService: { type: web, name: muuve-api, envVarKey: TREASURY_SECRET }
+      # Required to replace/reconcile interrupted devnet demo mint operations.
+      - key: TEST_MINT_AUTHORITY_SECRET
+        fromService: { type: web, name: muuve-api, envVarKey: TEST_MINT_AUTHORITY_SECRET }

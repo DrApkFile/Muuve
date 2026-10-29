@@ -1,0 +1,19 @@
+{
+  "name": "loader-sdk",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--manifest-path",
+    "programs/muuve_escrow/Cargo.toml",
+    "--test",
+    "loader_layout",
+    "--",
+    "--test-threads=1"
+  ],
+  "started_at": "2026-10-29T08:11:22.565Z",
+  "duration_ms": 86560,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

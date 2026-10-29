@@ -215,6 +215,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.3.0
         version: 19.3.0(@types/react@19.3.0)
+      ajv:
+        specifier: 8.17.1
+        version: 8.17.1
       prettier:
         specifier: 3.9.10
         version: 3.9.10
@@ -226,7 +229,10 @@ importers:
         version: 5.9.3
       vitest:
         specifier: 5.0.5
-        version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
+        version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2))
+      yaml:
+        specifier: 2.8.2
+        version: 2.8.2
 
   packages/shared: {}
 
@@ -934,6 +940,9 @@ packages:
     resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
+  ajv@8.17.1:
+    resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
+
   assertion-error@2.0.1:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
@@ -1063,11 +1072,17 @@ packages:
     resolution: {integrity: sha512-GipyPsXO1anza0AOZdy69Im7hGFCNB7Y/NGjDlZGJ3GJJLtwNSb2vrzYrTYJRrRloVx7pl+bhUaTB8yiccPvFQ==}
     engines: {node: '> 0.1.90'}
 
+  fast-deep-equal@3.1.3:
+    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
+
   fast-sha256@1.3.0:
     resolution: {integrity: sha512-n11RGP/lrWEFI/bWdygLxhI+pVeo1ZYIVwvvPkW7azl/rOy+F3HYRZ2K5zeE9mmkhQppyv9sQFx0JM9UabnpPQ==}
 
   fast-stable-stringify@1.0.0:
     resolution: {integrity: sha512-wpYMUmFu5f00Sm0cj2pfivpmawLZ0NKdviQ4w9zJeR8JVtOpOxHmLaJuj0vxvGqMJQWyP/COUkF75/57OKyRag==}
+
+  fast-uri@3.1.9:
+    resolution: {integrity: sha512-hS/0Wt3Ya043oKXs0sIxrMpKQITXhMLIrVAKKXi4gozGC9v7YRWVnXIZzjNPTO02M9BdxLCWqK1yRXgNziVyJQ==}
 
   fastestsmallesttextencoderdecoder@1.0.22:
     resolution: {integrity: sha512-Pb8d48e+oIuY4MaM64Cd7OW1gt4nxCHs7/ddPPZ/Ic3sg8yVGM7O9wDvZ7us6ScaUupzM+pfBolwtYhN1IxBIw==}
@@ -1107,6 +1122,9 @@ packages:
 
   jose@6.1.3:
     resolution: {integrity: sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==}
+
+  json-schema-traverse@1.0.0:
+    resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
 
   json-stringify-safe@5.0.1:
     resolution: {integrity: sha512-ZClg6AaYvamvYEE82d3Iyd3vSSIjQ+odgjaTzRuO3s7toCdFKczob2i0zCh7JE8kWn17yvAWhUVxvqGwUalsRA==}
@@ -1321,6 +1339,10 @@ packages:
 
   react@19.2.4:
     resolution: {integrity: sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==}
+    engines: {node: '>=0.10.0'}
+
+  require-from-string@2.0.2:
+    resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
   rolldown@1.2.15:
@@ -1569,6 +1591,11 @@ packages:
   xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
+
+  yaml@2.8.2:
+    resolution: {integrity: sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
 
   zod@4.6.7:
     resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
@@ -2104,20 +2131,27 @@ snapshots:
     dependencies:
       '@types/node': 26.6.5
 
-  '@vitest/mocker@5.0.5(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))':
+  '@vitest/mocker@5.0.5(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.5
       estree-walker: 3.0.3
       magic-string: 1.4.5
     optionalDependencies:
-      vite: 8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)
+      vite: 8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2)
 
   '@vitest/spy@5.0.5': {}
 
   agentkeepalive@4.6.0:
     dependencies:
       humanize-ms: 1.2.1
+
+  ajv@8.17.1:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-uri: 3.1.9
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
 
   assertion-error@2.0.1: {}
 
@@ -2248,9 +2282,13 @@ snapshots:
 
   eyes@0.1.8: {}
 
+  fast-deep-equal@3.1.3: {}
+
   fast-sha256@1.3.0: {}
 
   fast-stable-stringify@1.0.0: {}
+
+  fast-uri@3.1.9: {}
 
   fastestsmallesttextencoderdecoder@1.0.22: {}
 
@@ -2292,6 +2330,8 @@ snapshots:
       - utf-8-validate
 
   jose@6.1.3: {}
+
+  json-schema-traverse@1.0.0: {}
 
   json-stringify-safe@5.0.1: {}
 
@@ -2462,6 +2502,8 @@ snapshots:
 
   react@19.2.4: {}
 
+  require-from-string@2.0.2: {}
+
   rolldown@1.2.15:
     dependencies:
       '@oxc-project/types': 0.155.0
@@ -2605,7 +2647,7 @@ snapshots:
 
   uuid@8.3.2: {}
 
-  vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15):
+  vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -2617,11 +2659,12 @@ snapshots:
       esbuild: 0.28.2
       fsevents: 2.3.3
       tsx: 4.23.15
+      yaml: 2.8.2
 
-  vitest@5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)):
+  vitest@5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.5(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
+      '@vitest/mocker': 5.0.5(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2))
       chai: 6.3.0
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -2632,7 +2675,7 @@ snapshots:
       tinybench: 6.2.2
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)
+      vite: 8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15)(yaml@2.8.2)
       why-is-node-running: 3.2.1
     optionalDependencies:
       '@types/node': 24.19.2
@@ -2658,5 +2701,7 @@ snapshots:
       utf-8-validate: 6.0.6
 
   xtend@4.0.2: {}
+
+  yaml@2.8.2: {}
 
   zod@4.6.7: {}

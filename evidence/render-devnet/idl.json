@@ -1,0 +1,12 @@
+{
+  "name": "idl",
+  "command": [
+    "node",
+    "scripts/build-idl.mjs"
+  ],
+  "started_at": "2026-10-29T07:57:54.385Z",
+  "duration_ms": 258969,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

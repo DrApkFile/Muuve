@@ -1,0 +1,14 @@
+{
+  "name": "treasury",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/create-treasury.ts"
+  ],
+  "started_at": "2026-10-29T08:21:58.671Z",
+  "duration_ms": 9168,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

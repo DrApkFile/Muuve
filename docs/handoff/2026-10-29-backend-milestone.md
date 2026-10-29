@@ -1,5 +1,8 @@
 # Backend milestone handoff — 29 October 2026
 
+Historical checkpoint. See the later [Render/devnet handoff](2026-10-29-render-devnet.md)
+for the completed deployment, updated test results and current external prerequisites.
+
 ## Done
 
 Implemented the backend-only workspace, Anchor escrow, both token programs with an

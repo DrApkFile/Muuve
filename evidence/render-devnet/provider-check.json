@@ -1,0 +1,14 @@
+{
+  "name": "provider-check",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/provider-readiness.ts"
+  ],
+  "started_at": "2026-10-29T08:24:11.748Z",
+  "duration_ms": 17029,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

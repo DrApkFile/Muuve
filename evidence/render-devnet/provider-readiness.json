@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-10-29T08:24:16.282Z",
+  "scope": "read-only provider configuration; no SMS, wallet creation or payout",
+  "privy": {
+    "state": "credentials_verified",
+    "privileged_api_authenticated": true,
+    "app_matches": true,
+    "custom_jwt_auth_enabled": false,
+    "canonical_origin_allowed": false
+  },
+  "twilio": {
+    "state": "credentials_verified",
+    "service_matches": true,
+    "account_matches": true,
+    "code_length": 6,
+    "otp_provider": "mock",
+    "live_sms_sent": false
+  }
+}

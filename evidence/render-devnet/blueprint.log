@@ -1,0 +1,2 @@
+$ node scripts/validate-render.mjs
+{"state":"passed","services":2,"schema":"https://render.com/schema/render.yaml.json","schema_sha256":"8a3fb8da6b4f55fe686fbefa790e011d3dd7895f013f355953c572a21ab6494a","checks":["YAML syntax","official JSON Schema","entry points","environment references","worker secret separation"]}

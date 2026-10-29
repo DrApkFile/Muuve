@@ -1,0 +1,14 @@
+{
+  "name": "expiry-deadline-guard",
+  "command": [
+    "node",
+    "--input-type=module",
+    "-e",
+    "import {spawnSync} from \"node:child_process\";import {existsSync} from \"node:fs\";const pda=\"Hg9tsPmCdDBMbWcUEwepRGcNyUfxGubSaFBPYzxdFtde\";const r=spawnSync(process.execPath,[\"--import\",\"tsx\",\"scripts/verify-expiry.ts\"],{env:{...process.env,OPERATOR_APPROVED_DEVNET:\"1\",MUUVE_RUN_DEVNET_TRANSACTIONS:\"1\",MUUVE_DEVNET_EXPIRED_LINK_PDA:pda},encoding:\"utf8\",timeout:45000});const line=r.stdout.trim().split(\"\\n\").find(x=>x.startsWith(\"{\"));const x=line?JSON.parse(line):null;if(r.status!==1||x?.state!==\"waiting_for_actual_deadline\"||x.transaction_submitted!==false||existsSync(`evidence/devnet/expiry-${pda}.json`)){console.error(\"Expiry guard did not establish a safe pre-deadline stop\");process.exit(1)}console.info(JSON.stringify({...x,guard_passed:true,post_expiry_verification:false}));"
+  ],
+  "started_at": "2026-10-29T09:40:36.093Z",
+  "duration_ms": 11913,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

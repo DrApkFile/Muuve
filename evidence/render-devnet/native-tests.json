@@ -1,0 +1,14 @@
+{
+  "name": "native-tests",
+  "command": [
+    "pnpm",
+    "test:program",
+    "--",
+    "--test-threads=1"
+  ],
+  "started_at": "2026-10-29T07:57:52.280Z",
+  "duration_ms": 211093,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

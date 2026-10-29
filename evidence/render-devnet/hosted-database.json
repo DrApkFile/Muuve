@@ -1,0 +1,14 @@
+{
+  "name": "hosted-database",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/database-status.ts"
+  ],
+  "started_at": "2026-10-29T09:37:56.621Z",
+  "duration_ms": 5321,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

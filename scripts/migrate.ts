@@ -4,6 +4,20 @@ import { database, closeDatabase } from "../apps/web/lib/server/db";
 export async function migrate() {
   if (process.env.MUUVE_ALLOW_MIGRATIONS !== "1")
     throw new Error("Set MUUVE_ALLOW_MIGRATIONS=1 only for an approved database");
+  const ref = process.env.MUUVE_DATABASE_PROJECT_REF;
+  if (ref) {
+    const url = new URL(process.env.DATABASE_URL ?? "");
+    if (!(
+      url.hostname === `db.${ref}.supabase.co` ||
+      (url.hostname.endsWith(".pooler.supabase.com") &&
+        decodeURIComponent(url.username).endsWith(`.${ref}`))
+    ))
+      throw new Error("Database project mismatch");
+    if (url.hostname.endsWith(".pooler.supabase.com") && url.port !== "5432")
+      throw new Error("Migrations require the session pooler, port 5432");
+    if (url.searchParams.get("sslmode") !== "verify-full")
+      throw new Error("Hosted database requires certificate-verified TLS");
+  }
   const c = await database().connect();
   try {
     await c.query("SELECT pg_advisory_lock(72811699)");

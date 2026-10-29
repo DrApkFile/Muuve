@@ -1,0 +1,14 @@
+{
+  "name": "devnet-evidence",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-devnet-evidence.ts"
+  ],
+  "started_at": "2026-10-29T08:54:21.686Z",
+  "duration_ms": 26282,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

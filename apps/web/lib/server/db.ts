@@ -7,8 +7,14 @@ export function database() {
     pool = new pg.Pool({
       connectionString,
       max: 10,
+      connectionTimeoutMillis: 10000,
+      query_timeout: 30000,
+      idleTimeoutMillis: 30000,
       options: "-c search_path=muuve,public",
       application_name: "muuve-backend",
+    });
+    pool.on("error", () => {
+      console.error('{"event":"database.pool_error","code":"connection_lost"}');
     });
   }
   return pool;

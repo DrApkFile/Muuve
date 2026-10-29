@@ -4,6 +4,8 @@ import { keypair } from "../apps/web/lib/server/config";
 import { ix, meta, u64 } from "../apps/web/lib/server/solana/codec";
 import { SystemProgram, BPF_LOADER_UPGRADEABLE_PROGRAM_ID } from "./solana-ids";
 import { AppError } from "../apps/web/lib/server/errors";
+import { decodeConfig } from "../apps/web/lib/server/solana/codec";
+import { assert } from "../apps/web/lib/server/errors";
 async function main() {
   const connection = await operatorConnection(),
     payer = keypair("FEE_PAYER_SECRET"),
@@ -20,6 +22,26 @@ async function main() {
       [program.toBuffer()],
       BPF_LOADER_UPGRADEABLE_PROGRAM_ID,
     )[0];
+  const existing = await connection.getAccountInfo(config, "finalized");
+  if (existing) {
+    assert(existing.owner.equals(program), "config_owner_mismatch");
+    const state = decodeConfig(existing.data);
+    assert(
+      state.admin === admin.publicKey.toBase58() &&
+        state.attestor === attestor.publicKey.toBase58() &&
+        state.feePayer === payer.publicKey.toBase58() &&
+        state.mint === mint.toBase58() &&
+        state.tokenProgram === token.toBase58() &&
+        state.treasury === destination.toBase58() &&
+        state.treasuryOwner === treasury.publicKey.toBase58() &&
+        state.claimWindow === 172800 &&
+        state.maxSlot === "500000000" &&
+        state.maxLink === "1000000000",
+      "existing_config_mismatch",
+    );
+    console.info(JSON.stringify({ config: config.toBase58(), state: "existing_verified" }));
+    return;
+  }
   const instruction = ix(
     program,
     "init_config",

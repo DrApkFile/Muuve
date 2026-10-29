@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { format, resolveConfig } from "prettier";
 const result = spawnSync(
   "cargo",
   [
@@ -49,7 +50,11 @@ idl.types = [...new Map(idl.types.map((t) => [t.name, t])).values()].sort((a, b)
   a.name.localeCompare(b.name),
 );
 mkdirSync("packages/shared/idl", { recursive: true });
-writeFileSync("packages/shared/idl/muuve_escrow.json", JSON.stringify(idl, null, 2) + "\n");
+const destination = "packages/shared/idl/muuve_escrow.json";
+writeFileSync(
+  destination,
+  await format(JSON.stringify(idl), { ...(await resolveConfig(destination)), parser: "json" }),
+);
 console.info(
   `Generated Anchor IDL: ${idl.instructions.length} instructions, ${idl.accounts.length} accounts. Address is the explicit build ID or host-test fixture; no deployment is implied.`,
 );

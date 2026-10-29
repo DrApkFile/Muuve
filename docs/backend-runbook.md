@@ -6,6 +6,10 @@ are **mocks**. Twilio and Privy adapters require operator credentials and extern
 configuration; local tests do not establish live-service delivery or wallet ownership.
 
 Read [binding decisions](backend-decisions.md) before changing money or authorization.
+For the owner's explicitly authorized local provisioning and Render milestone, use
+[Render deployment](render-deployment.md) and [public funding addresses](../wallets.md).
+`pnpm setup:local` provisions missing protected local keys without a network action
+or replacement of existing identities. Configured IDs are not deployment evidence.
 
 ## Local checks
 
@@ -87,13 +91,14 @@ or a local wallet file. RPC genesis must match devnet, including fallback endpoi
 1. Provision separate admin, attestor, fee/rent payer, treasury and test-mint authority.
    Decide and record the deployment/upgrade authority. Keep admin/deployment keys
    out of the application environment. Never use real funds.
-2. Assign the program public ID. Set `MUUVE_PROGRAM_ID` before building SBF and add
-   the matching `[programs.devnet]` entry to `Anchor.toml`. `build.rs` allows a public
+2. Verify the stable public identity in `config/devnet-public.json`,
+   `MUUVE_PROGRAM_ID` and `[programs.devnet]` in `Anchor.toml`. `build.rs` allows a public
    fixture for native tests only and rejects missing IDs for SBF builds.
 3. Build/review SBF and generated IDL. The program needs the upgradeable loader's
    canonical ProgramData proof for initialization. An immutable deployment without
    an upgrade authority cannot use this bootstrap path.
-4. Human operator deploys **only devnet**, verifies executable program and authority.
+4. With explicit current owner authorization, deploy **only devnet** using
+   `scripts/deploy-devnet.ts`. Verify executable program, exact bytes and authority.
 5. Set `TOKEN_PROGRAM_ID` to legacy Token or Token-2022. Token-2022 mint extensions
    currently allowed: none. Token-account extensions: ImmutableOwner only.
 6. With explicit operator consent, run `OPERATOR_APPROVED_DEVNET=1 pnpm exec tsx

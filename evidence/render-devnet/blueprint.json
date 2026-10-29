@@ -1,0 +1,12 @@
+{
+  "name": "blueprint",
+  "command": [
+    "pnpm",
+    "check:render"
+  ],
+  "started_at": "2026-10-29T09:37:53.340Z",
+  "duration_ms": 1054,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

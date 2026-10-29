@@ -28,8 +28,10 @@ try {
     DATABASE_URL: `postgresql://127.0.0.1:${port}/postgres`,
     MUUVE_ALLOW_MIGRATIONS: "1",
     MUUVE_TEST_DB: "1",
+    MUUVE_DATABASE_PROJECT_REF: "",
   };
   run("pnpm", ["exec", "tsx", "scripts/migrate.ts"], env);
+  run("pnpm", ["exec", "tsx", "scripts/database-status.ts"], env);
   run("pnpm", ["exec", "vitest", "run", "tests/db", "tests/api"], env);
 } finally {
   if (started)
