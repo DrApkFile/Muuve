@@ -1,0 +1,14 @@
+{
+  "name": "scoped-payout-worker-database",
+  "command": [
+    "node",
+    "scripts/test-db.mjs",
+    "tests/db/worker.test.ts",
+    "tests/db/payouts.test.ts"
+  ],
+  "started_at": "2026-10-30T11:49:49.716Z",
+  "duration_ms": 22174,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

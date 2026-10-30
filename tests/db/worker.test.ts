@@ -12,6 +12,24 @@ setupEnv();
 describe.skipIf(process.env.MUUVE_TEST_DB !== "1")("worker database ownership and recovery", () => {
   beforeEach(reset);
   afterAll(closeDatabase);
+  it("leases only explicitly scoped payout jobs, leaving other entities and financial job kinds untouched", async () => {
+    const owned = randomUUID(),
+      other = randomUUID();
+    await database().query(
+      "INSERT INTO jobs(kind,entity_id,dedupe_key) VALUES('payout',$1,'scoped-owned'),('payout',$2,'scoped-other'),('wallet_refund',$1,'scoped-refund')",
+      [owned, other],
+    );
+    expect((await runJobs({ payoutIds: [] })).processed).toBe(0);
+    await Promise.all([runJobs({ payoutIds: [owned] }), runJobs({ payoutIds: [owned] })]);
+    const rows = (
+      await database().query("SELECT dedupe_key,state,attempts FROM jobs ORDER BY dedupe_key")
+    ).rows;
+    expect(rows).toEqual([
+      { dedupe_key: "scoped-other", state: "pending", attempts: 0 },
+      { dedupe_key: "scoped-owned", state: "done", attempts: 1 },
+      { dedupe_key: "scoped-refund", state: "pending", attempts: 0 },
+    ]);
+  });
   it("runs a due maintenance task once across concurrent replicas", async () => {
     const action = vi.fn(async () => {
       await new Promise((r) => setTimeout(r, 40));

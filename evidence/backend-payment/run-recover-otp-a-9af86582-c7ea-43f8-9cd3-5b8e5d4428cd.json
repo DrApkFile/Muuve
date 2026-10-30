@@ -1,0 +1,18 @@
+{
+  "started_at": "2026-10-30T11:47:52.376Z",
+  "action": "--recover-otp=a",
+  "requests": [
+    {
+      "path": "/api/auth/otp/send",
+      "status": 200
+    }
+  ],
+  "checks": [],
+  "transactions": [],
+  "state": "awaiting_private_otp_code",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "stage": "/api/auth/otp/send",
+  "role": "a",
+  "private_code_location": "keys/backend-payment-otp.json:a",
+  "finished_at": "2026-10-30T11:48:37.413Z"
+}

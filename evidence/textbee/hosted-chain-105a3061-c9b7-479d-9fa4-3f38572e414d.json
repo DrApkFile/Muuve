@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-30T09:57:41.080Z",
+  "scope": "readonly devnet batch state after owner-reported API deployment",
+  "transactions_submitted": 0,
+  "state": "passed",
+  "program_id": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+  "config_window_seconds": 172800,
+  "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+  "pda": "3QLc3eBgxvaj2nL8CtkqZnhzsqdW6Re3gk7HW98kpY4b",
+  "expires_at": "2026-11-01T01:18:31.000Z",
+  "vault": "62vZJge7BAKiZC8jg3xjzM9AdpmV5q4PMvSUvkdknFxW",
+  "vault_base_units": "1500000",
+  "slots": [
+    {
+      "index": 0,
+      "amount_base_units": "500000",
+      "status": 1
+    },
+    {
+      "index": 1,
+      "amount_base_units": "1000000",
+      "status": 1
+    }
+  ]
+}

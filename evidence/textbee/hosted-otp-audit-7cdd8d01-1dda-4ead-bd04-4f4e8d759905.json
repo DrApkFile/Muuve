@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-30T11:48:54.073Z",
+  "role": "a",
+  "database_writes": 0,
+  "sms_requests": 0,
+  "transactions_submitted": 0,
+  "challenge": {
+    "id": "850ab7ac-ec2f-4571-a49a-b21e5cbc6bd5",
+    "purpose": "claim",
+    "status": "sent",
+    "unexpired": true,
+    "provider": "textbee",
+    "slot_index": 0,
+    "amount_base_units": "500000"
+  },
+  "state": "passed_readonly_hosted_otp_audit"
+}

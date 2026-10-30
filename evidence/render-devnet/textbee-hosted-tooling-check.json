@@ -1,0 +1,12 @@
+{
+  "name": "textbee-hosted-tooling-check",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-30T09:55:42.501Z",
+  "duration_ms": 49191,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

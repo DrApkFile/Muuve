@@ -104,7 +104,9 @@ export async function reconcileAll(chain = new Chain(), options: { signal?: Abor
   await runJobs(options);
   return { processed: ops.length };
 }
-export async function runJobs(options: { signal?: AbortSignal; maxJobs?: number } = {}) {
+export async function runJobs(
+  options: { signal?: AbortSignal; maxJobs?: number; payoutIds?: string[] } = {},
+) {
   let count = 0;
   for (let i = 0; i < Math.min(options.maxJobs ?? 50, 50); i++) {
     if (options.signal?.aborted) break;
@@ -113,8 +115,9 @@ export async function runJobs(options: { signal?: AbortSignal; maxJobs?: number 
       one(
         `UPDATE jobs SET state='running',lease_until=now()+interval '60 seconds',lease_token=$1,attempts=attempts+1 WHERE id=(
    SELECT id FROM jobs WHERE (state='pending' OR (state='running' AND lease_until<now())) AND run_after<=now()
+   AND ($2::uuid[] IS NULL OR (kind IN ('payout','mock_webhook','provider_reconcile') AND entity_id=ANY($2::uuid[])))
    ORDER BY run_after FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`,
-        [token],
+        [token, options.payoutIds ?? null],
         c,
       ),
     );

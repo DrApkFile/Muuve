@@ -1,0 +1,21 @@
+{
+  "started_at": "2026-10-30T11:57:28.252Z",
+  "mode": "--send",
+  "requests": [
+    {
+      "path": "/api/auth/otp/send",
+      "status": 200
+    }
+  ],
+  "transactions_submitted": 0,
+  "payout_requests": 0,
+  "challenge": {
+    "id": "de5bfdcd-84b4-4a53-af4c-b37d2c6372af",
+    "status": "sent",
+    "unexpired": true,
+    "provider": "textbee",
+    "link_id": "cc8a9d6f-d6cd-47bf-b76e-23333bf4459b"
+  },
+  "state": "hosted_textbee_claim_sms_accepted_waiting_for_private_code",
+  "finished_at": "2026-10-30T11:57:33.601Z"
+}

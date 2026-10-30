@@ -1,0 +1,17 @@
+{
+  "name": "payment-progress-and-worker-unit",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "tests/unit/private-progress.test.ts",
+    "tests/unit/worker.test.ts",
+    "tests/unit/hosted-payment-review.test.ts"
+  ],
+  "started_at": "2026-10-30T11:52:12.178Z",
+  "duration_ms": 3601,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

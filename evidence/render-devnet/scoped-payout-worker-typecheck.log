@@ -1,0 +1,5 @@
+$ tsc --noEmit
+scripts/run-scoped-payout-worker.ts(133,7): error TS18048: 'after' is possibly 'undefined'.
+scripts/run-scoped-payout-worker.ts(134,14): error TS18048: 'after' is possibly 'undefined'.
+scripts/run-scoped-payout-worker.ts(134,51): error TS18048: 'before' is possibly 'undefined'.
+[ELIFECYCLE] Command failed with exit code 2.

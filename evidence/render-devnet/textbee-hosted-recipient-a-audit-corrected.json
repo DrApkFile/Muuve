@@ -1,0 +1,15 @@
+{
+  "name": "textbee-hosted-recipient-a-audit-corrected",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/audit-hosted-payment-otp.ts",
+    "--role=a"
+  ],
+  "started_at": "2026-10-30T09:57:16.432Z",
+  "duration_ms": 6818,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

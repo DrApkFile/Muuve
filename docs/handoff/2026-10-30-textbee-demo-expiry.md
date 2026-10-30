@@ -1,5 +1,10 @@
 # Textbee and four-minute demo — implementation and verification
 
+Subsequent hosted checks: see [the deployment continuation](2026-10-30-textbee-hosted-verification.md)
+and [root handoff](../../handoff.md). The initial 503 was followed by successful
+hosted Textbee sending after environment configuration. A new recipient's unfunded
+fixture is pending verification/approval; the owner stopped testing for handoff.
+
 30 October 2026. Work remains on `main`, based on
 `cee381f3ec11f7e556f06518bae1ccc9b26c0b43`. Existing changes were preserved. No
 branch, commit, push, hosted deployment, contract upgrade, Config change, migration

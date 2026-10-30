@@ -1,0 +1,16 @@
+{
+  "name": "textbee-hosted-batch-status",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--status",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T09:54:25.480Z",
+  "duration_ms": 20132,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

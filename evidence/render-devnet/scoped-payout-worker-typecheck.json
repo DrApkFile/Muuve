@@ -1,0 +1,12 @@
+{
+  "name": "scoped-payout-worker-typecheck",
+  "command": [
+    "pnpm",
+    "typecheck"
+  ],
+  "started_at": "2026-10-30T11:50:55.937Z",
+  "duration_ms": 19601,
+  "exit_code": 2,
+  "signal": null,
+  "passed": false
+}

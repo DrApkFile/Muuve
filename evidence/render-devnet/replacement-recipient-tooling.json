@@ -1,0 +1,12 @@
+{
+  "name": "replacement-recipient-tooling",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-30T11:57:28.346Z",
+  "duration_ms": 37509,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,17 @@
+{
+  "name": "replacement-recipient-unsigned-prepare",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-payments.ts",
+    "--replacement-recipient",
+    "--prepare",
+    "--operator-approved-test-records"
+  ],
+  "started_at": "2026-10-30T11:56:27.420Z",
+  "duration_ms": 30017,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

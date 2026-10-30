@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-10-30T09:56:26.481Z",
+  "sms_requests": 0,
+  "live_delivery_verified": false,
+  "missing_configuration_names": [],
+  "provider_http_status": 200,
+  "state": "credentials_and_enabled_device_verified_delivery_not_tested"
+}

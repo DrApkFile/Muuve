@@ -1,0 +1,16 @@
+{
+  "name": "textbee-hosted-recipient-a-send",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--resend-otp=a",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T09:55:20.246Z",
+  "duration_ms": 7290,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

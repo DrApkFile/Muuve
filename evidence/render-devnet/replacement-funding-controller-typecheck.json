@@ -1,0 +1,12 @@
+{
+  "name": "replacement-funding-controller-typecheck",
+  "command": [
+    "pnpm",
+    "typecheck"
+  ],
+  "started_at": "2026-10-30T11:59:25.441Z",
+  "duration_ms": 11508,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

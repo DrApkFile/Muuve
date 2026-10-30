@@ -9,13 +9,18 @@ import { Chain } from "../apps/web/lib/server/solana/chain";
 import { reconcileOperation } from "../apps/web/lib/server/operations";
 import { closeDatabase } from "../apps/web/lib/server/db";
 import { reviewCreateTransaction } from "./hosted-payment-review";
+import { hostedTestFetch } from "./hosted-test-http";
 
 // This stage cannot sign a funding transaction, submit one, send SMS or request payouts.
 const mode = process.argv.find((arg) => ["--preflight", "--prepare", "--cleanup"].includes(arg));
-const privateFile = "keys/backend-payment-test.json";
+const replacement = process.argv.includes("--replacement-recipient");
+const privateFile = replacement
+  ? "keys/replacement-payment-test.json"
+  : "keys/backend-payment-test.json";
 const evidence: Record<string, any> = {
   started_at: new Date().toISOString(),
   mode,
+  replacement_recipient: replacement,
   scope: "Hosted backend payment preflight/preparation only; no principal release",
   checks: [],
   requests: [],
@@ -83,15 +88,19 @@ async function main() {
     sender.publicKey.toBase58() === manifest.roles["test-sender"].public_key,
     "sender_mismatch",
   );
-  const phonesFile = "keys/hosted-test-phones.json";
+  const phonesFile = replacement
+    ? "keys/replacement-recipient-phone.json"
+    : "keys/hosted-test-phones.json";
   assert(((await stat(phonesFile)).mode & 0o077) === 0, "private_phones_permissions_required");
   const phones = JSON.parse(await readFile(phonesFile, "utf8"));
-  const recipients = [phones.wallet_recipient, phones.cashout_recipient];
+  const recipients = replacement
+    ? [phones.recipient]
+    : [phones.wallet_recipient, phones.cashout_recipient];
   assert(
     phones.authorize_sms === true &&
       recipients.every((value) => phone.safeParse(value).success) &&
-      new Set(recipients).size === 2,
-    "two_distinct_authorized_recipient_numbers_required",
+      new Set(recipients).size === (replacement ? 1 : 2),
+    "authorized_distinct_recipient_numbers_required",
   );
   const chain = new Chain();
   // Reconciliation must never turn this preparatory tool into a submission path.
@@ -135,7 +144,7 @@ async function main() {
     (SELECT count(*)::int FROM worker_schedules WHERE lease_until>now()) AS active_maintenance_leases`)
   ).rows[0];
   evidence.before = counts;
-  evidence.authorized_recipient_count = 2;
+  evidence.authorized_recipient_count = recipients.length;
   async function call(path: string, body?: unknown, jar: Record<string, string> = {}) {
     assert(
       [
@@ -149,7 +158,7 @@ async function main() {
       ].includes(path),
       "path_outside_nonfinancial_test_scope",
     );
-    const response = await fetch(api.APP_BASE_URL + path, {
+    const response = await hostedTestFetch(api.APP_BASE_URL + path, {
       method: body === undefined ? "GET" : "POST",
       headers: {
         origin: api.APP_BASE_URL!,
@@ -187,7 +196,7 @@ async function main() {
   }
   const health = await call("/api/health");
   assert(health.chain === "devnet" && health.payouts === "mock", "hosted_health_mismatch");
-  const amounts = ["500000", "1000000"];
+  const amounts = replacement ? ["100000"] : ["500000", "1000000"];
   assert(BigInt(tokenBalance) >= totalAllocations(amounts), "insufficient_test_token_balance");
   assert(feeBalance >= 20_000_000, "fee_payer_test_sol_required");
   if (mode === "--preflight") {
@@ -339,7 +348,7 @@ async function main() {
       )
     ).rows;
     assert(
-      slots.length === 2 &&
+      slots.length === recipients.length &&
         slots.every(
           (slot, index) =>
             slot.slot_index === index &&

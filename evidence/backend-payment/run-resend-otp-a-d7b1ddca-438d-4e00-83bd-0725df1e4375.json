@@ -1,0 +1,19 @@
+{
+  "started_at": "2026-10-30T09:55:22.004Z",
+  "action": "--resend-otp=a",
+  "requests": [
+    {
+      "path": "/api/auth/otp/send",
+      "status": 503,
+      "error": "otp_provider_unavailable"
+    }
+  ],
+  "checks": [],
+  "transactions": [],
+  "state": "blocked_or_failed_reconcile_before_retry",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "stage": "/api/auth/otp/send",
+  "error_class": "Error",
+  "code": "hosted_http_503",
+  "finished_at": "2026-10-30T09:55:27.369Z"
+}

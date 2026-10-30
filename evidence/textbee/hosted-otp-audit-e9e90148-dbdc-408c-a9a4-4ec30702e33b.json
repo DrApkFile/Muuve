@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-30T09:57:16.991Z",
+  "role": "a",
+  "database_writes": 0,
+  "sms_requests": 0,
+  "transactions_submitted": 0,
+  "challenge": {
+    "id": "d1e7b2a0-f10f-4ff1-95dc-3ee06436a234",
+    "purpose": "claim",
+    "status": "failed",
+    "unexpired": true,
+    "provider_reference_present": false
+  },
+  "state": "blocked_or_failed_no_resend_performed",
+  "code": "failed_or_incomplete_send_provider_unknown"
+}

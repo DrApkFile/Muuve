@@ -1,4 +1,4 @@
-import { readFile, writeFile, rename, mkdir, stat, open, unlink } from "node:fs/promises";
+import { readFile, writeFile, mkdir, stat, open, unlink } from "node:fs/promises";
 import { parseEnv } from "node:util";
 import { randomUUID, randomBytes, sign, createPrivateKey } from "node:crypto";
 import { Keypair, PublicKey, Transaction, ComputeBudgetProgram } from "@solana/web3.js";
@@ -10,16 +10,22 @@ import { reconcileOperation, prepareReplacement } from "../apps/web/lib/server/o
 import { closeDatabase } from "../apps/web/lib/server/db";
 import { reviewCreateTransaction } from "./hosted-payment-review";
 import { hostedTestFetch } from "./hosted-test-http";
+import { privateProgressWriter } from "./private-progress";
 
-const file = "keys/backend-payment-run.json";
+const replacement = process.argv.includes("--replacement-recipient");
+const file = replacement ? "keys/replacement-payment-run.json" : "keys/backend-payment-run.json";
+const fundingCeiling = replacement ? 100000n : 1900000n;
+const feeCeiling = replacement ? 10000000 : 50000000;
+const createFeeReservation = replacement ? 9500000 : 12000000;
 const action = process.argv.find((value) =>
-  /^--(?:fund-main|recall-fixture|expiry-fixture|send-otp=[ab]|resend-otp=[ab]|verify-otp=[ab]|claim=[ab]|retry-b|negative-auth|status|logout)$/.test(
+  /^--(?:fund-main|recall-fixture|expiry-fixture|send-otp=[ab]|resend-otp=[ab]|recover-otp=[ab]|verify-otp=[ab]|claim=[ab]|retry-b|negative-auth|status|logout)$/.test(
     value,
   ),
 );
 const evidence: Record<string, any> = {
   started_at: new Date().toISOString(),
   action,
+  replacement_recipient: replacement,
   requests: [],
   checks: [],
   transactions: [],
@@ -31,15 +37,14 @@ let progress: any;
 let pool: pg.Pool | undefined;
 let api: ReturnType<typeof parseEnv>;
 let lock: Awaited<ReturnType<typeof open>> | undefined;
+let budgetLock: Awaited<ReturnType<typeof open>> | undefined;
 function assert(value: unknown, code: string): asserts value {
   if (!value) throw new Error(code);
 }
-async function save() {
-  await writeFile(file + ".tmp", JSON.stringify(progress, null, 2) + "\n", { mode: 0o600 });
-  await rename(file + ".tmp", file);
-}
+const save = privateProgressWriter(file, () => progress);
 async function main() {
   try {
+    budgetLock = await open("keys/payment-test-budget.lock", "wx", 0o600);
     lock = await open(file + ".lock", "wx", 0o600);
     await lock.writeFile(String(process.pid));
   } catch (error) {
@@ -54,14 +59,26 @@ async function main() {
       process.env.MUUVE_RUN_DEVNET_TRANSACTIONS === "1",
     "explicit_approved_devnet_test_required",
   );
-  const approval = JSON.parse(await readFile("evidence/backend-payment/approval.json", "utf8"));
+  const approval = JSON.parse(
+    await readFile(
+      replacement
+        ? "evidence/backend-payment/replacement-approval.json"
+        : "evidence/backend-payment/approval.json",
+      "utf8",
+    ),
+  );
   assert(
-    approval.max_new_funding_base_units === "1900000" &&
-      approval.max_fee_and_rent_lamports === 50000000 &&
+    approval.max_new_funding_base_units === fundingCeiling.toString() &&
+      approval.max_fee_and_rent_lamports === feeCeiling &&
       approval.cluster === "devnet" &&
       approval.payouts === "mock",
     "approved_budget_required",
   );
+  if (replacement)
+    assert(
+      ["--fund-main", "--claim=a", "--status", "--logout"].includes(action),
+      "replacement_profile_action_outside_scope",
+    );
   const local = parseEnv(await readFile(".env.local", "utf8"));
   api = parseEnv(await readFile(".env.render-api", "utf8"));
   const target = new URL(local.DATABASE_URL!),
@@ -111,14 +128,18 @@ async function main() {
     sender.publicKey.toBase58() === manifest.roles["test-sender"].public_key,
     "sender_mismatch",
   );
-  const phoneFile = "keys/hosted-test-phones.json";
+  const phoneFile = replacement
+    ? "keys/replacement-recipient-phone.json"
+    : "keys/hosted-test-phones.json";
   assert(((await stat(phoneFile)).mode & 0o077) === 0, "phone_file_permissions_required");
   const phones = JSON.parse(await readFile(phoneFile, "utf8"));
   assert(
     phones.authorize_sms === true &&
-      phones.wallet_recipient &&
-      phones.cashout_recipient &&
-      phones.wallet_recipient !== phones.cashout_recipient,
+      (replacement
+        ? !!phones.recipient
+        : phones.wallet_recipient &&
+          phones.cashout_recipient &&
+          phones.wallet_recipient !== phones.cashout_recipient),
     "authorized_recipient_numbers_required",
   );
   const chain = new Chain();
@@ -133,26 +154,60 @@ async function main() {
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
     assert(action === "--fund-main", "start_with_main_fixture");
+    let prepared, claimSession;
+    if (replacement) {
+      prepared = JSON.parse(await readFile("keys/replacement-payment-test.json", "utf8"));
+      claimSession = JSON.parse(await readFile("keys/replacement-claim-session.json", "utf8"));
+      assert(
+        prepared.phase === "prepared_unsigned" &&
+          claimSession.phase === "phone_verified" &&
+          claimSession.link_id === prepared.link_id &&
+          claimSession.phone === phones.recipient,
+        "verified_new_recipient_and_reviewed_fixture_required",
+      );
+    }
     progress = {
       origin: api.APP_BASE_URL,
       sender: sender.publicKey.toBase58(),
-      fixtures: {},
+      fixtures: replacement
+        ? {
+            main: {
+              local_id: prepared.link_id_hex,
+              claim_secret: prepared.claim_secret,
+              amounts: ["100000"],
+              phase: "prepared_unsigned",
+              id: prepared.link_id,
+              pda: prepared.pda,
+              prepared: {
+                operation_id: prepared.operation_id,
+                tx: prepared.tx,
+                blockhash: prepared.blockhash,
+                last_valid_block_height: prepared.last_valid_block_height,
+                signature: bs58.encode(
+                  Transaction.from(Buffer.from(prepared.tx, "base64")).signatures[0]!.signature!,
+                ),
+              },
+            },
+          }
+        : {},
       cookies: {},
-      funding_reserved: "0",
+      funding_reserved: replacement ? "100000" : "0",
       fee_reservations: {},
       submissions: {},
-      roles: {
-        a: { phone: phones.wallet_recipient, cookies: {}, code: "" },
-        b: { phone: phones.cashout_recipient, cookies: {}, code: "" },
-      },
+      roles: replacement
+        ? { a: { phone: phones.recipient, cookies: claimSession.cookies, state: "phone_verified" } }
+        : {
+            a: { phone: phones.wallet_recipient, cookies: {}, code: "" },
+            b: { phone: phones.cashout_recipient, cookies: {}, code: "" },
+          },
     };
     await save();
   }
   assert(
     progress.origin === api.APP_BASE_URL &&
       progress.sender === sender.publicKey.toBase58() &&
-      progress.roles.a.phone === phones.wallet_recipient &&
-      progress.roles.b.phone === phones.cashout_recipient,
+      progress.roles.a.phone === (replacement ? phones.recipient : phones.wallet_recipient) &&
+      (replacement || progress.roles.b.phone === phones.cashout_recipient),
     "private_progress_identity_mismatch",
   );
   async function call(path: string, body?: unknown, jar = progress.cookies, expected = 200) {
@@ -253,13 +308,29 @@ async function main() {
     progress.user_id = result.user.id;
     await save();
   }
-  function reserveFee(id: string, amount: number) {
+  async function reserveFee(id: string, amount: number) {
     if (progress.fee_reservations[id]) return;
     const used = Object.values(progress.fee_reservations).reduce<number>(
       (sum, value) => sum + Number(value),
       0,
     );
-    assert(used + amount <= 50000000, "approved_fee_budget_exhausted");
+    assert(used + amount <= feeCeiling, "approved_fee_budget_exhausted");
+    let otherReserved = 0;
+    try {
+      const other = JSON.parse(
+        await readFile(
+          replacement ? "keys/backend-payment-run.json" : "keys/replacement-payment-run.json",
+          "utf8",
+        ),
+      );
+      otherReserved = Object.values(other.fee_reservations).reduce<number>(
+        (sum, value) => sum + Number(value),
+        0,
+      );
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+    assert(used + amount + otherReserved <= 50000000, "combined_original_fee_budget_exhausted");
     progress.fee_reservations[id] = amount;
   }
   async function finishOperation(id: string, signature: string) {
@@ -352,7 +423,7 @@ async function main() {
           ((await connection.getFeeForMessage(transaction.compileMessage(), "finalized")).value ??
             1000000),
       );
-      assert(rent <= 12000000, "create_rent_or_fee_above_budget");
+      assert(rent <= createFeeReservation, "create_rent_or_fee_above_budget");
     } else {
       const state = await chain.link(fixture.pda);
       assert(state, "funded_link_required");
@@ -413,7 +484,7 @@ async function main() {
       );
       assert(fee.value !== null && fee.value <= 250000, "settlement_fee_above_budget");
     }
-    reserveFee(id, kind === "create" ? 12000000 : 250000);
+    await reserveFee(id, kind === "create" ? createFeeReservation : 250000);
     await save();
     transaction.partialSign(key);
     assert(transaction.verifySignatures(true), "fully_signed_transaction_required");
@@ -444,7 +515,7 @@ async function main() {
     if (!fixture) {
       const amount = amounts.reduce((sum, value) => sum + BigInt(value), 0n);
       assert(
-        BigInt(progress.funding_reserved) + amount <= 1900000n,
+        BigInt(progress.funding_reserved) + amount <= fundingCeiling,
         "approved_token_budget_exhausted",
       );
       assert(
@@ -467,7 +538,7 @@ async function main() {
         link_id_hex: fixture.local_id,
         claim_pubkey: claim.publicKey.toBase58(),
         note: `Backend devnet ${name} fixture`,
-        recipients: ["a", "b"].map((role, index) => ({
+        recipients: (replacement ? ["a"] : ["a", "b"]).map((role, index) => ({
           phone_e164: progress.roles[role].phone,
           amount_base_units: amounts[index],
         })),
@@ -493,8 +564,8 @@ async function main() {
     assert(
       link?.sender === progress.sender &&
         link.total === amounts.reduce((sum, value) => sum + BigInt(value), 0n).toString() &&
-        link.slotCount === 2 &&
-        link.openSlots === 2 &&
+        link.slotCount === amounts.length &&
+        link.openSlots === amounts.length &&
         link.slots.every((slot, index) => slot.status === 1 && slot.amount === amounts[index]) &&
         [172800, 240].includes(link.expiresAt - link.createdAt),
       "funded_chain_state_mismatch",
@@ -530,7 +601,18 @@ async function main() {
     return fixture;
   }
   if (action === "--fund-main") {
-    const fixture = await fund("main", ["500000", "1000000"]);
+    if (replacement) {
+      const share = await call(
+        `/api/claims/${progress.fixtures.main.id}/share`,
+        undefined,
+        progress.roles.a.cookies,
+      );
+      assert(
+        share.slot_index === 0 && share.amount_base_units === "100000",
+        "verified_new_recipient_share_required",
+      );
+    }
+    const fixture = await fund("main", replacement ? ["100000"] : ["500000", "1000000"]);
     const signed = progress.submissions[fixture.prepared.operation_id];
     await call("/api/links/submit", {
       operation_id: signed.operation_id,
@@ -539,21 +621,37 @@ async function main() {
     });
     const preview = await call(`/api/public/links/${fixture.id}`, undefined, {});
     assert(
-      !("slots" in preview) && !("slot_count" in preview) && !("amount_base_units" in preview),
+      !("slots" in preview) &&
+        !("slot_count" in preview) &&
+        (replacement ? preview.amount_base_units === "100000" : !("amount_base_units" in preview)),
       "public_batch_membership_leaked",
     );
     await call(`/api/claims/${fixture.id}/share`, undefined, progress.cookies, 401);
     evidence.checks.push(
       "funding_replay_idempotent",
-      "batch_preview_private",
+      replacement ? "single_preview_has_only_its_allocation" : "batch_preview_private",
       "sender_wallet_session_is_not_claim_proof",
     );
-  } else if (action.startsWith("--send-otp=") || action.startsWith("--resend-otp=")) {
+  } else if (
+    action.startsWith("--send-otp=") ||
+    action.startsWith("--resend-otp=") ||
+    action.startsWith("--recover-otp=")
+  ) {
     const role = action.slice(-1),
       entry = progress.roles[role],
       fixture = progress.fixtures.main;
-    if (action.startsWith("--resend-otp=")) {
-      assert(entry.send_started_at && (entry.resends ?? 0) === 0, "one_scoped_resend_only");
+    if (action.startsWith("--resend-otp=") || action.startsWith("--recover-otp=")) {
+      const recovery = action.startsWith("--recover-otp=");
+      if (recovery) {
+        assert(
+          process.argv.includes("--operator-confirmed-provider-fix") &&
+            api.OTP_PROVIDER === "textbee" &&
+            entry.resends === 1 &&
+            !entry.provider_recovery,
+          "one_confirmed_provider_recovery_only",
+        );
+      } else assert(entry.send_started_at && (entry.resends ?? 0) === 0, "one_scoped_resend_only");
+      assert(entry.send_started_at, "previous_send_receipt_required");
       const previous = (
         await pool.query(
           `SELECT id,status,provider_ref IS NOT NULL AS provider_reference_present,expires_at<=now() AS expired
@@ -568,13 +666,24 @@ async function main() {
             (previous[0].status === "failed" && !previous[0].provider_reference_present)),
         "prior_otp_outcome_requires_manual_reconciliation",
       );
+      if (recovery)
+        assert(
+          previous[0].status === "failed" && !previous[0].provider_reference_present,
+          "recovery_requires_failed_send_without_receipt",
+        );
       entry.challenge_history ??= [];
       entry.challenge_history.push({
         id: previous[0].id,
         status: previous[0].status,
         expired: previous[0].expired,
       });
-      entry.resends = 1;
+      if (recovery)
+        entry.provider_recovery = {
+          previous_challenge_id: previous[0].id,
+          provider: "textbee",
+          owner_confirmed_fix_at: new Date().toISOString(),
+        };
+      else entry.resends = 1;
       delete entry.challenge_id;
       delete entry.send_started_at;
       await save();
@@ -617,10 +726,16 @@ async function main() {
     );
     const codes = JSON.parse(await readFile("keys/backend-payment-otp.json", "utf8"));
     assert(
-      entry.state === "awaiting_private_code" && /^\d{6}$/.test(codes[role]),
+      entry.state === "awaiting_private_code" &&
+        typeof codes[role] === "string" &&
+        /^\d{6}$/.test(codes[role]),
       "private_owner_code_required",
     );
     const code = codes[role];
+    codes[role] = "";
+    await writeFile("keys/backend-payment-otp.json", JSON.stringify(codes, null, 2) + "\n", {
+      mode: 0o600,
+    });
     entry.code = "";
     await save();
     await call("/api/auth/otp/verify", { challenge_id: entry.challenge_id, code }, entry.cookies);
@@ -715,12 +830,13 @@ async function main() {
     );
     const state = await chain.link(fixture.pda);
     assert(state?.slots[index]?.status === 2, "slot_not_claimed_onchain");
-    const remaining = state.slots[1 - index]!;
+    const remaining = state.slots[1 - index];
     evidence.checks.push(
       "exact_treasury_destination",
       "duplicate_claims_return_same_finalized_operation",
     );
-    evidence.other_slot = { amount_base_units: remaining.amount, status: remaining.status };
+    if (remaining)
+      evidence.other_slot = { amount_base_units: remaining.amount, status: remaining.status };
     entry.state = "treasury_claim_finalized";
     await save();
     evidence.payout_id = entry.payout.payout.id;
@@ -784,7 +900,7 @@ async function main() {
     await save();
   } else if (action === "--expiry-fixture") {
     const fixture = await fund("expiry", ["100000", "100000"]);
-    reserveFee("future_expiry", 250000);
+    await reserveFee("future_expiry", 250000);
     await save();
     evidence.expiry = {
       id: fixture.id,
@@ -861,13 +977,16 @@ async function main() {
       "sender_wallet_cannot_authorize_claim_intent_without_otp",
     );
   } else if (action === "--logout") {
-    for (const jar of [progress.cookies, progress.roles.a.cookies, progress.roles.b.cookies])
+    for (const jar of [
+      progress.cookies,
+      ...Object.values(progress.roles).map((entry: any) => entry.cookies),
+    ])
       if (Object.keys(jar).length) await call("/api/auth/logout", {}, jar);
     progress.cookies = {};
     progress.roles.a.cookies = {};
-    progress.roles.b.cookies = {};
+    if (progress.roles.b) progress.roles.b.cookies = {};
     progress.roles.a.code = "";
-    progress.roles.b.code = "";
+    if (progress.roles.b) progress.roles.b.code = "";
     await save();
   }
   const ids = Object.values(progress.fixtures)
@@ -919,6 +1038,10 @@ try {
   if (lock) {
     await lock.close();
     await unlink(file + ".lock");
+  }
+  if (budgetLock) {
+    await budgetLock.close();
+    await unlink("keys/payment-test-budget.lock");
   }
   await pool?.end();
   await closeDatabase();
