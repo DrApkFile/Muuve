@@ -1,0 +1,43 @@
+$ node scripts/test-db.mjs
+The files belonging to this database system will be owned by user "kingghidorah".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+creating directory /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-DVr0A5/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Africa/Lagos
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-DVr0A5/data -l logfile start
+
+waiting for server to start..... done
+server started
+Applied 001_backend.sql
+Applied 002_state_guards.sql
+Applied 003_treasury_origin.sql
+Applied 004_immutable_terms.sql
+Applied 005_worker_leases.sql
+{"state":"passed","database":"postgres","role":"kingghidorah","migrations":["001_backend.sql","002_state_guards.sql","003_treasury_origin.sql","004_immutable_terms.sql","005_worker_leases.sql"],"tables":["events","funding_reservations","jobs","link_slots","links","mock_provider_transfers","operations","otp_challenges","payouts","principals","provider_attempts","quotes","sessions","transaction_attempts","users","webhook_inbox","worker_schedules"],"all_tables_rls":true,"constraints":232,"indexes":47,"permissions":{"public_schema_blocked":true,"public_tables_blocked":true}}
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+
+ Test Files  7 passed (7)
+      Tests  42 passed (42)
+   Start at  23:09:21
+   Duration  56.19s (tests 75%, import 24%, transform 1%)
+
+waiting for server to shut down.... done
+server stopped

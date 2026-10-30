@@ -1,0 +1,12 @@
+{
+  "name": "wallet-auth-final-checks",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-29T23:25:06.491Z",
+  "duration_ms": 43154,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

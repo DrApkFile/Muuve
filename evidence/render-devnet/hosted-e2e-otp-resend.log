@@ -1,0 +1,1 @@
+{"checked_at":"2026-10-29T22:37:10.306Z","scope":"Actual hosted OTP, no local mock or session fabrication","calls":[{"path":"/api/auth/otp/send","status":200}],"live_sms_requested":true,"role":"sender","state":"waiting_for_owner_code","private_code_location":"keys/hosted-test-auth.json:roles.sender.code"}

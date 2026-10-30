@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-29T20:23:45.486Z",
+  "server_version": "17.11",
+  "search_path": "muuve,public",
+  "not_null_columns": "125",
+  "client_roles": [
+    {
+      "role": "anon",
+      "schema_usage": false,
+      "user_table_select": false
+    },
+    {
+      "role": "authenticated",
+      "schema_usage": false,
+      "user_table_select": false
+    }
+  ]
+}

@@ -110,3 +110,28 @@ sender-local IDs, bootstrap takeover, rotations, donations, rent and arithmetic.
 Local native/runtime tests are not devnet deployment evidence. Devnet expiry needs
 an actually aged 48-hour fixture; never shorten Config to manufacture evidence.
 Security-sensitive code remains subject to the repository's human review requirements.
+
+## Wallet-only sender login (owner clarification, 30 October 2026)
+
+Senders may authenticate by proving control of their funding wallet without providing
+or verifying a phone. Add a server-generated Ed25519 sign-message challenge, bound to
+canonical APP_BASE_URL, Solana devnet, a unique nonce, a five-minute deadline and an
+HttpOnly/Secure/SameSite=Lax browser cookie. Persist and consume challenges atomically;
+limit issuance by wallet/IP and failed signature attempts. Concurrent/replayed proofs
+must create at most one account session per challenge. Never accept a client-defined
+message, user ID, phone or funding destination as identity evidence.
+
+Wallet login issues an account session with **no verified phone**, even if the wallet
+already belongs to a phone account. Recipient claim/proof sessions still require OTP
+and link membership; wallet-only sessions cannot authorize keep/claim as that phone.
+Existing phone accounts are not automatically merged by claimed phone or Privy ID.
+An existing wallet association identifies its existing user; a new wallet creates a
+wallet-origin user with no phone. Wallet ownership checks for embedded Privy wallets
+remain enforced independently. No arbitrary-transaction signing API is introduced.
+
+Database changes are an additive migration, tested on disposable PostgreSQL only until
+operator approval to migrate hosted Supabase. Preserve all historical migration hashes.
+Privy live verification uses an explicitly opted-in dedicated test identity and a
+Privy-managed test wallet. Test message/transaction signing without broadcasting,
+exporting a wallet key, adding a server signer or changing Privy dashboard settings.
+A local API/SQL proof is recorded separately from hosted API authentication evidence.

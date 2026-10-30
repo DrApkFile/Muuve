@@ -1,0 +1,17 @@
+{
+  "updated_at": "2026-10-29T23:59:34.796Z",
+  "branch": "main",
+  "base_commit": "81d999288df15954b2cdf17c9884f4701602800e",
+  "state": "hosted_migration_006_verified_owner_can_push_main",
+  "owner_explicitly_approved_migration": true,
+  "migration_006_sha256": "cb438d6608c2212a22bbbf3c96c8a6dec19f77e19d71dadc5abcc8adb5c378b1",
+  "shared_database_changed": true,
+  "hosted_migration_count": 6,
+  "existing_records_unchanged": true,
+  "source_pushed_by_agent": false,
+  "deployment": "owner will perform; awaiting new hosted build",
+  "worker_deployed": false,
+  "program_changed": false,
+  "hosted_wallet_login_verified": false,
+  "report": "docs/handoff/2026-10-30-wallet-rollout.md"
+}

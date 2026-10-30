@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-29T22:47:14.032Z",
+  "state": "partial_verified_with_blockers",
+  "report": "docs/handoff/2026-10-29-hosted-e2e.md",
+  "origin": "https://muuve.onrender.com",
+  "database_project": "yirelxmcveyxcqofzayq",
+  "cluster": "devnet",
+  "payouts": "mock",
+  "automated": {
+    "unit_passed": 56,
+    "database_api_passed": 43,
+    "native_unit_and_runtime_passed": 17,
+    "native_ignored": 1,
+    "sbf_passed": 13
+  },
+  "hosted": {
+    "infrastructure_groups_passed": 19,
+    "infrastructure_groups_failed": 0,
+    "real_otp_signup_session_jwks_jwt_verified": true,
+    "refresh_revocation_logout_verified": true,
+    "unlinked_wallet_funding_and_batch_guards_verified": true,
+    "actual_funded_payment_lifecycle": false
+  },
+  "local_worker": {
+    "target": "same hosted Supabase project",
+    "pending_fixture_processed": true,
+    "expired_lease_recovered": true,
+    "stale_owner_fenced": true,
+    "shutdown_exit_code": 0,
+    "principal_released": false
+  },
+  "defects": [
+    {
+      "name": "missing Render CA Secret File",
+      "state": "owner_fixed_and_hosted_retested"
+    },
+    {
+      "name": "missing or unauthorized operation bypasses JSON error boundary",
+      "state": "fixed_and_regression_tested_locally_not_deployed"
+    },
+    {
+      "name": "absent Privy user maps to generic 500",
+      "state": "fixed_and_regression_tested_locally_not_deployed"
+    }
+  ],
+  "blockers": [
+    "Sender wallet-only authentication is missing; current flow uses phone account then Privy wallet",
+    "Privy custom JWT authentication is disabled and the test sender has no eligible Privy wallet",
+    "Local API fixes need reviewed deployment and hosted retest",
+    "Funded API batch/claims/mock-payout/financial-recovery scenarios remain unexecuted",
+    "Existing 48-hour devnet expiry fixture matures 2026-10-31T08:39:30Z"
+  ],
+  "new_onchain_submissions": 0,
+  "new_token_mints": 0,
+  "real_ngn_transfers": 0
+}

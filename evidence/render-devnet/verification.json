@@ -1,7 +1,7 @@
 {
-  "recorded_at": "2026-10-29T09:43:15.039Z",
-  "state": "local_and_basic_devnet_verified_external_completion_pending",
-  "scope": "Backend only; devnet test assets; mocked fiat. No hosted or real-money success claimed.",
+  "recorded_at": "2026-10-29T21:08:03.704Z",
+  "state": "local_supabase_and_basic_devnet_verified_hosting_pending",
+  "scope": "Backend only; local production API/worker with real Supabase, devnet test assets, mocked fiat. No Render-hosted or live Privy wallet success claimed.",
   "checks": {
     "checks": {
       "name": "checks",
@@ -17,17 +17,17 @@
       "log": "evidence/render-devnet/checks.log"
     },
     "unit": {
-      "name": "unit",
+      "name": "render-startup-unit",
       "command": [
         "pnpm",
         "test"
       ],
-      "started_at": "2026-10-29T08:54:24.789Z",
-      "duration_ms": 15883,
+      "started_at": "2026-10-29T20:52:41.729Z",
+      "duration_ms": 19182,
       "exit_code": 0,
       "signal": null,
       "passed": true,
-      "log": "evidence/render-devnet/unit.log"
+      "log": "evidence/render-devnet/render-startup-unit.log"
     },
     "database": {
       "name": "database",
@@ -287,40 +287,265 @@
       "passed": true,
       "log": "evidence/render-devnet/provider-check.log"
     },
-    "hosted-migrations": {
-      "name": "hosted-migrations",
+    "supabase-migrations": {
+      "name": "supabase-migrations",
       "command": [
         "node",
         "--import",
         "tsx",
         "scripts/migrate.ts"
       ],
-      "started_at": "2026-10-29T09:35:22.142Z",
-      "duration_ms": 5487,
-      "exit_code": 1,
+      "started_at": "2026-10-29T20:17:49.709Z",
+      "duration_ms": 5466,
+      "exit_code": 0,
       "signal": null,
-      "passed": false,
-      "log": "evidence/render-devnet/hosted-migrations.log"
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-migrations.log"
     },
-    "hosted-database": {
-      "name": "hosted-database",
+    "supabase-config-checks": {
+      "name": "supabase-config-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T20:30:55.016Z",
+      "duration_ms": 50311,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-config-checks.log"
+    },
+    "supabase-secret-audit": {
+      "name": "supabase-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T20:31:45.403Z",
+      "duration_ms": 3824,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-secret-audit.log"
+    },
+    "supabase-migration-replay": {
+      "name": "supabase-migration-replay",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/migrate.ts"
+      ],
+      "started_at": "2026-10-29T20:23:45.604Z",
+      "duration_ms": 2114,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-migration-replay.log"
+    },
+    "supabase-schema": {
+      "name": "supabase-schema",
       "command": [
         "node",
         "--import",
         "tsx",
         "scripts/database-status.ts"
       ],
-      "started_at": "2026-10-29T09:37:56.621Z",
-      "duration_ms": 5321,
-      "exit_code": 1,
+      "started_at": "2026-10-29T20:17:55.283Z",
+      "duration_ms": 1978,
+      "exit_code": 0,
       "signal": null,
-      "passed": false,
-      "log": "evidence/render-devnet/hosted-database.log"
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-schema.log"
+    },
+    "supabase-http-worker": {
+      "name": "supabase-http-worker",
+      "command": [
+        "node",
+        "scripts/smoke-hosted-backend.mjs",
+        "--allow-test-records"
+      ],
+      "started_at": "2026-10-29T20:23:01.926Z",
+      "duration_ms": 19991,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-http-worker.log"
+    },
+    "supabase-smoke-redaction": {
+      "name": "supabase-smoke-redaction",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "import {spawnSync} from \"node:child_process\";import {randomUUID} from \"node:crypto\";const marker=randomUUID();const r=spawnSync(process.execPath,[\"scripts/smoke-hosted-backend.mjs\",\"--allow-test-records\"],{env:{...process.env,DATABASE_URL:marker},encoding:\"utf8\",timeout:15000});if(r.status===0||!r.stderr.includes(\"Valid PostgreSQL connection required\")||r.stderr.includes(marker)||r.stdout.includes(marker))process.exit(1);console.log(JSON.stringify({state:\"passed\",check:\"malformed connection fails without logging its value\",network_action:false}));"
+      ],
+      "started_at": "2026-10-29T20:30:52.938Z",
+      "duration_ms": 712,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/supabase-smoke-redaction.log"
+    },
+    "render-startup-tests": {
+      "name": "render-startup-tests",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/render-startup.test.ts"
+      ],
+      "started_at": "2026-10-29T20:53:38.438Z",
+      "duration_ms": 3406,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-startup-tests.log"
+    },
+    "render-startup-unit": {
+      "name": "render-startup-unit",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T20:52:41.729Z",
+      "duration_ms": 19182,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-startup-unit.log"
+    },
+    "render-startup-checks": {
+      "name": "render-startup-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T20:53:41.939Z",
+      "duration_ms": 41721,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-startup-checks.log"
+    },
+    "render-startup-http": {
+      "name": "render-startup-http",
+      "command": [
+        "node",
+        "scripts/smoke-api.mjs"
+      ],
+      "started_at": "2026-10-29T20:53:12.045Z",
+      "duration_ms": 26928,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-startup-http.log"
+    },
+    "render-startup-blueprint": {
+      "name": "render-startup-blueprint",
+      "command": [
+        "pnpm",
+        "check:render"
+      ],
+      "started_at": "2026-10-29T20:53:12.080Z",
+      "duration_ms": 6991,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-startup-blueprint.log"
+    },
+    "render-startup-secret-audit": {
+      "name": "render-startup-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T20:53:19.161Z",
+      "duration_ms": 13159,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-startup-secret-audit.log"
+    },
+    "render-env-api-smoke": {
+      "name": "render-env-api-smoke",
+      "command": [
+        "node",
+        "--env-file=.env.render-api",
+        "scripts/smoke-api.mjs"
+      ],
+      "started_at": "2026-10-29T21:05:26.324Z",
+      "duration_ms": 7731,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-env-api-smoke.log"
+    },
+    "render-env-worker-config": {
+      "name": "render-env-worker-config",
+      "command": [
+        "node",
+        "--env-file=.env.render-worker",
+        "--import",
+        "tsx",
+        "--input-type=module",
+        "-e",
+        "import {chainConfig,runtimeKeys} from \"./apps/web/lib/server/config.ts\";try{chainConfig();runtimeKeys();console.log(JSON.stringify({state:\"passed\",check:\"worker export loads runtime key values and devnet configuration\",external_action:false}));}catch{console.error(\"Worker export validation failed without logging values\");process.exitCode=1;}"
+      ],
+      "started_at": "2026-10-29T21:05:26.346Z",
+      "duration_ms": 2361,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-env-worker-config.log"
+    },
+    "render-env-auth": {
+      "name": "render-env-auth",
+      "command": [
+        "node",
+        "--env-file=.env.render-api",
+        "--import",
+        "tsx",
+        "scripts/verify-auth.ts"
+      ],
+      "started_at": "2026-10-29T21:07:11.287Z",
+      "duration_ms": 2024,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-env-auth.log"
+    },
+    "render-env-checks": {
+      "name": "render-env-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T21:06:01.876Z",
+      "duration_ms": 22824,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-env-checks.log"
+    },
+    "render-env-secret-audit": {
+      "name": "render-env-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T21:06:24.791Z",
+      "duration_ms": 593,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "log": "evidence/render-devnet/render-env-secret-audit.log"
     }
   },
   "test_counts": {
     "javascript_unit": {
-      "passed": 48,
+      "passed": 50,
       "skipped_database_cases_run_separately": 42,
       "failed": 0
     },
@@ -352,7 +577,72 @@
     "indexes": 47,
     "all_tables_rls": true,
     "public_schema_and_table_access_blocked": true,
-    "hosted_supabase": "unverified; direct IPv6 endpoint ENETUNREACH; exact session-pooler SQL URI required"
+    "hosted_supabase": "Verified: connected with verified TLS; all five migrations applied and replayed with matching checksums; hosted schema and local HTTP/worker smoke passed.",
+    "hosted_schema": {
+      "state": "passed",
+      "database": "postgres",
+      "role": "postgres",
+      "migrations": [
+        "001_backend.sql",
+        "002_state_guards.sql",
+        "003_treasury_origin.sql",
+        "004_immutable_terms.sql",
+        "005_worker_leases.sql"
+      ],
+      "tables": [
+        "events",
+        "funding_reservations",
+        "jobs",
+        "link_slots",
+        "links",
+        "mock_provider_transfers",
+        "operations",
+        "otp_challenges",
+        "payouts",
+        "principals",
+        "provider_attempts",
+        "quotes",
+        "sessions",
+        "transaction_attempts",
+        "users",
+        "webhook_inbox",
+        "worker_schedules"
+      ],
+      "all_tables_rls": true,
+      "constraints": 107,
+      "indexes": 47,
+      "permissions": {
+        "public_schema_blocked": true,
+        "public_tables_blocked": true
+      }
+    },
+    "hosted_platform": {
+      "checked_at": "2026-10-29T20:23:45.486Z",
+      "server_version": "17.11",
+      "search_path": "muuve,public",
+      "not_null_columns": "125",
+      "client_roles": [
+        {
+          "role": "anon",
+          "schema_usage": false,
+          "user_table_select": false
+        },
+        {
+          "role": "authenticated",
+          "schema_usage": false,
+          "user_table_select": false
+        }
+      ]
+    },
+    "hosted_test_records": {
+      "checked_at": "2026-10-29T20:30:59.786Z",
+      "dedicated_test_accounts": "2",
+      "completed_noop_jobs": "2",
+      "chain_operations": "0",
+      "database_links": "0",
+      "payouts": "0",
+      "active_maintenance_leases": "0"
+    }
   },
   "authentication": {
     "local_signing_key_generated": true,
@@ -361,7 +651,8 @@
     "private_encoding": "PKCS8 PEM",
     "private_key_values_in_report": false,
     "jwks_and_local_verification_passed": true,
-    "privy_live_wallet_linking_verified": false
+    "privy_live_wallet_linking_verified": false,
+    "local_http_with_supabase_verified": true
   },
   "deployment": {
     "network": "devnet",
@@ -456,16 +747,62 @@
     "blueprint_schema_verified": true,
     "api_build_command_observed_passed": "node scripts/render-build.mjs api",
     "worker_build_command_observed_passed": "node scripts/render-build.mjs worker",
-    "services_created": false,
-    "hosted_health_verified": false
+    "hosted_health_verified": false,
+    "api_service_creation": "owner-reported",
+    "worker_service_creation": "unverified",
+    "owner_reported_service_id": "srv-dbhqunegekts73c09c20",
+    "latest_startup": {
+      "state": "owner_reported_rejection_of_local_operator_configuration",
+      "remote_environment_changed": false,
+      "local_diagnostic_fix": "API and worker list forbidden variable names without values; exclusion policy unchanged",
+      "operator_action": "Remove local operator variables from the service and linked environment groups, then save and deploy"
+    },
+    "api_origin": "https://muuve.onrender.com",
+    "environment_exports": {
+      "created_at": "2026-10-29T21:04:07.522Z",
+      "state": "generated_with_owner_supplied_api_origin",
+      "exports": [
+        {
+          "file": ".env.render-api",
+          "service": "API",
+          "variables": 32,
+          "mode": "0600",
+          "git_ignored": true,
+          "missing_required": [],
+          "private_files_embedded_as_values": true
+        },
+        {
+          "file": ".env.render-worker",
+          "service": "worker",
+          "variables": 17,
+          "mode": "0600",
+          "git_ignored": true,
+          "missing_required": [],
+          "private_files_embedded_as_values": true
+        }
+      ],
+      "local_environment_unchanged": true,
+      "operator_variables_excluded": true,
+      "roles_match_verified_public_manifest": true,
+      "jwt_key_and_kid_verified": true,
+      "ca_secret_file_required_on_render": "/etc/secrets/supabase-prod-ca-2021.crt",
+      "public_ca_source_file": "config/certs/supabase-prod-ca-2021.crt",
+      "updated_at": "2026-10-29T21:06:51.735Z",
+      "api_origin": "https://muuve.onrender.com"
+    },
+    "latest_public_health_probe": {
+      "checked_at": "2026-10-29T21:06:51.896Z",
+      "url": "https://muuve.onrender.com/api/health",
+      "state": "request_failed_or_timed_out",
+      "status": null
+    }
   },
   "remaining": [
-    "Actual Supabase session-pooler URI and hosted migrations/schema verification",
-    "Render account/repository setup, secrets and stable HTTPS APP_BASE_URL",
+    "Correct Render runtime environments, deploy API/worker and verify public health/worker progress",
     "Enable Privy custom JWT authentication, published JWKS and approved origin; verify real wallet linking",
     "Authorize a recipient number before live Twilio SMS testing",
     "Verify genuinely aged expiry fixture after 2026-10-31T08:39:30Z",
-    "Hosted combined API/Privy/devnet payment and worker integration",
+    "Render-hosted API/worker with live Privy/devnet combined payment integration",
     "Token-2022 devnet verification requires a separate deployment because the mint is immutable",
     "Remote CI and human security review"
   ],
@@ -479,7 +816,7 @@
       "no local secret values in Next build artifacts"
     ],
     "artifact_files_scanned": 191,
-    "repository_files_scanned": 202,
+    "repository_files_scanned": 236,
     "external_dependency_links_checked": 2
   },
   "expiry_deadline_guard": {
@@ -489,5 +826,143 @@
     "transaction_submitted": false,
     "guard_passed": true,
     "post_expiry_verification": false
+  },
+  "supabase_pooler_result": {
+    "checked_at": "2026-10-29T20:17:35.806Z",
+    "state": "connected",
+    "client_tls_authorized": true,
+    "error_code": null,
+    "local_environment_updated": true,
+    "preflight": {
+      "database": "postgres",
+      "role": "postgres",
+      "migration_registry_exists": false,
+      "application_schema_exists": false
+    },
+    "project_ref": "yirelxmcveyxcqofzayq",
+    "host": "aws-0-eu-west-1.pooler.supabase.com",
+    "port": 5432,
+    "tls_mode": "verify-full"
+  },
+  "historical_direct_database_attempts": {
+    "migration": {
+      "name": "hosted-migrations",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/migrate.ts"
+      ],
+      "started_at": "2026-10-29T09:35:22.142Z",
+      "duration_ms": 5487,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "log": "evidence/render-devnet/hosted-migrations.log"
+    },
+    "verification": {
+      "name": "hosted-database",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/database-status.ts"
+      ],
+      "started_at": "2026-10-29T09:37:56.621Z",
+      "duration_ms": 5321,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "log": "evidence/render-devnet/hosted-database.log"
+    }
+  },
+  "latest_handoff": "docs/handoff/2026-10-29-render-env-export.md",
+  "historical_supabase_authentication": {
+    "initial_pooler_result": {
+      "checked_at": "2026-10-29T18:11:29.914Z",
+      "project_ref": "yirelxmcveyxcqofzayq",
+      "host": "aws-0-eu-west-1.pooler.supabase.com",
+      "port": 5432,
+      "tls_mode": "verify-full",
+      "root_certificate": "config/certs/supabase-prod-ca-2021.crt",
+      "state": "blocked",
+      "client_tls_authorized": true,
+      "error_code": "28P01"
+    },
+    "password_variants": {
+      "checked_at": "2026-10-29T20:07:34.346Z",
+      "target": "owner_supabase_session_pooler",
+      "attempts": [
+        {
+          "attempt": 1,
+          "state": "rejected",
+          "code": "28P01",
+          "client_tls_authorized": true
+        },
+        {
+          "attempt": 2,
+          "state": "rejected",
+          "code": "28P01",
+          "client_tls_authorized": true
+        },
+        {
+          "attempt": 3,
+          "state": "rejected",
+          "code": "28P01",
+          "client_tls_authorized": true
+        },
+        {
+          "attempt": 4,
+          "state": "rejected",
+          "code": "28P01",
+          "client_tls_authorized": true
+        }
+      ],
+      "state": "no_success",
+      "successful_attempt": null
+    },
+    "initial_connectivity_command": {
+      "name": "supabase-connectivity",
+      "command": [
+        "node",
+        "--input-type=module",
+        "-e",
+        "\nimport pg from \"pg\";import fs from \"node:fs\";\nconst u=new URL(process.env.DATABASE_URL),c=new pg.Client({connectionString:u.toString(),connectionTimeoutMillis:15000});\nconst record={checked_at:new Date().toISOString(),project_ref:process.env.MUUVE_DATABASE_PROJECT_REF,host:u.hostname,port:Number(u.port),tls_mode:u.searchParams.get(\"sslmode\"),root_certificate:u.searchParams.get(\"sslrootcert\"),state:\"pending\",client_tls_authorized:false,error_code:null};\ntry{await c.connect();const r=await c.query(\"SELECT current_database() AS database,current_user AS role\");Object.assign(record,{state:\"connected\",...r.rows[0]});}catch(e){record.state=\"blocked\";record.error_code=e.code??\"connection_failed\";process.exitCode=1;}finally{record.client_tls_authorized=c.connection.stream.authorized===true;await c.end().catch(()=>{});fs.writeFileSync(\"evidence/render-devnet/supabase-connectivity-result.json\",JSON.stringify(record,null,2)+\"\\n\");console.log(JSON.stringify(record));}\n"
+      ],
+      "started_at": "2026-10-29T18:11:29.783Z",
+      "duration_ms": 1473,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "log": "evidence/render-devnet/supabase-connectivity.log"
+    }
+  },
+  "supabase_http_worker": {
+    "checked_at": "2026-10-29T20:23:02.432Z",
+    "scope": "Loopback production HTTP and local worker with hosted Supabase; mock OTP; no payout",
+    "state": "passed",
+    "checks": [
+      "mock OTP invalid-code rejection, signup, session and single-use proof",
+      "public JWKS token verification, refresh rotation and logout revocation",
+      "existing-account login, expired sessions/challenges and OTP rate limit",
+      "real worker no-op queue progress, maintenance lease release and graceful SIGTERM"
+    ],
+    "test_user_id": "0110284c-6dfa-4972-ab8d-1243d3819995",
+    "test_job_id": "a73020b4-1d93-407b-93b4-1504ea8f1ff5",
+    "live_sms_sent": false,
+    "principal_release_submitted": false,
+    "child_exits": [
+      {
+        "role": "worker",
+        "exit_code": 0,
+        "signal": null
+      },
+      {
+        "role": "api",
+        "exit_code": 143,
+        "signal": null
+      }
+    ],
+    "finished_at": "2026-10-29T20:23:21.777Z"
   }
 }

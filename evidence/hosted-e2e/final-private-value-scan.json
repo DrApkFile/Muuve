@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-29T22:46:47.494Z",
+  "state": "passed",
+  "files_scanned": 546,
+  "secret_sources": [
+    "local environment",
+    "API environment",
+    "worker environment",
+    "authorized test phone file"
+  ]
+}

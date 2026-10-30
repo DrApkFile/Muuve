@@ -1,0 +1,12 @@
+{
+  "name": "hosted-e2e-sbf-build",
+  "command": [
+    "node",
+    "scripts/build-sbf.mjs"
+  ],
+  "started_at": "2026-10-29T22:14:38.435Z",
+  "duration_ms": 36012,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

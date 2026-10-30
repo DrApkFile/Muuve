@@ -1,0 +1,5 @@
+Applied 001_backend.sql
+Applied 002_state_guards.sql
+Applied 003_treasury_origin.sql
+Applied 004_immutable_terms.sql
+Applied 005_worker_leases.sql

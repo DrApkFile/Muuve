@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-10-29T20:23:02.432Z",
+  "scope": "Loopback production HTTP and local worker with hosted Supabase; mock OTP; no payout",
+  "state": "passed",
+  "checks": [
+    "mock OTP invalid-code rejection, signup, session and single-use proof",
+    "public JWKS token verification, refresh rotation and logout revocation",
+    "existing-account login, expired sessions/challenges and OTP rate limit",
+    "real worker no-op queue progress, maintenance lease release and graceful SIGTERM"
+  ],
+  "test_user_id": "0110284c-6dfa-4972-ab8d-1243d3819995",
+  "test_job_id": "a73020b4-1d93-407b-93b4-1504ea8f1ff5",
+  "live_sms_sent": false,
+  "principal_release_submitted": false,
+  "child_exits": [
+    {
+      "role": "worker",
+      "exit_code": 0,
+      "signal": null
+    },
+    {
+      "role": "api",
+      "exit_code": 143,
+      "signal": null
+    }
+  ],
+  "finished_at": "2026-10-29T20:23:21.777Z"
+}

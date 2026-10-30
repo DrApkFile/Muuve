@@ -20,7 +20,10 @@ export async function assertCanAttestClaim(
   c?: PoolClient,
 ) {
   assert(
-    actor.purpose === "claim" && actor.link_id === id && actor.expires_at.getTime() > Date.now(),
+    actor.purpose === "claim" &&
+      typeof actor.phone_e164 === "string" &&
+      actor.link_id === id &&
+      actor.expires_at.getTime() > Date.now(),
     "invalid_claim_session",
     403,
   );

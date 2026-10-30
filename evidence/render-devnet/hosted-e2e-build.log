@@ -1,0 +1,24 @@
+$ next build apps/web
+▲ Next.js 16.4.3 (Turbopack)
+✓ Running next.config.ts took 2.6s
+- Experiments (use with caution):
+  · cpus: 2
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 38.3s
+  Running TypeScript ...
+  Finished TypeScript in 6.5s ...
+  Collecting page data using 2 workers ...
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+  Generating static pages using 2 workers (0/2) ...
+✓ Generating static pages using 2 workers (2/2) in 395ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /_not-found
+└ ƒ /api/[...path]
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

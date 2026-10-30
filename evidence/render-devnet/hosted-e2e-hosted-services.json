@@ -1,0 +1,16 @@
+{
+  "name": "hosted-e2e-hosted-services",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-services.ts",
+    "--allow-test-records",
+    "--run-worker-check"
+  ],
+  "started_at": "2026-10-29T22:14:38.368Z",
+  "duration_ms": 59377,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

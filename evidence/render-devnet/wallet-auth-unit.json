@@ -1,0 +1,12 @@
+{
+  "name": "wallet-auth-unit",
+  "command": [
+    "pnpm",
+    "test"
+  ],
+  "started_at": "2026-10-29T23:19:23.022Z",
+  "duration_ms": 27337,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

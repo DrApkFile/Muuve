@@ -1,0 +1,14 @@
+{
+  "name": "hosted-e2e-database-schema",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/database-status.ts"
+  ],
+  "started_at": "2026-10-29T22:06:00.909Z",
+  "duration_ms": 14774,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

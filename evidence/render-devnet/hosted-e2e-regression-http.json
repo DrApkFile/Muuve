@@ -1,0 +1,12 @@
+{
+  "name": "hosted-e2e-regression-http",
+  "command": [
+    "node",
+    "scripts/smoke-api.mjs"
+  ],
+  "started_at": "2026-10-29T22:45:37.074Z",
+  "duration_ms": 9426,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

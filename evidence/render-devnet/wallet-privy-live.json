@@ -1,0 +1,13 @@
+{
+  "name": "wallet-privy-live",
+  "command": [
+    "node",
+    "scripts/verify-privy-live.mjs",
+    "--operator-approved"
+  ],
+  "started_at": "2026-10-29T23:19:21.846Z",
+  "duration_ms": 33690,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

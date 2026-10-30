@@ -31,6 +31,7 @@ operation. See the [latest milestone report](docs/handoff/2026-10-29-render-devn
 for actual results and the remaining Supabase, Render and Privy configuration.
 
 Render API and continuous-worker setup: [deployment guide](docs/render-deployment.md).
+Supabase migration and HTTP/worker results: [verified database handoff](docs/handoff/2026-10-29-supabase-verified.md).
 Public devnet funding addresses: [wallets.md](wallets.md).
 `pnpm setup:local` provisions local keys when no saved identity exists. Restore the
 protected key backup on a new machine; missing keys for saved identities are never

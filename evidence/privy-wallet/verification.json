@@ -1,0 +1,42 @@
+{
+  "recorded_at": "2026-10-29T23:32:59.413Z",
+  "report": "docs/handoff/2026-10-30-wallet-auth.md",
+  "state": "local_backend_and_live_privy_verified_hosted_rollout_pending",
+  "local_automated": {
+    "unit_passed": 62,
+    "database_api_passed": 58,
+    "typecheck_and_format": true,
+    "production_build": true,
+    "http_smoke": true,
+    "secret_audit": true
+  },
+  "real_privy": {
+    "jwt_acceptance": true,
+    "owner_quorum_checked": true,
+    "message_signature_verified": true,
+    "transaction_signature_and_message_verified": true,
+    "no_user_authorization_rejected": true,
+    "expired_jwt_rejected": true,
+    "check_groups_passed": 7
+  },
+  "hosted": {
+    "new_wallet_routes": 404,
+    "migration_count": 5,
+    "new_wallet_table_present": false,
+    "positive_wallet_login": false,
+    "funded_payment_lifecycle": false
+  },
+  "side_effects": {
+    "dedicated_privy_identity_and_wallet_created": 1,
+    "hosted_database_migrations": 0,
+    "program_deployments": 0,
+    "blockchain_transactions_submitted": 0,
+    "real_ngn_transfers": 0,
+    "private_wallet_keys_exported": false
+  },
+  "operator_steps": [
+    "Review and apply migration 006 to the approved Supabase development database",
+    "Publish reviewed source and deploy the Render API",
+    "Run positive hosted wallet login and the funded devnet payment lifecycle"
+  ]
+}

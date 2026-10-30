@@ -1,0 +1,15 @@
+{
+  "name": "hosted-e2e-otp-send",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-otp.ts",
+    "--send=sender"
+  ],
+  "started_at": "2026-10-29T22:24:27.599Z",
+  "duration_ms": 10170,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

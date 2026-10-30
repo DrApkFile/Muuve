@@ -1,0 +1,30 @@
+{
+  "started_at": "2026-10-29T23:21:38.876Z",
+  "scope": "New local API and disposable SQL, real Privy, real hosted JWKS; no hosted login or chain submission",
+  "checks": [
+    {
+      "name": "wallet_only_local_api_login_and_database",
+      "state": "passed",
+      "phone_required": false
+    },
+    {
+      "name": "real_hosted_jwks_verifies_local_api_bridge_jwt",
+      "state": "passed"
+    },
+    {
+      "name": "privy_server_records_bind_custom_user_and_wallet",
+      "state": "passed",
+      "wallet_address": "E8SaZ7LFCppUr4HoBF2cGTWtEfkzftVmnBzRA37C1fue",
+      "user_id": "603dceb2-04f9-496f-bee4-742e4f5ec202",
+      "privy_user_id": "did:privy:cmvu61h3v007r0glbb6xunpq1",
+      "user_only_owner_quorum_verified": true
+    }
+  ],
+  "blockchain_transactions_submitted": 0,
+  "private_keys_exported": false,
+  "state": "blocked_or_failed",
+  "stage": "jwt_authorized_message_signing",
+  "provider_http_status": 401,
+  "code": "provider_or_transport_failure",
+  "finished_at": "2026-10-29T23:21:43.313Z"
+}

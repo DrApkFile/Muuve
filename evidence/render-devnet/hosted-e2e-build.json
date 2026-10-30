@@ -1,0 +1,12 @@
+{
+  "name": "hosted-e2e-build",
+  "command": [
+    "pnpm",
+    "build"
+  ],
+  "started_at": "2026-10-29T22:14:38.379Z",
+  "duration_ms": 79805,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

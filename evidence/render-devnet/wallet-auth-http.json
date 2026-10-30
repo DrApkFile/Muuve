@@ -1,0 +1,12 @@
+{
+  "name": "wallet-auth-http",
+  "command": [
+    "node",
+    "scripts/smoke-api.mjs"
+  ],
+  "started_at": "2026-10-29T23:25:07.769Z",
+  "duration_ms": 9094,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,12 @@
+{
+  "name": "hosted-e2e-final-checks",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-29T22:26:07.872Z",
+  "duration_ms": 40973,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

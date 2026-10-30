@@ -1,0 +1,13 @@
+$ vitest run
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+
+ Test Files  8 passed | 8 skipped (16)
+      Tests  56 passed | 58 skipped (114)
+   Start at  00:19:24
+   Duration  26.18s (import 65%, tests 31%, transform 3%, worker 1%)
+
+    Isolate  16 workers spawned · ~439ms startup each (spawn + environment, per file)
+             at least ~3.07s faster with isolate: false — reuses workers across files instead of one per file
+

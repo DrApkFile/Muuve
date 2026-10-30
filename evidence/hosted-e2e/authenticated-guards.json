@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-29T22:42:03.623Z",
+  "origin": "https://muuve.onrender.com",
+  "requests": [
+    {
+      "path": "/api/me",
+      "status": 200
+    },
+    {
+      "path": "/api/operations/1db30a0e-cfed-4b67-a3f3-3f02891fc2a8",
+      "transport_error": true
+    }
+  ],
+  "checks": [],
+  "state": "blocked_or_failed",
+  "error": "hosted_request_transport_failure"
+}

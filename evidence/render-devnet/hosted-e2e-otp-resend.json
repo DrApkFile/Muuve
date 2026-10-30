@@ -1,0 +1,16 @@
+{
+  "name": "hosted-e2e-otp-resend",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-otp.ts",
+    "--send=sender",
+    "--new-challenge"
+  ],
+  "started_at": "2026-10-29T22:37:07.321Z",
+  "duration_ms": 12359,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

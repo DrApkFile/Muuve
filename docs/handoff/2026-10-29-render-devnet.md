@@ -1,6 +1,13 @@
 # Backend milestone: Render readiness and verified devnet deployment
 
-This is the latest handoff for 29 October 2026. It supersedes the external-blocker
+Latest update: [Supabase is connected, migrated and verified](2026-10-29-supabase-verified.md).
+Its database connection blocker is resolved; Render and live Privy verification remain.
+
+Later update: the [Supabase pooler continuation](2026-10-29-supabase-pooler.md)
+records the supplied pooler URI, verified TLS configuration and current database
+authentication failure. The missing-pooler-URI statements below are historical.
+
+This records the backend/deployment checkpoint for 29 October 2026. It supersedes the external-blocker
 and test-count statements in the earlier backend handoff; its historical evidence
 has been preserved. Work remains backend only. No hosted Render deployment, live
 bank payout or combined hosted API/Privy/payment end-to-end result is claimed.

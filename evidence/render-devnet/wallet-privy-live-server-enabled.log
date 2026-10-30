@@ -1,0 +1,35 @@
+The files belonging to this database system will be owned by user "kingghidorah".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+creating directory /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-privy-7YPBXx/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Africa/Lagos
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-privy-7YPBXx/data -l logfile start
+
+waiting for server to start.... done
+server started
+Applied 001_backend.sql
+Applied 002_state_guards.sql
+Applied 003_treasury_origin.sql
+Applied 004_immutable_terms.sql
+Applied 005_worker_leases.sql
+Applied 006_wallet_login.sql
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+{"started_at":"2026-10-29T23:26:29.870Z","scope":"New local API and disposable SQL, real Privy, real hosted JWKS; no hosted login or chain submission","checks":[{"name":"wallet_only_local_api_login_and_database","state":"passed","phone_required":false},{"name":"real_hosted_jwks_verifies_local_api_bridge_jwt","state":"passed"},{"name":"privy_server_records_bind_custom_user_and_wallet","state":"passed","wallet_address":"E8SaZ7LFCppUr4HoBF2cGTWtEfkzftVmnBzRA37C1fue","user_id":"603dceb2-04f9-496f-bee4-742e4f5ec202","privy_user_id":"did:privy:cmvu61h3v007r0glbb6xunpq1","user_only_owner_quorum_verified":true},{"name":"privy_accepts_muuve_jwt_and_signs_valid_solana_message","state":"passed"},{"name":"app_secret_without_user_authorization_cannot_sign","state":"passed"},{"name":"privy_rejects_expired_muuve_jwt","state":"passed"},{"name":"privy_signs_exact_devnet_test_transaction_without_broadcast","state":"passed","amount_lamports":0}],"blockchain_transactions_submitted":0,"private_keys_exported":false,"state":"passed_local_wallet_login_real_privy_and_hosted_jwks","finished_at":"2026-10-29T23:26:52.077Z"}
+waiting for server to shut down.... done
+server stopped

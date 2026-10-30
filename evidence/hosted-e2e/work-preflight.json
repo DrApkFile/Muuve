@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-29T22:07:04.672Z",
+  "counts": {
+    "users": "2",
+    "linked_wallet_users": "0",
+    "live_sessions": "0",
+    "links": "0",
+    "active_operations": "0",
+    "active_jobs": "0",
+    "active_maintenance_leases": "0",
+    "payouts": "0"
+  },
+  "existing_local_worker_pids": [],
+  "remote_cron_inventory": "unavailable without Render account connection; DB leases support overlap safely"
+}

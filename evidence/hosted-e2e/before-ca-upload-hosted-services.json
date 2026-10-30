@@ -1,0 +1,116 @@
+{
+  "started_at": "2026-10-29T22:14:40.492Z",
+  "scope": "Real HTTPS Render requests and Supabase; optional one local worker; no user-auth bypass",
+  "checks": [
+    {
+      "name": "schema_checksums_and_verified_database_tls",
+      "state": "passed",
+      "details": {
+        "project": "yirelxmcveyxcqofzayq",
+        "migrations": [
+          "001_backend.sql",
+          "002_state_guards.sql",
+          "003_treasury_origin.sql",
+          "004_immutable_terms.sql",
+          "005_worker_leases.sql"
+        ],
+        "client_tls_authorized": true
+      }
+    },
+    {
+      "name": "hosted_health_and_security_headers",
+      "state": "passed",
+      "details": {
+        "http_status": 200,
+        "service": "muuve-backend",
+        "declared_chain": "devnet",
+        "declared_payouts": "mock"
+      }
+    },
+    {
+      "name": "hosted_public_jwks_matches_local_signing_identity",
+      "state": "passed",
+      "details": {
+        "public_key_matches": true,
+        "kid_matches": true,
+        "private_fields_absent": true
+      }
+    },
+    {
+      "name": "unauthenticated_me",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_links",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_balance",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_banks",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_operations",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_claims",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_payouts",
+      "state": "passed"
+    },
+    {
+      "name": "missing_and_foreign_origin_rejected",
+      "state": "passed"
+    },
+    {
+      "name": "hosted_origin_accepts_validation_without_sending_sms",
+      "state": "passed"
+    },
+    {
+      "name": "nonexistent_otp_challenge_rejected_without_provider_action",
+      "state": "failed",
+      "code": "unexpected_http_500_expected_401"
+    },
+    {
+      "name": "invalid_and_expired_account_tokens_rejected",
+      "state": "passed"
+    },
+    {
+      "name": "unsigned_cron_and_webhook_rejected",
+      "state": "passed"
+    },
+    {
+      "name": "signed_mock_webhook_validates_secret_but_rejects_unknown_payout",
+      "state": "failed",
+      "code": "unexpected_http_500_expected_409"
+    },
+    {
+      "name": "authenticated_hosted_monitor",
+      "state": "failed",
+      "code": "monitor_or_cron_configuration_failed"
+    },
+    {
+      "name": "queue_and_worker_probes",
+      "state": "blocked",
+      "code": "preflight_failed"
+    },
+    {
+      "name": "positive_hosted_payment_lifecycle",
+      "state": "blocked",
+      "code": "requires_authorized_phone_verification_and_real_privy_wallet_ownership"
+    }
+  ],
+  "worker_events": [],
+  "fixture_jobs": [],
+  "live_sms_sent": false,
+  "principal_release_submitted": false,
+  "state": "failed",
+  "origin": "https://muuve.onrender.com",
+  "finished_at": "2026-10-29T22:15:37.720Z"
+}

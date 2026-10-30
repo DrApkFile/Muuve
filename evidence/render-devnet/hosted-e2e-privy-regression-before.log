@@ -1,0 +1,164 @@
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+ ❯ tests/unit/privy.test.ts (11 tests | 6 failed) 98ms
+   ❯ Privy server-record wallet ownership (11)
+     × rejects an absent custom-auth user as an ownership denial 38ms
+     × fails closed with a redacted service error for provider failure 401 5ms
+     × fails closed with a redacted service error for provider failure 403 22ms
+     × fails closed with a redacted service error for provider failure 429 6ms
+     × fails closed with a redacted service error for provider failure 500 3ms
+     × fails closed with a redacted service error for provider failure undefined 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/privy.test.ts > Privy server-record wallet ownership > rejects an absent custom-auth user as an ownership denial
+AssertionError: expected Error: private upstream detail { …(1) } to match object { code: 'wallet_not_owned', …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "wallet_not_owned",
+-   "message": "wallet_not_owned",
+-   "status": 403,
++ Error {
++   "status": 404,
+  }
+
+ ❯ tests/unit/privy.test.ts:23:46
+     21|   it("rejects an absent custom-auth user as an ownership denial", asyn…
+     22|     lookup.mockRejectedValue(Object.assign(new Error("private upstream…
+     23|     await expect(verifyWallet(user, address)).rejects.toMatchObject({
+       |                                              ^
+     24|       code: "wallet_not_owned",
+     25|       status: 403,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/unit/privy.test.ts > Privy server-record wallet ownership > fails closed with a redacted service error for provider failure 401
+AssertionError: expected Error: private upstream detail { …(1) } to match object { code: 'privy_unavailable', …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "privy_unavailable",
+-   "message": "privy_unavailable",
+-   "status": 503,
++ Error {
++   "status": 401,
+  }
+
+ ❯ tests/unit/privy.test.ts:33:48
+     31|     async (status) => {
+     32|       lookup.mockRejectedValue(Object.assign(new Error("private upstre…
+     33|       await expect(verifyWallet(user, address)).rejects.toMatchObject({
+       |                                                ^
+     34|         code: "privy_unavailable",
+     35|         status: 503,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/unit/privy.test.ts > Privy server-record wallet ownership > fails closed with a redacted service error for provider failure 403
+AssertionError: expected Error: private upstream detail { …(1) } to match object { code: 'privy_unavailable', …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "privy_unavailable",
+-   "message": "privy_unavailable",
+-   "status": 503,
++ Error {
++   "status": 403,
+  }
+
+ ❯ tests/unit/privy.test.ts:33:48
+     31|     async (status) => {
+     32|       lookup.mockRejectedValue(Object.assign(new Error("private upstre…
+     33|       await expect(verifyWallet(user, address)).rejects.toMatchObject({
+       |                                                ^
+     34|         code: "privy_unavailable",
+     35|         status: 503,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/unit/privy.test.ts > Privy server-record wallet ownership > fails closed with a redacted service error for provider failure 429
+AssertionError: expected Error: private upstream detail { …(1) } to match object { code: 'privy_unavailable', …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "privy_unavailable",
+-   "message": "privy_unavailable",
+-   "status": 503,
++ Error {
++   "status": 429,
+  }
+
+ ❯ tests/unit/privy.test.ts:33:48
+     31|     async (status) => {
+     32|       lookup.mockRejectedValue(Object.assign(new Error("private upstre…
+     33|       await expect(verifyWallet(user, address)).rejects.toMatchObject({
+       |                                                ^
+     34|         code: "privy_unavailable",
+     35|         status: 503,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/unit/privy.test.ts > Privy server-record wallet ownership > fails closed with a redacted service error for provider failure 500
+AssertionError: expected Error: private upstream detail { …(1) } to match object { code: 'privy_unavailable', …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "privy_unavailable",
+-   "message": "privy_unavailable",
+-   "status": 503,
++ Error {
++   "status": 500,
+  }
+
+ ❯ tests/unit/privy.test.ts:33:48
+     31|     async (status) => {
+     32|       lookup.mockRejectedValue(Object.assign(new Error("private upstre…
+     33|       await expect(verifyWallet(user, address)).rejects.toMatchObject({
+       |                                                ^
+     34|         code: "privy_unavailable",
+     35|         status: 503,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  tests/unit/privy.test.ts > Privy server-record wallet ownership > fails closed with a redacted service error for provider failure undefined
+AssertionError: expected Error: private upstream detail { …(1) } to match object { code: 'privy_unavailable', …(2) }
+
+- Expected
++ Received
+
+- {
+-   "code": "privy_unavailable",
+-   "message": "privy_unavailable",
+-   "status": 503,
++ Error {
++   "status": undefined,
+  }
+
+ ❯ tests/unit/privy.test.ts:33:48
+     31|     async (status) => {
+     32|       lookup.mockRejectedValue(Object.assign(new Error("private upstre…
+     33|       await expect(verifyWallet(user, address)).rejects.toMatchObject({
+       |                                                ^
+     34|         code: "privy_unavailable",
+     35|         status: 503,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 5 passed (11)
+   Start at  23:43:06
+   Duration  1.14s (import 58%, transform 27%, tests 14%, worker 2%)
+

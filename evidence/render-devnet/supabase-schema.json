@@ -1,0 +1,14 @@
+{
+  "name": "supabase-schema",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/database-status.ts"
+  ],
+  "started_at": "2026-10-29T20:17:55.283Z",
+  "duration_ms": 1978,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

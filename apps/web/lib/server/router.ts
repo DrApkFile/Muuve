@@ -18,6 +18,7 @@ import { share, startIntent, keep, assertCanAttestClaim } from "./claims";
 import { quote, preparePayout, payoutView, retryPayout, receiveWebhook } from "./payouts";
 import { mockRateProvider, mockBankDirectory, mockClevaGateway } from "./providers/finance";
 import { verifyWallet } from "./providers/privy";
+import { walletChallenge, walletLogin } from "./wallet-auth";
 import { submitOperation, canAccessOperation, storedOperation } from "./operations";
 import { fund } from "./funding";
 import { Chain } from "./solana/chain";
@@ -105,6 +106,14 @@ export async function handle(req: Request): Promise<Response> {
     checkOrigin(req);
     if (path === "/api/health" && method === "GET")
       return response({ service: "muuve-backend", chain: "devnet", payouts: "mock" });
+    if (path === "/api/auth/wallet/challenge" && method === "POST") {
+      const result = await walletChallenge(req, await body(req, schemas.walletChallenge));
+      return response(result.body, 200, [result.cookie]);
+    }
+    if (path === "/api/auth/wallet/login" && method === "POST") {
+      const result = await walletLogin(req, await body(req, schemas.walletLogin));
+      return response({ user: result.user }, 200, result.cookies);
+    }
     if (path === "/api/auth/otp/send" && method === "POST")
       return response(await sendOtp(req, await body(req, schemas.otpSend)));
     if (path === "/api/auth/otp/verify" && method === "POST") {
@@ -233,7 +242,7 @@ export async function handle(req: Request): Promise<Response> {
     if (match && method === "GET") {
       const actor = await accountOrClaim(req),
         id = uuid.parse(match[1]);
-      return transaction(async (c) => {
+      return await transaction(async (c) => {
         const op = await one("SELECT * FROM operations WHERE id=$1", [id], c);
         assert(op && (await canAccessOperation(c, op, actor)), "not_found", 404);
         return response({ ...(await storedOperation(c, id)), state: op.state });

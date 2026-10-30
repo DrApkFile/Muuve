@@ -28,7 +28,7 @@ export async function createLink(actor: Session, body: z.infer<typeof schemas.cr
     new Set(body.recipients.map((r) => r.phone_e164)).size === body.recipients.length,
     "duplicate_recipient",
   );
-  assert(!body.recipients.some((r) => r.phone_e164 === actor.phone_e164), "self_payment");
+  assert(!body.recipients.some((r) => r.phone_e164 === user.phone_e164), "self_payment");
   const chain = new Chain();
   const chainConfig = await chain.readiness();
   assert(

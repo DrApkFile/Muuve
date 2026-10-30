@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-29T18:11:29.914Z",
+  "project_ref": "yirelxmcveyxcqofzayq",
+  "host": "aws-0-eu-west-1.pooler.supabase.com",
+  "port": 5432,
+  "tls_mode": "verify-full",
+  "root_certificate": "config/certs/supabase-prod-ca-2021.crt",
+  "state": "blocked",
+  "client_tls_authorized": true,
+  "error_code": "28P01"
+}

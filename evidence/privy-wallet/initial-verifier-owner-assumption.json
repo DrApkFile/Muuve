@@ -1,0 +1,21 @@
+{
+  "started_at": "2026-10-29T23:19:35.854Z",
+  "scope": "New local API and disposable SQL, real Privy, real hosted JWKS; no hosted login or chain submission",
+  "checks": [
+    {
+      "name": "wallet_only_local_api_login_and_database",
+      "state": "passed",
+      "phone_required": false
+    },
+    {
+      "name": "real_hosted_jwks_verifies_local_api_bridge_jwt",
+      "state": "passed"
+    }
+  ],
+  "blockchain_transactions_submitted": 0,
+  "private_keys_exported": false,
+  "state": "blocked_or_failed",
+  "stage": "dedicated_privy_identity",
+  "code": "wallet_owner_record_mismatch",
+  "finished_at": "2026-10-29T23:19:55.319Z"
+}

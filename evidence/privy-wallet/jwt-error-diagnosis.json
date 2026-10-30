@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-10-29T23:22:48.687Z",
+  "scope": "operator diagnostic for existing dedicated test identity; no transaction",
+  "state": "provider_rejected",
+  "status": 401,
+  "response_field_names": [
+    "error"
+  ],
+  "safe_code": null,
+  "mentions_server": false,
+  "mentions_not_enabled": false,
+  "mentions_jwt": true,
+  "mentions_key_or_signature": false,
+  "mentions_expiry": false,
+  "mentions_user": false
+}

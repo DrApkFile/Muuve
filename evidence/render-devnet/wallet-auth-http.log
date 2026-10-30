@@ -1,0 +1,1 @@
+Production HTTP smoke: exact start command/PORT, health, public JWKS/signature, session, Origin and webhook guards passed. No external service contacted.

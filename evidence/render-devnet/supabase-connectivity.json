@@ -1,0 +1,14 @@
+{
+  "name": "supabase-connectivity",
+  "command": [
+    "node",
+    "--input-type=module",
+    "-e",
+    "\nimport pg from \"pg\";import fs from \"node:fs\";\nconst u=new URL(process.env.DATABASE_URL),c=new pg.Client({connectionString:u.toString(),connectionTimeoutMillis:15000});\nconst record={checked_at:new Date().toISOString(),project_ref:process.env.MUUVE_DATABASE_PROJECT_REF,host:u.hostname,port:Number(u.port),tls_mode:u.searchParams.get(\"sslmode\"),root_certificate:u.searchParams.get(\"sslrootcert\"),state:\"pending\",client_tls_authorized:false,error_code:null};\ntry{await c.connect();const r=await c.query(\"SELECT current_database() AS database,current_user AS role\");Object.assign(record,{state:\"connected\",...r.rows[0]});}catch(e){record.state=\"blocked\";record.error_code=e.code??\"connection_failed\";process.exitCode=1;}finally{record.client_tls_authorized=c.connection.stream.authorized===true;await c.end().catch(()=>{});fs.writeFileSync(\"evidence/render-devnet/supabase-connectivity-result.json\",JSON.stringify(record,null,2)+\"\\n\");console.log(JSON.stringify(record));}\n"
+  ],
+  "started_at": "2026-10-29T18:11:29.783Z",
+  "duration_ms": 1473,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

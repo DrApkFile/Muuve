@@ -1,0 +1,21 @@
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+{
+  "network": "devnet",
+  "genesis": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+  "program": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+  "config": {
+    "admin": "BvfPFXU4t6rkNHhAGJKTwWchFGszkf6A7io8DAspAdvN",
+    "attestor": "As2E5nQkD6sL7kWVMY6c44JgYfLAnHevpG85JZLgQ6Px",
+    "feePayer": "EXCRqXUPPtVsDLgYsqsd2Uo88NawAT5sUy35sqVk4hg8",
+    "mint": "H9d97DiVPydaxKTWFxVYfAg3FLSsicqx9u2boCoMksQJ",
+    "tokenProgram": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "treasury": "29vE2HKDM5MLmDytaFQXDCp4ejSBam8FrGqZhTC85XuC",
+    "treasuryOwner": "6dWu1Y2b7oMCGmJkQfoDqnzGLjMsKXyFFdKoB9wwT12f",
+    "mintAuthority": "6eG2i1arM6ei52bxj3XyhATwUvseRDNoJkL2VfMPX3kV",
+    "maxSlot": "500000000",
+    "maxLink": "1000000000",
+    "claimWindow": 172800,
+    "bump": 255
+  },
+  "verified_at": "2026-10-29T22:06:54.605Z"
+}

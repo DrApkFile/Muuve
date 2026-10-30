@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-29T22:34:53.885Z",
+  "role": "sender",
+  "private_code_ready": false,
+  "challenge": {
+    "status": "sent",
+    "attempts": 1,
+    "expires_at": "2026-10-29T22:34:36.089Z",
+    "active": false
+  }
+}

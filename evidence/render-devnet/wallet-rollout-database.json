@@ -1,0 +1,12 @@
+{
+  "name": "wallet-rollout-database",
+  "command": [
+    "pnpm",
+    "test:db"
+  ],
+  "started_at": "2026-10-29T23:47:44.136Z",
+  "duration_ms": 45607,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

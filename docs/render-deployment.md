@@ -87,6 +87,13 @@ region. Session pooling uses port 5432. See [Supabase network compatibility](htt
 
 Use certificate-verified TLS (`sslmode=verify-full`). Install the provider CA if your
 environment requires it; do not fix TLS errors with `rejectUnauthorized:false`.
+The owner-supplied pooler required Supabase's public CA. This repository now includes
+the official certificate at `config/certs/supabase-prod-ca-2021.crt`, with download
+provenance beside it. For local and Render `DATABASE_URL`, append
+`sslmode=verify-full&sslrootcert=config/certs/supabase-prod-ca-2021.crt` using the
+appropriate `?` or `&` separator. Both services start from the repository root, so
+that relative path resolves consistently. Do not put a private key in this file.
+See the [certificate provenance and renewal notes](../config/certs/README.md).
 Use the direct connection if IPv6 is available, otherwise the session pooler for
 migrations. Transaction pooling is not the documented migration path: the runner
 uses a session advisory lock. `MUUVE_DATABASE_PROJECT_REF` enables a project/host guard.
@@ -107,6 +114,15 @@ Use a separately managed migration role if you restrict the runtime role further
 truncating the hosted project. Test fixtures refuse an external database hostname.
 Do not set `MUUVE_TEST_DB=1` against a hosted connection. Hosted verification is
 read-only apart from the explicitly authorized migration command and normal API work.
+
+The owner's Supabase project was subsequently connected, migrated and verified.
+For an explicitly authorized development database, a separate smoke check can create
+dedicated synthetic records without resetting shared tables:
+`node --env-file=.env.local scripts/smoke-hosted-backend.mjs --allow-test-records`.
+It runs the production API on loopback with mock OTP and a local worker, verifies
+sessions/JWTs and a no-op queue job, and refuses existing payment work. It leaves
+test records and sends no SMS or payout. See the
+[verified database handoff](handoff/2026-10-29-supabase-verified.md) for exact evidence.
 
 ## Render environment matrix
 
@@ -182,6 +198,78 @@ the process exits unsuccessfully if draining cannot finish; leases recover on re
 Do not terminate by deleting queue rows or releasing uncertain principal reservations.
 The authenticated cron endpoints remain for explicit recovery; do not configure a
 second continuous scheduler alongside this worker unnecessarily.
+
+## Troubleshooting: operator environment rejected before port binding
+
+### Prepared local upload files
+
+The owner-requested `.env.render-api` and `.env.render-worker` files are generated
+locally, Git-ignored and mode 0600. They contain actual runtime values from the
+verified local configuration. Local private-file alternatives are replaced by their
+contents; deployment/admin/test-sender settings are excluded. The worker file contains
+only its own required settings and excludes Privy, Twilio, session and JWT secrets.
+
+The owner supplied `https://muuve.onrender.com`; that exact origin is populated in
+the API file's `APP_BASE_URL`. No hostname was guessed from the service name or ID.
+The worker does not need that variable. Keep `.env.local` unchanged.
+
+For these exports, `DATABASE_URL` references
+`/etc/secrets/supabase-prod-ca-2021.crt`. In **Environment → Secret Files**, add a file
+named **supabase-prod-ca-2021.crt** with the contents of the public certificate at
+`config/certs/supabase-prod-ca-2021.crt`. Add it to each service using an export.
+This works with the existing application code and does not require uploading local
+private-key files or waiting for the CA to be committed into the repository.
+
+Remove the old manually imported environment entries and inappropriate linked groups
+before using **Add from .env**. Importing the replacement file adds/updates its keys;
+it does not clean up unrelated old operator variables automatically. Import the API
+file into the API service and the worker file into the worker, then save and deploy.
+Never commit or share these two secret-bearing files.
+
+### Diagnose the startup rejection
+
+If startup reports `Operator keys are forbidden in the Render API environment`,
+at least one non-empty local-only variable was imported into the hosted service.
+The updated API error names those variables without printing their values; the
+worker emits a redacted `worker.operator_environment_rejected` event with the names.
+The guard deliberately remains enabled.
+
+In the Render service's **Environment** settings, remove every configured variable
+whose name starts with `OPERATOR_` or `DEVNET_TEST_`, plus `TEST_MINT_SECRET` and
+`TEST_MINT_SECRET_FILE`. Check linked environment groups too; remove the entries
+there or unlink an inappropriate local-development group. A string such as `false`
+still counts as configured, so delete the entry rather than changing it to false.
+
+For the current local configuration, these names are local-only:
+
+```text
+OPERATOR_ADMIN_SECRET_FILE
+OPERATOR_DEPLOYMENT_SECRET_FILE
+DEVNET_TEST_SENDER_SECRET_FILE
+DEVNET_TEST_CLAIM_SECRET_FILE
+DEVNET_TEST_RECIPIENT
+TEST_MINT_SECRET_FILE
+```
+
+`OPERATOR_APPROVED_DEVNET`, if separately configured, is also local-only. The exact
+remote list cannot be inferred from the old generic error; inspect variable names
+in the dashboard or use the improved error after deploying this update.
+
+Keep runtime `FEE_PAYER_SECRET`, `ATTESTOR_SECRET`, `TREASURY_SECRET` and
+`TEST_MINT_AUTHORITY_SECRET` as specified in the environment matrix. Use actual JSON
+secret values on Render; local `keys/...` file paths do not exist in a normal checkout.
+For JWT signing use the actual PKCS8 PEM in `AUTH_JWT_PRIVATE_KEY` with its stable KID.
+
+Set `APP_ENV=preview`, `OTP_PROVIDER=twilio`, `WHATSAPP_OTP_ENABLED=false` and
+`APP_BASE_URL` to the service's actual canonical HTTPS origin. Local mock OTP is
+deliberately unavailable on Render. Save and deploy the corrected environment, then
+check `/api/health`. With only environment changes, Render's **Save and deploy**
+reuses the existing build. Deploy the updated source separately if you want its new
+variable-name diagnostics. See [Render environment settings](https://render.com/docs/configure-environment-variables).
+
+The `No open ports detected` line follows the early process exit. The start command
+already binds `0.0.0.0` and Render's `PORT`; changing the port does not resolve a
+configuration rejection that occurs before Next starts.
 
 ## Privy dashboard actions
 

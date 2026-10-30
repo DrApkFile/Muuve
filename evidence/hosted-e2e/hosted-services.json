@@ -1,0 +1,321 @@
+{
+  "started_at": "2026-10-29T22:28:49.624Z",
+  "scope": "Real HTTPS Render requests and Supabase; optional one local worker; no user-auth bypass",
+  "checks": [
+    {
+      "name": "schema_checksums_and_verified_database_tls",
+      "state": "passed",
+      "details": {
+        "project": "yirelxmcveyxcqofzayq",
+        "migrations": [
+          "001_backend.sql",
+          "002_state_guards.sql",
+          "003_treasury_origin.sql",
+          "004_immutable_terms.sql",
+          "005_worker_leases.sql"
+        ],
+        "client_tls_authorized": true
+      }
+    },
+    {
+      "name": "hosted_health_and_security_headers",
+      "state": "passed",
+      "details": {
+        "http_status": 200,
+        "service": "muuve-backend",
+        "declared_chain": "devnet",
+        "declared_payouts": "mock"
+      }
+    },
+    {
+      "name": "hosted_public_jwks_matches_local_signing_identity",
+      "state": "passed",
+      "details": {
+        "public_key_matches": true,
+        "kid_matches": true,
+        "private_fields_absent": true
+      }
+    },
+    {
+      "name": "unauthenticated_me",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_links",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_balance",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_banks",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_operations",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_claims",
+      "state": "passed"
+    },
+    {
+      "name": "unauthenticated_payouts",
+      "state": "passed"
+    },
+    {
+      "name": "missing_and_foreign_origin_rejected",
+      "state": "passed"
+    },
+    {
+      "name": "hosted_origin_accepts_validation_without_sending_sms",
+      "state": "passed"
+    },
+    {
+      "name": "nonexistent_otp_challenge_rejected_without_provider_action",
+      "state": "passed"
+    },
+    {
+      "name": "invalid_and_expired_account_tokens_rejected",
+      "state": "passed"
+    },
+    {
+      "name": "unsigned_cron_and_webhook_rejected",
+      "state": "passed"
+    },
+    {
+      "name": "signed_mock_webhook_validates_secret_but_rejects_unknown_payout",
+      "state": "passed"
+    },
+    {
+      "name": "authenticated_hosted_monitor",
+      "state": "passed",
+      "details": {
+        "counts": {
+          "unknown_operations": "0",
+          "quarantined_principals": "0",
+          "quarantined_jobs": "0",
+          "overdue_expiry": "0",
+          "slow_payouts": "0"
+        },
+        "deficit_count": 0,
+        "fee_payer_lamports": 971641080
+      }
+    },
+    {
+      "name": "hosted_cron_processes_unique_job_in_intended_database_once",
+      "state": "passed",
+      "details": {
+        "job_id": "35d9d602-ae8a-4f95-bf0e-dbd9fb6d82e8",
+        "kind": "obsolete-payout-noop",
+        "processed_once": true,
+        "concurrent_deliveries": 2,
+        "repeated_delivery_processed": 0,
+        "principal_released": false
+      }
+    },
+    {
+      "name": "single_local_worker_processes_hosted_job_and_drains",
+      "state": "passed",
+      "details": {
+        "job_id": "2a7adb73-5c47-47ef-aafa-65a4fb95f201",
+        "expired_lease_fixture_id": "f3ef47d6-6c5f-4f29-a819-6ce7bae2717e",
+        "expired_lease_recovered": true,
+        "stale_owner_update_rejected": true,
+        "processed_once": true,
+        "exit_code": 0,
+        "database_target": "hosted Supabase",
+        "only_connection_difference": "local public CA file path",
+        "principal_released": false
+      }
+    },
+    {
+      "name": "positive_hosted_payment_lifecycle",
+      "state": "blocked",
+      "code": "requires_authorized_phone_verification_and_real_privy_wallet_ownership"
+    }
+  ],
+  "worker_events": [
+    {
+      "event": "worker.started"
+    },
+    {
+      "event": "worker.jobs_processed"
+    },
+    {
+      "event": "worker.stopped"
+    }
+  ],
+  "http_requests": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/jwks",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/me",
+      "status": 401,
+      "request_id": "fea3b814-87cc-449f-9acb-7ded5555f57c",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/links",
+      "status": 401,
+      "request_id": "7ed26b07-5a32-4f36-ac8d-6c4ebf85cd1c",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/balance",
+      "status": 401,
+      "request_id": "ebdb029b-9db8-40f8-9f46-ccdd5698530a",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/banks",
+      "status": 401,
+      "request_id": "0cb85d5b-9ee5-4b86-83ed-164df9a7235c",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/operations/452daa18-87f2-466c-8f72-f2b5fbdd5d54",
+      "status": 401,
+      "request_id": "7ebd98b8-9a46-46b0-9870-1d6bd3eb4904",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/claims/a51fe1d9-56a1-42b2-bed0-9b5d48bb2f8a/share",
+      "status": 401,
+      "request_id": "92fe276b-2d3c-4fee-a033-301723681157",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/payouts/77f9b40e-b051-4ccd-8c53-edb05448c83f",
+      "status": 401,
+      "request_id": "002f6c31-8c32-4eeb-9c8b-61932f71dfc1",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/otp/send",
+      "status": 403,
+      "request_id": "f0fed4e2-ec12-4bcc-be3d-dd4b71e0a262",
+      "error_code": "invalid_origin"
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/otp/send",
+      "status": 403,
+      "request_id": "fe0ed193-7d74-4af9-b910-19382c459254",
+      "error_code": "invalid_origin"
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/otp/send",
+      "status": 400,
+      "request_id": "f693c555-3735-4097-a329-9c72ac8c65c4",
+      "error_code": "invalid_body"
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/otp/verify",
+      "status": 401,
+      "request_id": "3efab6f9-49c7-42af-8be6-90f1ccfbc189",
+      "error_code": "invalid_challenge"
+    },
+    {
+      "method": "GET",
+      "path": "/api/me",
+      "status": 401,
+      "request_id": "874b0289-27f5-401b-bcf6-c1b35c3ee861",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "GET",
+      "path": "/api/me",
+      "status": 401,
+      "request_id": "28b86323-aa34-4414-82a0-b62b007834db",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "POST",
+      "path": "/api/cron/work",
+      "status": 401,
+      "request_id": "e27d9a49-c8b7-4281-a7f8-ab434e06a8e5",
+      "error_code": "unauthorized"
+    },
+    {
+      "method": "POST",
+      "path": "/api/webhooks/payout",
+      "status": 401,
+      "request_id": "079cd613-1b9b-4f6f-b003-7e4d061bdec5",
+      "error_code": "invalid_webhook"
+    },
+    {
+      "method": "POST",
+      "path": "/api/webhooks/payout",
+      "status": 409,
+      "request_id": "690ee9ad-8d7a-42f7-a7bf-17f2ae25455f",
+      "error_code": "unknown_provider_reference"
+    },
+    {
+      "method": "POST",
+      "path": "/api/webhooks/payout",
+      "status": 401,
+      "request_id": "0cd1d9d0-d20a-4aea-8314-e29268cad7dd",
+      "error_code": "invalid_webhook"
+    },
+    {
+      "method": "POST",
+      "path": "/api/cron/monitor",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/cron/work",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/cron/work",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/cron/work",
+      "status": 200
+    }
+  ],
+  "fixture_jobs": [
+    {
+      "id": "35d9d602-ae8a-4f95-bf0e-dbd9fb6d82e8",
+      "purpose": "remote-cron"
+    },
+    {
+      "id": "2a7adb73-5c47-47ef-aafa-65a4fb95f201",
+      "purpose": "local-worker"
+    },
+    {
+      "id": "f3ef47d6-6c5f-4f29-a819-6ce7bae2717e",
+      "purpose": "expired-lease-fixture"
+    }
+  ],
+  "live_sms_sent": false,
+  "principal_release_submitted": false,
+  "state": "partial_verified_with_blockers",
+  "origin": "https://muuve.onrender.com",
+  "worker_pid": 955110,
+  "finished_at": "2026-10-29T22:29:19.670Z"
+}

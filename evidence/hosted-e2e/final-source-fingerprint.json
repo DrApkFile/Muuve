@@ -1,0 +1,24 @@
+{
+  "checked_at": "2026-10-29T22:48:51.105Z",
+  "base_commit": "81d999288df15954b2cdf17c9884f4701602800e",
+  "working_tree": "dirty; existing owner work preserved",
+  "task_source_files": [
+    "apps/web/lib/server/router.ts",
+    "apps/web/lib/server/providers/privy.ts",
+    "tests/api/auth.test.ts",
+    "tests/unit/privy.test.ts",
+    "scripts/verify-hosted-services.ts",
+    "scripts/verify-hosted-otp.ts",
+    "scripts/verify-hosted-session.ts"
+  ],
+  "sha256": {
+    "apps/web/lib/server/router.ts": "0cb5b94793c99c64b7502423c5a0dcaf7dece1dd2da35335045fbdf44bf9ce30",
+    "apps/web/lib/server/providers/privy.ts": "8fff8718218f8205f96a1732703206b5d22753e0f34d0a17f8559a908cc31edc",
+    "tests/api/auth.test.ts": "cb4548d14d7bfc1edd3f1b3d0330194972f19b40b47b7eac1c986e4841ba776b",
+    "tests/unit/privy.test.ts": "d5354637ca09ec19b236775870a4c81f21496d427b531ab1ef436117cb5c7a09",
+    "scripts/verify-hosted-services.ts": "efac3858e9b8169b6deae499a51b5abb8be952b6f9696a26a9ec569efc04bbb6",
+    "scripts/verify-hosted-otp.ts": "7e3d473c66bf889fb7aca0f3d02c29a893a83385a06e34602f6c9381243182b1",
+    "scripts/verify-hosted-session.ts": "201fefc3a601cac2e9dfccee7095e8f0e742699504ecf6239f78d05ac71cc893"
+  },
+  "source_fix_deployed": false
+}

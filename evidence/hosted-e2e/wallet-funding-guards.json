@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-10-29T22:42:48.305Z",
+  "requests": [
+    {
+      "path": "/api/me",
+      "status": 200,
+      "json": true
+    },
+    {
+      "path": "/api/auth/wallet",
+      "status": 500,
+      "json": true,
+      "error_code": "internal_error"
+    },
+    {
+      "path": "/api/me",
+      "status": 200,
+      "json": true
+    },
+    {
+      "path": "/api/fund/demo",
+      "status": 409,
+      "json": true,
+      "error_code": "wallet_required"
+    },
+    {
+      "path": "/api/links/prepare",
+      "status": 409,
+      "json": true,
+      "error_code": "wallet_required"
+    }
+  ],
+  "checks": [
+    {
+      "name": "arbitrary_wallet_rejected",
+      "passed": true,
+      "proper_status": false
+    },
+    {
+      "name": "wallet_required_for_funding",
+      "passed": true
+    },
+    {
+      "name": "wallet_required_for_batch",
+      "passed": true
+    }
+  ],
+  "state": "defect_found",
+  "privy_lookup": {
+    "exists": false,
+    "http_status": 404
+  }
+}

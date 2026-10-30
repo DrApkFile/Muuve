@@ -1,0 +1,12 @@
+{
+  "name": "hosted-e2e-operation-regression-before",
+  "command": [
+    "pnpm",
+    "test:db"
+  ],
+  "started_at": "2026-10-29T22:42:46.057Z",
+  "duration_ms": 37350,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

@@ -1,0 +1,1 @@
+{"checked_at":"2026-10-29T20:20:41.116Z","scope":"Loopback production HTTP and local worker with hosted Supabase; mock OTP; no payout","state":"failed","checks":[],"test_user_id":null,"test_job_id":null,"live_sms_sent":false,"principal_release_submitted":false,"failure_code":"child_shutdown_failed","finished_at":"2026-10-29T20:20:53.088Z"}

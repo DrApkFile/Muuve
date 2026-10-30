@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-29T22:17:24.682Z",
+  "results": [
+    {
+      "path": "/api/auth/otp/verify",
+      "status": 500,
+      "error_code": "internal_error",
+      "request_id": "b5053a0a-d0d2-4ef2-b535-469768f010f7"
+    },
+    {
+      "path": "/api/cron/monitor",
+      "status": 500,
+      "error_code": "internal_error",
+      "request_id": "de0ccb48-bc07-4760-a355-79fea7b942c3"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "started_at": "2026-10-29T23:26:29.870Z",
+  "scope": "New local API and disposable SQL, real Privy, real hosted JWKS; no hosted login or chain submission",
+  "checks": [
+    {
+      "name": "wallet_only_local_api_login_and_database",
+      "state": "passed",
+      "phone_required": false
+    },
+    {
+      "name": "real_hosted_jwks_verifies_local_api_bridge_jwt",
+      "state": "passed"
+    },
+    {
+      "name": "privy_server_records_bind_custom_user_and_wallet",
+      "state": "passed",
+      "wallet_address": "E8SaZ7LFCppUr4HoBF2cGTWtEfkzftVmnBzRA37C1fue",
+      "user_id": "603dceb2-04f9-496f-bee4-742e4f5ec202",
+      "privy_user_id": "did:privy:cmvu61h3v007r0glbb6xunpq1",
+      "user_only_owner_quorum_verified": true
+    },
+    {
+      "name": "privy_accepts_muuve_jwt_and_signs_valid_solana_message",
+      "state": "passed"
+    },
+    {
+      "name": "app_secret_without_user_authorization_cannot_sign",
+      "state": "passed"
+    },
+    {
+      "name": "privy_rejects_expired_muuve_jwt",
+      "state": "passed"
+    },
+    {
+      "name": "privy_signs_exact_devnet_test_transaction_without_broadcast",
+      "state": "passed",
+      "amount_lamports": 0
+    }
+  ],
+  "blockchain_transactions_submitted": 0,
+  "private_keys_exported": false,
+  "state": "passed_local_wallet_login_real_privy_and_hosted_jwks",
+  "finished_at": "2026-10-29T23:26:52.077Z"
+}

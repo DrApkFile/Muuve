@@ -3,13 +3,16 @@ const port = process.env.PORT ?? "3000";
 if (!/^\d+$/.test(port) || Number(port) < 1 || Number(port) > 65535)
   throw new Error("Invalid PORT");
 if (process.env.RENDER) {
-  if (
-    Object.keys(process.env).some(
+  const forbidden = Object.keys(process.env)
+    .filter(
       (name) =>
         process.env[name] && /^(OPERATOR_|DEVNET_TEST_|TEST_MINT_SECRET(?:_FILE)?$)/.test(name),
     )
-  )
-    throw new Error("Operator keys are forbidden in the Render API environment");
+    .sort();
+  if (forbidden.length)
+    throw new Error(
+      `Remove local operator variables from the Render API environment: ${forbidden.join(", ")}. See docs/render-deployment.md.`,
+    );
   if (process.env.APP_ENV === "local" || process.env.OTP_PROVIDER === "mock")
     throw new Error("Local mock OTP is forbidden on Render");
   const url = new URL(process.env.APP_BASE_URL ?? "");

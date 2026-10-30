@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, afterAll } from "vitest";
 import { randomUUID } from "node:crypto";
 import { handle } from "../../apps/web/lib/server/router";
-import { database, closeDatabase } from "../../apps/web/lib/server/db";
-import { setupEnv, reset, seed, makeSession } from "../helpers";
+import { database, closeDatabase, transaction } from "../../apps/web/lib/server/db";
+import { setupEnv, reset, seed, makeSession, prepared } from "../helpers";
+import { insertOperation } from "../../apps/web/lib/server/operations";
 setupEnv();
 function request(path: string, method = "GET", data?: unknown, cookie?: string, ip = "192.0.2.1") {
   return handle(
@@ -23,6 +24,45 @@ describe.skipIf(process.env.MUUVE_TEST_DB !== "1")(
   () => {
     beforeEach(reset);
     afterAll(closeDatabase);
+    it("returns a private JSON 404 for missing operations and another sender's operation", async () => {
+      const owner = await seed(),
+        ownerSession = await makeSession("account", owner.user.phone_e164, owner.user.id, null),
+        stranger = await seed({
+          senderPhone: "+2348030000003",
+          wallet: "11111111111111111111111111111112",
+        }),
+        strangerSession = await makeSession(
+          "account",
+          stranger.user.phone_e164,
+          stranger.user.id,
+          null,
+        );
+      const operation = await transaction((c) =>
+        insertOperation(
+          c,
+          ownerSession.session,
+          { kind: "recall", linkId: owner.link.id, request: {} },
+          prepared(),
+        ),
+      );
+      for (const id of [randomUUID(), operation.operation_id]) {
+        const result = await request(`operations/${id}`, "GET", undefined, strangerSession.cookie);
+        expect(result.status).toBe(404);
+        expect(result.headers.get("content-type")).toBe("application/json");
+        const body = await result.json();
+        expect(body).toEqual({ error: "not_found", request_id: expect.any(String) });
+      }
+      expect(
+        (
+          await request(
+            `operations/${operation.operation_id}`,
+            "GET",
+            undefined,
+            ownerSession.cookie,
+          )
+        ).status,
+      ).toBe(200);
+    });
     it("requires sessions and rejects invalid mutation origins", async () => {
       expect((await request("me")).status).toBe(401);
       expect(

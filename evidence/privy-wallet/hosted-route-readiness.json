@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-10-29T23:24:13.760Z",
+  "origin": "https://muuve.onrender.com",
+  "path": "/api/auth/wallet/challenge",
+  "http_status": 404,
+  "error_code": "not_found",
+  "state": "new_wallet_routes_not_deployed"
+}

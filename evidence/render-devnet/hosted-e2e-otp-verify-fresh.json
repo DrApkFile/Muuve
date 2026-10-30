@@ -1,0 +1,15 @@
+{
+  "name": "hosted-e2e-otp-verify-fresh",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-otp.ts",
+    "--verify=sender"
+  ],
+  "started_at": "2026-10-29T22:37:54.393Z",
+  "duration_ms": 6661,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

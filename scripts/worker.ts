@@ -18,14 +18,16 @@ function shutdown() {
 process.once("SIGTERM", shutdown);
 process.once("SIGINT", shutdown);
 try {
-  if (
-    process.env.RENDER &&
-    Object.keys(process.env).some(
+  const forbidden = Object.keys(process.env)
+    .filter(
       (name) =>
         process.env[name] && /^(OPERATOR_|DEVNET_TEST_|TEST_MINT_SECRET(?:_FILE)?$)/.test(name),
     )
-  )
+    .sort();
+  if (process.env.RENDER && forbidden.length) {
+    safeLog({ event: "worker.operator_environment_rejected", code: forbidden.join(", ") });
     throw new Error("Operator keys are forbidden in the Render worker environment");
+  }
   chainConfig();
   runtimeKeys();
   if (

@@ -1,0 +1,13 @@
+{
+  "name": "hosted-e2e-local-http",
+  "command": [
+    "node",
+    "--env-file=.env.local",
+    "scripts/smoke-api.mjs"
+  ],
+  "started_at": "2026-10-29T22:15:58.264Z",
+  "duration_ms": 7569,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

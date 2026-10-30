@@ -1,0 +1,5 @@
+$ tsc --noEmit && prettier --check .
+Checking formatting...
+[warn] scripts/verify-privy-live.ts
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+[ELIFECYCLE] Command failed with exit code 1.

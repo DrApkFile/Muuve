@@ -1,0 +1,8 @@
+{
+  "recorded_at": "2026-10-29T22:22:15.429Z",
+  "initial_state": "owner_confirmed_missing_render_ca_secret_file",
+  "owner_action": "added supabase-prod-ca-2021.crt through Render dashboard",
+  "assistant_changed_hosted_configuration": false,
+  "verification": "resolved: hosted retest passed database-backed OTP challenge rejection, signed unknown-payout webhook, monitor, remote no-op queue job and local worker same-database probe",
+  "resolved_at": "2026-10-29T22:22:44.803Z"
+}

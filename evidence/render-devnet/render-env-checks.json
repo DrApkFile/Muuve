@@ -1,0 +1,12 @@
+{
+  "name": "render-env-checks",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-29T21:06:01.876Z",
+  "duration_ms": 22824,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

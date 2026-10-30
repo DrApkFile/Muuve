@@ -1,0 +1,16 @@
+{
+  "name": "hosted-e2e-local-worker",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-services.ts",
+    "--allow-test-records",
+    "--local-worker-only"
+  ],
+  "started_at": "2026-10-29T22:20:26.317Z",
+  "duration_ms": 15422,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,14 @@
+{
+  "name": "hosted-e2e-contract-evidence",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-devnet-evidence.ts"
+  ],
+  "started_at": "2026-10-29T22:15:14.521Z",
+  "duration_ms": 36653,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

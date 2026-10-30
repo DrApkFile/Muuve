@@ -9,7 +9,7 @@ export type Session = {
   id: string;
   purpose: "account" | "claim" | "proof";
   user_id: string | null;
-  phone_e164: string;
+  phone_e164: string | null;
   link_id: string | null;
   expires_at: Date;
 };
@@ -25,10 +25,14 @@ export function cookie(name: string, value: string, maxAge: number) {
 export async function issue(
   c: PoolClient,
   purpose: Session["purpose"],
-  phone: string,
+  phone: string | null,
   user: string | null,
   link: string | null,
 ): Promise<string> {
+  assert(
+    purpose === "account" ? !!user : typeof phone === "string" && phone.length > 0,
+    "session_identity_required",
+  );
   const id = randomUUID(),
     seconds = { account: 2592000, claim: 1200, proof: 900 }[purpose];
   await c.query(
@@ -150,4 +154,5 @@ export async function verifyCustomAuthToken(token: string) {
   );
   return result.payload;
 }
-export const clearCookies = () => Object.values(names).map((n) => cookie(n, "", 0));
+export const clearCookies = () =>
+  [...Object.values(names), "muuve_wallet_challenge"].map((n) => cookie(n, "", 0));

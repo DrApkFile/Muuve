@@ -1,0 +1,17 @@
+{
+  "name": "render-env-worker-config",
+  "command": [
+    "node",
+    "--env-file=.env.render-worker",
+    "--import",
+    "tsx",
+    "--input-type=module",
+    "-e",
+    "import {chainConfig,runtimeKeys} from \"./apps/web/lib/server/config.ts\";try{chainConfig();runtimeKeys();console.log(JSON.stringify({state:\"passed\",check:\"worker export loads runtime key values and devnet configuration\",external_action:false}));}catch{console.error(\"Worker export validation failed without logging values\");process.exitCode=1;}"
+  ],
+  "started_at": "2026-10-29T21:05:26.346Z",
+  "duration_ms": 2361,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,32 @@
+{
+  "created_at": "2026-10-29T21:04:07.522Z",
+  "state": "generated_with_owner_supplied_api_origin",
+  "exports": [
+    {
+      "file": ".env.render-api",
+      "service": "API",
+      "variables": 32,
+      "mode": "0600",
+      "git_ignored": true,
+      "missing_required": [],
+      "private_files_embedded_as_values": true
+    },
+    {
+      "file": ".env.render-worker",
+      "service": "worker",
+      "variables": 17,
+      "mode": "0600",
+      "git_ignored": true,
+      "missing_required": [],
+      "private_files_embedded_as_values": true
+    }
+  ],
+  "local_environment_unchanged": true,
+  "operator_variables_excluded": true,
+  "roles_match_verified_public_manifest": true,
+  "jwt_key_and_kid_verified": true,
+  "ca_secret_file_required_on_render": "/etc/secrets/supabase-prod-ca-2021.crt",
+  "public_ca_source_file": "config/certs/supabase-prod-ca-2021.crt",
+  "updated_at": "2026-10-29T21:06:51.735Z",
+  "api_origin": "https://muuve.onrender.com"
+}

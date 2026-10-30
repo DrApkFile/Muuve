@@ -1,0 +1,165 @@
+{
+  "updated_at": "2026-10-30T00:00:30.881Z",
+  "checks": [
+    {
+      "name": "wallet-rollout-unit",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T23:47:44.130Z",
+      "duration_ms": 27768,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-unit.json"
+    },
+    {
+      "name": "wallet-rollout-database",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T23:47:44.136Z",
+      "duration_ms": 45607,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-database.json"
+    },
+    {
+      "name": "wallet-rollout-preflight",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-wallet-rollout.ts",
+        "--before"
+      ],
+      "started_at": "2026-10-29T23:50:24.657Z",
+      "duration_ms": 8480,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-preflight.json"
+    },
+    {
+      "name": "wallet-rollout-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T23:50:25.881Z",
+      "duration_ms": 38177,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-checks.json"
+    },
+    {
+      "name": "wallet-rollout-render",
+      "command": [
+        "pnpm",
+        "check:render"
+      ],
+      "started_at": "2026-10-29T23:50:27.079Z",
+      "duration_ms": 2916,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-render.json"
+    },
+    {
+      "name": "wallet-rollout-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T23:55:48.740Z",
+      "duration_ms": 5860,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-secret-audit.json"
+    },
+    {
+      "name": "wallet-rollout-preapply",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-wallet-rollout.ts",
+        "--before"
+      ],
+      "started_at": "2026-10-29T23:57:13.956Z",
+      "duration_ms": 7877,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-preapply.json"
+    },
+    {
+      "name": "wallet-rollout-hosted-migration",
+      "command": [
+        "env",
+        "MUUVE_ALLOW_MIGRATIONS=1",
+        "MUUVE_DATABASE_PROJECT_REF=yirelxmcveyxcqofzayq",
+        "node",
+        "--env-file=.env.local",
+        "--import",
+        "tsx",
+        "scripts/migrate.ts"
+      ],
+      "started_at": "2026-10-29T23:57:33.280Z",
+      "duration_ms": 3024,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-hosted-migration.json"
+    },
+    {
+      "name": "wallet-rollout-hosted-preservation",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-wallet-rollout.ts",
+        "--after"
+      ],
+      "started_at": "2026-10-29T23:58:02.714Z",
+      "duration_ms": 3465,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-hosted-preservation.json"
+    },
+    {
+      "name": "wallet-rollout-hosted-schema",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/database-status.ts"
+      ],
+      "started_at": "2026-10-29T23:58:02.715Z",
+      "duration_ms": 2158,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-hosted-schema.json"
+    },
+    {
+      "name": "wallet-rollout-post-migration-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-30T00:00:06.179Z",
+      "duration_ms": 583,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-rollout-post-migration-secret-audit.json"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-29T23:28:12.918Z",
+  "project": "yirelxmcveyxcqofzayq",
+  "read_only": true,
+  "migrations": [
+    "001_backend.sql",
+    "002_state_guards.sql",
+    "003_treasury_origin.sql",
+    "004_immutable_terms.sql",
+    "005_worker_leases.sql"
+  ],
+  "wallet_table_present": false
+}

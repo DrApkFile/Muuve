@@ -1,0 +1,14 @@
+{
+  "name": "hosted-e2e-devnet-readiness",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-devnet.ts"
+  ],
+  "started_at": "2026-10-29T22:06:15.766Z",
+  "duration_ms": 38861,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

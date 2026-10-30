@@ -1,0 +1,12 @@
+{
+  "name": "render-startup-http",
+  "command": [
+    "node",
+    "scripts/smoke-api.mjs"
+  ],
+  "started_at": "2026-10-29T20:53:12.045Z",
+  "duration_ms": 26928,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

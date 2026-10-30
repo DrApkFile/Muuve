@@ -1,0 +1,1 @@
+{"checked_at":"2026-10-29T22:36:17.444Z","scope":"Actual hosted OTP, no local mock or session fabrication","calls":[{"path":"/api/auth/otp/verify","status":401,"error_code":"invalid_challenge","request_id":"aa6c221a-c610-45f3-a75b-6f271cc8fabe"}],"live_sms_requested":false,"role":"sender","state":"blocked_or_failed","code":"hosted_http_401"}

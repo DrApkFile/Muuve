@@ -1,0 +1,12 @@
+{
+  "name": "render-startup-blueprint",
+  "command": [
+    "pnpm",
+    "check:render"
+  ],
+  "started_at": "2026-10-29T20:53:12.080Z",
+  "duration_ms": 6991,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-10-29T22:06:39.028Z",
+  "api_origin": "https://muuve.onrender.com",
+  "local_database": {
+    "host": "aws-0-eu-west-1.pooler.supabase.com",
+    "port": "5432",
+    "database": "/postgres",
+    "username_project_matches": true,
+    "verified_tls": true
+  },
+  "api_database": {
+    "host": "aws-0-eu-west-1.pooler.supabase.com",
+    "port": "5432",
+    "database": "/postgres",
+    "username_project_matches": true,
+    "verified_tls": true
+  },
+  "worker_database": {
+    "host": "aws-0-eu-west-1.pooler.supabase.com",
+    "port": "5432",
+    "database": "/postgres",
+    "username_project_matches": true,
+    "verified_tls": true
+  },
+  "shared_configuration_matches": true,
+  "api_mode": {
+    "app_env": "preview",
+    "otp": "twilio",
+    "payout": "mock"
+  },
+  "cron_secret_present": true,
+  "session_secret_same": true,
+  "git_commit": "81d9992",
+  "hosted_environment_evidence": "local exported files; independently verify remote compatibility through hosted requests"
+}

@@ -1,0 +1,83 @@
+$ node scripts/test-db.mjs
+The files belonging to this database system will be owned by user "kingghidorah".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+creating directory /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-cUkZF6/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Africa/Lagos
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-cUkZF6/data -l logfile start
+
+waiting for server to start.... done
+server started
+Applied 001_backend.sql
+Applied 002_state_guards.sql
+Applied 003_treasury_origin.sql
+Applied 004_immutable_terms.sql
+Applied 005_worker_leases.sql
+{"state":"passed","database":"postgres","role":"kingghidorah","migrations":["001_backend.sql","002_state_guards.sql","003_treasury_origin.sql","004_immutable_terms.sql","005_worker_leases.sql"],"tables":["events","funding_reservations","jobs","link_slots","links","mock_provider_transfers","operations","otp_challenges","payouts","principals","provider_attempts","quotes","sessions","transaction_attempts","users","webhook_inbox","worker_schedules"],"all_tables_rls":true,"constraints":232,"indexes":47,"permissions":{"public_schema_blocked":true,"public_tables_blocked":true}}
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+stderr | tests/api/auth.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ❯ tests/api/auth.test.ts (9 tests | 1 failed) 1721ms
+   ❯ API auth and recipient privacy with real Postgres (9)
+     × returns a private JSON 404 for missing operations and another sender's operation 348ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/auth.test.ts > API auth and recipient privacy with real Postgres > returns a private JSON 404 for missing operations and another sender's operation
+Error: not_found
+ ❯ assert apps/web/lib/server/errors.ts:10:25
+      8| }
+      9| export function assert(condition: unknown, code: string, status = 400)…
+     10|   if (!condition) throw new AppError(code, status);
+       |                         ^
+     11| }
+     12|
+ ❯ apps/web/lib/server/router.ts:238:9
+ ❯ transaction apps/web/lib/server/db.ts:27:22
+ ❯ tests/api/auth.test.ts:50:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 6 passed (7)
+      Tests  1 failed | 42 passed (43)
+   Start at  23:42:57
+   Duration  26.06s (tests 51%, import 45%, transform 4%, worker 1%)
+
+    Isolate  7 workers spawned · ~306ms startup each (spawn + environment, per file)
+             at least ~1.84s faster with isolate: false — reuses workers across files instead of one per file
+
+waiting for server to shut down.... done
+server stopped
+file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:10
+  if (r.status !== 0) throw new Error(`${cmd} exited ${r.status}`);
+                            ^
+
+Error: pnpm exited 1
+    at run (file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:10:29)
+    at file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:35:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.19.0
+[ELIFECYCLE] Command failed with exit code 1.

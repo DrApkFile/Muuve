@@ -1,0 +1,12 @@
+{
+  "name": "wallet-auth-database",
+  "command": [
+    "pnpm",
+    "test:db"
+  ],
+  "started_at": "2026-10-29T23:15:59.381Z",
+  "duration_ms": 76130,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,19 @@
+{
+  "name": "hosted-e2e-native",
+  "command": [
+    "cargo",
+    "test",
+    "--locked",
+    "--manifest-path",
+    "programs/muuve_escrow/Cargo.toml",
+    "--jobs",
+    "2",
+    "--",
+    "--test-threads=1"
+  ],
+  "started_at": "2026-10-29T22:06:00.893Z",
+  "duration_ms": 238848,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

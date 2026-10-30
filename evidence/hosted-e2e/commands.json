@@ -1,0 +1,584 @@
+{
+  "updated_at": "2026-10-29T22:48:51.099Z",
+  "note": "Command arrays are recorded exactly by record-check. Parent --env-file and CARGO_HOME/SBF_TOOLCHAIN_ROOT settings are documented in the handoff. Exit 0 alone does not establish the whole hosted payment lifecycle.",
+  "checks": [
+    {
+      "name": "hosted-e2e-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T22:06:00.893Z",
+      "duration_ms": 116631,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-checks.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-native",
+      "command": [
+        "cargo",
+        "test",
+        "--locked",
+        "--manifest-path",
+        "programs/muuve_escrow/Cargo.toml",
+        "--jobs",
+        "2",
+        "--",
+        "--test-threads=1"
+      ],
+      "started_at": "2026-10-29T22:06:00.893Z",
+      "duration_ms": 238848,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-native.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-database-schema",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/database-status.ts"
+      ],
+      "started_at": "2026-10-29T22:06:00.909Z",
+      "duration_ms": 14774,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-database-schema.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-devnet-readiness",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-devnet.ts"
+      ],
+      "started_at": "2026-10-29T22:06:15.766Z",
+      "duration_ms": 38861,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-devnet-readiness.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-providers",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/provider-readiness.ts"
+      ],
+      "started_at": "2026-10-29T22:06:54.699Z",
+      "duration_ms": 69078,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-providers.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-unit",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T22:07:57.599Z",
+      "duration_ms": 29196,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-unit.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-database",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T22:08:26.879Z",
+      "duration_ms": 112807,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-database.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-sbf",
+      "command": [
+        "pnpm",
+        "test:sbf"
+      ],
+      "started_at": "2026-10-29T22:10:00.109Z",
+      "duration_ms": 75877,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-sbf.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-rust-format",
+      "command": [
+        "cargo",
+        "fmt",
+        "--manifest-path",
+        "programs/muuve_escrow/Cargo.toml",
+        "--check"
+      ],
+      "started_at": "2026-10-29T22:11:16.067Z",
+      "duration_ms": 612,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-rust-format.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-hosted-services",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-services.ts",
+        "--allow-test-records",
+        "--run-worker-check"
+      ],
+      "started_at": "2026-10-29T22:14:38.368Z",
+      "duration_ms": 59377,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-hosted-services.json",
+      "interpretation": "initial deployment failure; CA prerequisite fixed by owner and retested"
+    },
+    {
+      "name": "hosted-e2e-build",
+      "command": [
+        "pnpm",
+        "build"
+      ],
+      "started_at": "2026-10-29T22:14:38.379Z",
+      "duration_ms": 79805,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-build.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-sbf-build",
+      "command": [
+        "node",
+        "scripts/build-sbf.mjs"
+      ],
+      "started_at": "2026-10-29T22:14:38.435Z",
+      "duration_ms": 36012,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-sbf-build.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-contract-evidence",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-devnet-evidence.ts"
+      ],
+      "started_at": "2026-10-29T22:15:14.521Z",
+      "duration_ms": 36653,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-contract-evidence.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-local-http",
+      "command": [
+        "node",
+        "--env-file=.env.local",
+        "scripts/smoke-api.mjs"
+      ],
+      "started_at": "2026-10-29T22:15:58.264Z",
+      "duration_ms": 7569,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-local-http.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T22:16:05.938Z",
+      "duration_ms": 4270,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-secret-audit.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-local-worker",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-services.ts",
+        "--allow-test-records",
+        "--local-worker-only"
+      ],
+      "started_at": "2026-10-29T22:20:26.317Z",
+      "duration_ms": 15422,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-local-worker.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-hosted-services-retest",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-services.ts",
+        "--allow-test-records",
+        "--run-worker-check"
+      ],
+      "started_at": "2026-10-29T22:22:15.497Z",
+      "duration_ms": 29440,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-hosted-services-retest.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-otp-send",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-otp.ts",
+        "--send=sender"
+      ],
+      "started_at": "2026-10-29T22:24:27.599Z",
+      "duration_ms": 10170,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-otp-send.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-final-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T22:26:07.872Z",
+      "duration_ms": 40973,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-final-checks.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-hosted-concurrency",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-services.ts",
+        "--allow-test-records",
+        "--run-worker-check"
+      ],
+      "started_at": "2026-10-29T22:28:48.449Z",
+      "duration_ms": 31356,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-hosted-concurrency.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-otp-verify",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-otp.ts",
+        "--verify=sender"
+      ],
+      "started_at": "2026-10-29T22:31:07.410Z",
+      "duration_ms": 8178,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-otp-verify.json",
+      "interpretation": "actual invalid-code rejection; later fresh challenge succeeded"
+    },
+    {
+      "name": "hosted-e2e-blueprint",
+      "command": [
+        "pnpm",
+        "check:render"
+      ],
+      "started_at": "2026-10-29T22:34:40.121Z",
+      "duration_ms": 1418,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-blueprint.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-otp-expired",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-otp.ts",
+        "--verify=sender"
+      ],
+      "started_at": "2026-10-29T22:36:15.055Z",
+      "duration_ms": 9517,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-otp-expired.json",
+      "interpretation": "expected rejection of naturally expired challenge"
+    },
+    {
+      "name": "hosted-e2e-otp-resend",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-otp.ts",
+        "--send=sender",
+        "--new-challenge"
+      ],
+      "started_at": "2026-10-29T22:37:07.321Z",
+      "duration_ms": 12359,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-otp-resend.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-otp-verify-fresh",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-otp.ts",
+        "--verify=sender"
+      ],
+      "started_at": "2026-10-29T22:37:54.393Z",
+      "duration_ms": 6661,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-otp-verify-fresh.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-operation-regression-before",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T22:42:46.057Z",
+      "duration_ms": 37350,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-operation-regression-before.json",
+      "interpretation": "expected regression failure before fix"
+    },
+    {
+      "name": "hosted-e2e-privy-regression-before",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/privy.test.ts"
+      ],
+      "started_at": "2026-10-29T22:43:05.230Z",
+      "duration_ms": 2353,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-privy-regression-before.json",
+      "interpretation": "expected regression failure before fix"
+    },
+    {
+      "name": "hosted-e2e-privy-regression-after",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/privy.test.ts"
+      ],
+      "started_at": "2026-10-29T22:43:21.876Z",
+      "duration_ms": 1872,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-privy-regression-after.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-regression-database",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T22:43:31.159Z",
+      "duration_ms": 44078,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-regression-database.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-regression-unit",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T22:43:32.436Z",
+      "duration_ms": 22165,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-regression-unit.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-regression-build",
+      "command": [
+        "pnpm",
+        "build"
+      ],
+      "started_at": "2026-10-29T22:43:55.521Z",
+      "duration_ms": 95776,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-regression-build.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-regression-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T22:43:56.731Z",
+      "duration_ms": 81142,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-regression-checks.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-session-lifecycle",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-session.ts",
+        "--close-test-session"
+      ],
+      "started_at": "2026-10-29T22:44:34.855Z",
+      "duration_ms": 7253,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-session-lifecycle.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-regression-http",
+      "command": [
+        "node",
+        "scripts/smoke-api.mjs"
+      ],
+      "started_at": "2026-10-29T22:45:37.074Z",
+      "duration_ms": 9426,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-regression-http.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-final-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T22:46:42.500Z",
+      "duration_ms": 5002,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-final-secret-audit.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    },
+    {
+      "name": "hosted-e2e-completion-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T22:47:35.669Z",
+      "duration_ms": 15767,
+      "exit_code": 2,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-completion-checks.json",
+      "interpretation": "new verifier type narrowing failed; fixed and rechecked successfully"
+    },
+    {
+      "name": "hosted-e2e-completion-checks-fixed",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T22:48:02.508Z",
+      "duration_ms": 30850,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/hosted-e2e-completion-checks-fixed.json",
+      "interpretation": "executed check passed; scope and skips in log"
+    }
+  ]
+}

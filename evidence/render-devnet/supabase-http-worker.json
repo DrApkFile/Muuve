@@ -1,0 +1,13 @@
+{
+  "name": "supabase-http-worker",
+  "command": [
+    "node",
+    "scripts/smoke-hosted-backend.mjs",
+    "--allow-test-records"
+  ],
+  "started_at": "2026-10-29T20:23:01.926Z",
+  "duration_ms": 19991,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

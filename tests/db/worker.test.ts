@@ -118,6 +118,16 @@ describe.skipIf(process.env.MUUVE_TEST_DB !== "1")("worker database ownership an
     });
     const exited = once(child, "exit");
     try {
+      // Process/module startup is separate from the queue-processing deadline.
+      // Concurrent type checking can make a cold tsx import exceed ten seconds.
+      const startupDeadline = Date.now() + 15000;
+      while (
+        !output.includes("worker.started") &&
+        child.exitCode === null &&
+        Date.now() < startupDeadline
+      )
+        await new Promise((r) => setTimeout(r, 50));
+      expect(output.includes("worker.started")).toBe(true);
       let progressed = false;
       for (let i = 0; i < 200; i++) {
         if (

@@ -59,6 +59,10 @@ export const schemas = {
     })
     .strict(),
   wallet: z.object({ wallet_address: publicKey }).strict(),
+  walletChallenge: z.object({ wallet_address: publicKey }).strict(),
+  walletLogin: z
+    .object({ challenge_id: uuid, signature: z.string().regex(/^[1-9A-HJ-NP-Za-km-z]{64,88}$/) })
+    .strict(),
   create: z
     .object({
       link_id_hex: linkIdHex,

@@ -1,0 +1,221 @@
+{
+  "updated_at": "2026-10-29T23:34:29.994Z",
+  "checks": [
+    {
+      "name": "wallet-auth-database",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T23:15:59.381Z",
+      "duration_ms": 76130,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-database.json"
+    },
+    {
+      "name": "wallet-privy-live",
+      "command": [
+        "node",
+        "scripts/verify-privy-live.mjs",
+        "--operator-approved"
+      ],
+      "started_at": "2026-10-29T23:19:21.846Z",
+      "duration_ms": 33690,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/wallet-privy-live.json"
+    },
+    {
+      "name": "wallet-auth-unit",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T23:19:23.022Z",
+      "duration_ms": 27337,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-unit.json"
+    },
+    {
+      "name": "wallet-auth-database-final",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T23:19:40.420Z",
+      "duration_ms": 56710,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/wallet-auth-database-final.json"
+    },
+    {
+      "name": "wallet-auth-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T23:20:06.260Z",
+      "duration_ms": 65155,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/wallet-auth-checks.json"
+    },
+    {
+      "name": "wallet-privy-live-quorum",
+      "command": [
+        "node",
+        "scripts/verify-privy-live.mjs",
+        "--operator-approved"
+      ],
+      "started_at": "2026-10-29T23:21:29.406Z",
+      "duration_ms": 14099,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/wallet-privy-live-quorum.json"
+    },
+    {
+      "name": "wallet-auth-database-verified",
+      "command": [
+        "pnpm",
+        "test:db"
+      ],
+      "started_at": "2026-10-29T23:22:11.337Z",
+      "duration_ms": 52080,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-database-verified.json"
+    },
+    {
+      "name": "wallet-auth-unit-verified",
+      "command": [
+        "pnpm",
+        "test"
+      ],
+      "started_at": "2026-10-29T23:22:12.517Z",
+      "duration_ms": 29331,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-unit-verified.json"
+    },
+    {
+      "name": "wallet-auth-build",
+      "command": [
+        "pnpm",
+        "build"
+      ],
+      "started_at": "2026-10-29T23:22:47.486Z",
+      "duration_ms": 66906,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-build.json"
+    },
+    {
+      "name": "wallet-auth-final-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T23:25:06.491Z",
+      "duration_ms": 43154,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-final-checks.json"
+    },
+    {
+      "name": "wallet-auth-http",
+      "command": [
+        "node",
+        "scripts/smoke-api.mjs"
+      ],
+      "started_at": "2026-10-29T23:25:07.769Z",
+      "duration_ms": 9094,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-http.json"
+    },
+    {
+      "name": "wallet-privy-live-server-enabled",
+      "command": [
+        "node",
+        "scripts/verify-privy-live.mjs",
+        "--operator-approved"
+      ],
+      "started_at": "2026-10-29T23:26:20.259Z",
+      "duration_ms": 32021,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-privy-live-server-enabled.json"
+    },
+    {
+      "name": "wallet-auth-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T23:27:28.016Z",
+      "duration_ms": 5130,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-secret-audit.json"
+    },
+    {
+      "name": "wallet-auth-final-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-29T23:31:41.641Z",
+      "duration_ms": 613,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-final-secret-audit.json"
+    },
+    {
+      "name": "wallet-auth-completion",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-29T23:33:47.850Z",
+      "duration_ms": 37177,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-auth-completion.json"
+    }
+  ],
+  "additional_observed_commands": [
+    {
+      "command": [
+        "pnpm",
+        "check:render"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "note": "Failed intermediate runs are retained. Final successes are wallet-auth-database-verified, wallet-auth-unit-verified, wallet-auth-final-checks and wallet-privy-live-server-enabled. No skipped case is counted as passed."
+}

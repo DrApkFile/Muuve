@@ -98,3 +98,20 @@ Its actual deadline is **31 October 2026, 08:39:30 UTC / 09:39:30 Lagos**. The d
 expiry refund is not verified yet. Leave this fixture funded for that test; never
 shorten its 48-hour window. See `docs/devnet-operations.md` for the gated expiry command.
 Actual signatures and account verification are in `evidence/devnet/`.
+
+## Privy signing verification wallet — 30 October 2026
+
+```text
+E8SaZ7LFCppUr4HoBF2cGTWtEfkzftVmnBzRA37C1fue
+```
+
+This dedicated test wallet is managed by Privy. Its ownership was verified through
+Privy's server records and a one-user signing quorum, and its actual message and
+transaction signatures were verified locally. The transaction used a recent devnet
+blockhash and was **not submitted**. No wallet private key was exported or stored
+locally, and no funds were sent to this wallet in this task; its balance was not checked.
+
+It does not replace the existing devnet test sender, fee payer or treasury role.
+It belongs to an isolated integration-test identity, not a hosted Muuve customer.
+The resumable identity metadata is in an ignored private progress file. Evidence:
+`evidence/privy-wallet/live-verification.json`.

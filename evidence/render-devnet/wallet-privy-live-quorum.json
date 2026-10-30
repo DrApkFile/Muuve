@@ -1,0 +1,13 @@
+{
+  "name": "wallet-privy-live-quorum",
+  "command": [
+    "node",
+    "scripts/verify-privy-live.mjs",
+    "--operator-approved"
+  ],
+  "started_at": "2026-10-29T23:21:29.406Z",
+  "duration_ms": 14099,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

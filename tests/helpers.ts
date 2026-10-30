@@ -56,7 +56,7 @@ export function setupEnv() {
 }
 export async function reset() {
   await database().query(
-    "TRUNCATE users,otp_challenges,events,jobs,worker_schedules,webhook_inbox,mock_provider_transfers RESTART IDENTITY CASCADE",
+    "TRUNCATE users,otp_challenges,wallet_auth_challenges,events,jobs,worker_schedules,webhook_inbox,mock_provider_transfers RESTART IDENTITY CASCADE",
   );
 }
 export async function seed(
@@ -112,14 +112,14 @@ export async function seed(
 }
 export async function makeSession(
   purpose: Session["purpose"],
-  phone: string,
+  phone: string | null,
   user: string | null,
   link: string | null,
 ) {
   return transaction(async (c) => {
     const cookie = await issue(c, purpose, phone, user, link);
     const sid = await one<Session>(
-      "SELECT * FROM sessions WHERE phone_e164=$1 AND purpose=$2 ORDER BY created_at DESC LIMIT 1",
+      "SELECT * FROM sessions WHERE phone_e164 IS NOT DISTINCT FROM $1 AND purpose=$2 ORDER BY created_at DESC LIMIT 1",
       [phone, purpose],
       c,
     );

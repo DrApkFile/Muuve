@@ -1,0 +1,45 @@
+{
+  "checked_at": "2026-10-29T22:39:05.810Z",
+  "origin": "https://muuve.onrender.com",
+  "test_user_id": "305c7ed0-e343-4160-a7ba-0cfe6f28c778",
+  "checks": [
+    {
+      "name": "hosted_sender_account_session",
+      "state": "passed",
+      "wallet_linked": false
+    },
+    {
+      "name": "authenticated_sender_links",
+      "state": "passed"
+    },
+    {
+      "name": "authenticated_mock_bank_directory",
+      "state": "passed"
+    },
+    {
+      "name": "authenticated_mock_bank_resolution",
+      "state": "passed"
+    }
+  ],
+  "requests": [
+    {
+      "path": "/api/me",
+      "status": 200
+    },
+    {
+      "path": "/api/links",
+      "status": 200
+    },
+    {
+      "path": "/api/banks",
+      "status": 200
+    },
+    {
+      "path": "/api/banks/resolve",
+      "status": 200
+    }
+  ],
+  "new_principal_releases": 0,
+  "state": "blocked_or_failed",
+  "error": "verification_failure_no_private_details_logged"
+}

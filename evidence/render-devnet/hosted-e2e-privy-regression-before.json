@@ -1,0 +1,15 @@
+{
+  "name": "hosted-e2e-privy-regression-before",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "tests/unit/privy.test.ts"
+  ],
+  "started_at": "2026-10-29T22:43:05.230Z",
+  "duration_ms": 2353,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

@@ -1,0 +1,41 @@
+{
+  "checked_at": "2026-10-29T22:44:36.243Z",
+  "state": "passed_actual_hosted_refresh_revocation_and_logout",
+  "requests": [
+    {
+      "path": "/api/me",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/auth/refresh",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "path": "/api/me",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/auth/logout",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/me",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "path": "/api/auth/privy-token",
+      "method": "GET",
+      "status": 401
+    }
+  ]
+}

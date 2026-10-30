@@ -1,0 +1,14 @@
+{
+  "name": "supabase-migrations",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/migrate.ts"
+  ],
+  "started_at": "2026-10-29T20:17:49.709Z",
+  "duration_ms": 5466,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

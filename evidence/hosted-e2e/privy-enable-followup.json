@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-10-29T23:10:05.362312+00:00",
+  "scope": "read-only follow-up after owner saved Privy verifier settings",
+  "owner_reported_verifier_post_status": 200,
+  "privy_app_settings": {
+    "checked_at": "2026-10-29T23:09:36.732Z",
+    "app_matches": true,
+    "custom_jwt_auth_enabled": true
+  },
+  "hosted_jwks": {
+    "checked_at": "2026-10-29T23:09:41.337Z",
+    "http_status": 200,
+    "valid_es256_public_key": true
+  },
+  "privy_acceptance_of_muuve_jwt": "not_exercised",
+  "wallet_authentication_and_signing": "not_exercised",
+  "new_transactions_submitted": 0
+}
