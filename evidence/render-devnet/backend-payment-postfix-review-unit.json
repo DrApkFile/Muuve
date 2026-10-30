@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-postfix-review-unit",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "tests/unit/hosted-payment-review.test.ts",
+    "tests/unit/worker.test.ts"
+  ],
+  "started_at": "2026-10-30T07:32:05.595Z",
+  "duration_ms": 4329,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

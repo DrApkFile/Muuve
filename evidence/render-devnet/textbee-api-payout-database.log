@@ -1,0 +1,77 @@
+The files belonging to this database system will be owned by user "kingghidorah".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+creating directory /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-KwaB3q/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Africa/Lagos
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-KwaB3q/data -l logfile start
+
+waiting for server to start..... done
+server started
+Applied 001_backend.sql
+Applied 002_state_guards.sql
+Applied 003_treasury_origin.sql
+Applied 004_immutable_terms.sql
+Applied 005_worker_leases.sql
+Applied 006_wallet_login.sql
+{"state":"passed","database":"postgres","role":"kingghidorah","migrations":["001_backend.sql","002_state_guards.sql","003_treasury_origin.sql","004_immutable_terms.sql","005_worker_leases.sql","006_wallet_login.sql"],"tables":["events","funding_reservations","jobs","link_slots","links","mock_provider_transfers","operations","otp_challenges","payouts","principals","provider_attempts","quotes","sessions","transaction_attempts","users","wallet_auth_challenges","webhook_inbox","worker_schedules"],"all_tables_rls":true,"constraints":245,"indexes":51,"permissions":{"public_schema_blocked":true,"public_tables_blocked":true}}
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+stderr | tests/api/textbee.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ❯ tests/api/textbee.test.ts (4 tests | 1 failed) 4874ms
+   ❯ Textbee-backed OTP with disposable PostgreSQL and simulated SMS transport (4)
+     × independently authorizes two fixed batch slots without exposing batch membership 441ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/api/textbee.test.ts > Textbee-backed OTP with disposable PostgreSQL and simulated SMS transport > independently authorizes two fixed batch slots without exposing batch membership
+error: immutable link terms
+ ❯ node_modules/.pnpm/pg-pool@3.14.0_pg@8.23.1/node_modules/pg-pool/index.js:45:11
+ ❯ tests/api/textbee.test.ts:64:7
+     62|       const f = await seed({ amount: "100000" }),
+     63|         second = "+2348030000003";
+     64|       await database().query(
+       |       ^
+     65|         "UPDATE links SET kind='batch',slot_count=2,total_base_units=3…
+     66|         [f.link.id],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 34 passed (35)
+   Start at  09:42:12
+   Duration  50.56s (tests 82%, import 14%, transform 4%)
+
+waiting for server to shut down.... done
+server stopped
+file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:13
+  if (r.status !== 0) throw new Error(`${cmd} exited ${r.status}`);
+                            ^
+
+Error: pnpm exited 1
+    at run (file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:13:29)
+    at file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:38:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.19.0

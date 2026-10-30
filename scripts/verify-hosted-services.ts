@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { parseEnv } from "node:util";
 import { createHash, createHmac, createPrivateKey, createPublicKey, randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
@@ -13,9 +13,14 @@ function requireThat(value: unknown, code: string): asserts value {
   if (!value) throw new ProbeError(code);
 }
 const localWorkerOnly = process.argv.includes("--local-worker-only");
-const output = localWorkerOnly
-  ? "evidence/hosted-e2e/local-worker.json"
-  : "evidence/hosted-e2e/hosted-services.json";
+const requestedOutput = process.argv.find((arg) => arg.startsWith("--evidence-file="))?.slice(16);
+if (requestedOutput && !/^evidence\/backend-payment\/[a-z0-9-]+\.json$/.test(requestedOutput))
+  throw new Error("invalid_evidence_path");
+const output =
+  requestedOutput ??
+  (localWorkerOnly
+    ? "evidence/hosted-e2e/local-worker.json"
+    : "evidence/hosted-e2e/hosted-services.json");
 const result: {
   started_at: string;
   finished_at?: string;
@@ -50,6 +55,7 @@ const result: {
 };
 async function save() {
   await mkdir("evidence/hosted-e2e", { recursive: true });
+  if (requestedOutput) await mkdir("evidence/backend-payment", { recursive: true });
   await writeFile(output, JSON.stringify(result, null, 2) + "\n");
 }
 async function check(name: string, action: () => Promise<unknown>) {
@@ -108,7 +114,7 @@ async function main() {
     "local_api_worker_configuration_mismatch",
   );
   requireThat(
-    api.APP_ENV === "preview" && api.OTP_PROVIDER === "twilio",
+    api.APP_ENV === "preview" && ["twilio", "textbee"].includes(api.OTP_PROVIDER ?? ""),
     "hosted_otp_policy_mismatch",
   );
   const needles = [
@@ -118,6 +124,7 @@ async function main() {
       "MOCK_WEBHOOK_SECRET",
       "PRIVY_APP_SECRET",
       "TWILIO_AUTH_TOKEN",
+      "TEXTBEE_API_KEY",
       "AUTH_JWT_PRIVATE_KEY",
       "FEE_PAYER_SECRET",
       "ATTESTOR_SECRET",
@@ -231,7 +238,14 @@ async function main() {
         const migrations = (
           await client.query("SELECT name,checksum FROM public.muuve_migrations ORDER BY name")
         ).rows;
-        requireThat(migrations.length === 5, "migration_count_mismatch");
+        const expected = (await readdir("supabase/migrations"))
+          .filter((name) => /^\d{3}_[a-z_]+\.sql$/.test(name))
+          .sort();
+        requireThat(
+          JSON.stringify(migrations.map((migration) => migration.name)) ===
+            JSON.stringify(expected),
+          "migration_set_mismatch",
+        );
         for (const migration of migrations) {
           requireThat(/^\d{3}_[a-z_]+\.sql$/.test(migration.name), "invalid_migration_filename");
           const sql = await readFile(`supabase/migrations/${migration.name}`);

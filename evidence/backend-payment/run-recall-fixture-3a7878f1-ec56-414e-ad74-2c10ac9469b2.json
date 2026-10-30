@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-10-30T07:09:16.722Z",
+  "action": "--recall-fixture",
+  "requests": [],
+  "checks": [],
+  "transactions": [],
+  "state": "blocked_or_failed_reconcile_before_retry",
+  "code": "configuration_transport_or_verification_failure",
+  "finished_at": "2026-10-30T07:09:33.678Z"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-session-pause",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--logout",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T07:53:19.398Z",
+  "duration_ms": 53150,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

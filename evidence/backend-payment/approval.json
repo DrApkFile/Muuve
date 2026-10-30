@@ -1,0 +1,25 @@
+{
+  "approved_at": "2026-10-30T01:15:56.409Z",
+  "source": "Explicit owner reply: Approve this devnet test budget",
+  "review": "docs/backend-payment-approval.md",
+  "cluster": "devnet",
+  "max_new_funding_base_units": "1900000",
+  "max_fee_and_rent_lamports": 50000000,
+  "fixtures": {
+    "main": [
+      "500000",
+      "1000000"
+    ],
+    "recall": [
+      "100000",
+      "100000"
+    ],
+    "expiry": [
+      "100000",
+      "100000"
+    ]
+  },
+  "payouts": "mock",
+  "minting_authorized": false,
+  "airdrop_authorized": false
+}

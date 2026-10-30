@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-10-30T07:53:20.776Z",
+  "action": "--logout",
+  "requests": [],
+  "checks": [],
+  "transactions": [],
+  "state": "blocked_or_failed_reconcile_before_retry",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "stage": "/api/auth/logout",
+  "error_class": "Error",
+  "code": "curl_transport_exit_28",
+  "finished_at": "2026-10-30T07:54:12.515Z"
+}

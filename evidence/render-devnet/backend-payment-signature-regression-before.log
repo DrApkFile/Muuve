@@ -1,0 +1,109 @@
+The files belonging to this database system will be owned by user "kingghidorah".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "C".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+creating directory /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-NCvnwG/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default "max_connections" ... 100
+selecting default "shared_buffers" ... 128MB
+selecting default time zone ... Africa/Lagos
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /home/kingghidorah/Documents/projects/bounties/Muuve/.cache/pg-test-NCvnwG/data -l logfile start
+
+waiting for server to start.... done
+server started
+Applied 001_backend.sql
+Applied 002_state_guards.sql
+Applied 003_treasury_origin.sql
+Applied 004_immutable_terms.sql
+Applied 005_worker_leases.sql
+Applied 006_wallet_login.sql
+{"state":"passed","database":"postgres","role":"kingghidorah","migrations":["001_backend.sql","002_state_guards.sql","003_treasury_origin.sql","004_immutable_terms.sql","005_worker_leases.sql","006_wallet_login.sql"],"tables":["events","funding_reservations","jobs","link_slots","links","mock_provider_transfers","operations","otp_challenges","payouts","principals","provider_attempts","quotes","sessions","transaction_attempts","users","wallet_auth_challenges","webhook_inbox","worker_schedules"],"all_tables_rls":true,"constraints":245,"indexes":51,"permissions":{"public_schema_blocked":true,"public_tables_blocked":true}}
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+stderr | tests/db/finality.test.ts
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+
+ ❯ tests/db/finality.test.ts (4 tests | 2 failed) 900ms
+   ❯ finality policy and attestor boundaries (4)
+     × retains the funding signature when link state opens before receipt reconciliation (operation already finalized=false) 369ms
+     × retains the funding signature when link state opens before receipt reconciliation (operation already finalized=true) 186ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/db/finality.test.ts > finality policy and attestor boundaries > retains the funding signature when link state opens before receipt reconciliation (operation already finalized=false)
+AssertionError: expected { status: 'open', create_sig: null } to match object { status: 'open', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "create_sig": "25p3RWeyWZtSGbpbQLqedU7ZUX4V7EjBycvsXmcyEsxPL4Z9XNWNCZUSZXmHpxswfQ9djBgSHG3EweYnEC8LrJAU",
++   "create_sig": null,
+    "status": "open",
+  }
+
+ ❯ tests/db/finality.test.ts:73:11
+     71|         expect(
+     72|           await one("SELECT status,create_sig FROM links WHERE id=$1",…
+     73|         ).toMatchObject({ status: "open", create_sig: funding.signatur…
+       |           ^
+     74|       },
+     75|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/db/finality.test.ts > finality policy and attestor boundaries > retains the funding signature when link state opens before receipt reconciliation (operation already finalized=true)
+AssertionError: expected { status: 'open', create_sig: null } to match object { status: 'open', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "create_sig": "2BqPNK4qzM28H5G9XKvJgvcbxfMevWd1YmbZnGp8vH1K1ACZn1UaAU354pZnXSFQXP4pMAe21grsvtM3rQq4UViY",
++   "create_sig": null,
+    "status": "open",
+  }
+
+ ❯ tests/db/finality.test.ts:73:11
+     71|         expect(
+     72|           await one("SELECT status,create_sig FROM links WHERE id=$1",…
+     73|         ).toMatchObject({ status: "open", create_sig: funding.signatur…
+       |           ^
+     74|       },
+     75|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  08:14:35
+   Duration  2.72s (import 55%, tests 37%, transform 7%)
+
+waiting for server to shut down.... done
+server stopped
+file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:13
+  if (r.status !== 0) throw new Error(`${cmd} exited ${r.status}`);
+                            ^
+
+Error: pnpm exited 1
+    at run (file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:13:29)
+    at file:///home/kingghidorah/Documents/projects/bounties/Muuve/scripts/test-db.mjs:38:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.19.0

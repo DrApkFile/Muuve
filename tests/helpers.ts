@@ -68,6 +68,7 @@ export async function seed(
     localId?: string;
     wallet?: string;
     expired?: boolean;
+    recipients?: { phone: string; amount: string }[];
   } = {},
 ) {
   return transaction(async (c) => {
@@ -76,6 +77,9 @@ export async function seed(
       [options.senderPhone ?? "+2348030000001", options.wallet ?? sender.publicKey.toBase58()],
       c,
     );
+    const recipients = options.recipients ?? [
+      { phone: options.phone ?? "+2348030000002", amount: options.amount ?? "1000000" },
+    ];
     const id = randomUUID(),
       localId = options.localId ?? "00112233445566778899aabbccddeeff";
     const pda = PublicKey.findProgramAddressSync(
@@ -88,7 +92,7 @@ export async function seed(
     )[0].toBase58();
     const link = await one(
       `INSERT INTO links(id,sender_user_id,sender_wallet,link_id_hex,pda,claim_pubkey,kind,total_base_units,slot_count,status,expires_at,capacity_state)
-  VALUES($1,$2,$3,$4,$5,$6,'single',$7,1,$8,$9,'open') RETURNING *`,
+  VALUES($1,$2,$3,$4,$5,$6,$10,$7,$11,$8,$9,'open') RETURNING *`,
       [
         id,
         user!.id,
@@ -96,18 +100,24 @@ export async function seed(
         localId,
         pda,
         Keypair.generate().publicKey.toBase58(),
-        options.amount ?? "1000000",
+        recipients.reduce((sum, recipient) => sum + BigInt(recipient.amount), 0n).toString(),
         options.status ?? "open",
         new Date(Date.now() + (options.expired ? -1000 : 172800000)),
+        recipients.length === 1 ? "single" : "batch",
+        recipients.length,
       ],
       c,
     );
-    const slot = await one(
-      "INSERT INTO link_slots(link_id,slot_index,recipient_phone_e164,amount_base_units,status) VALUES($1,0,$2,$3,'funded') RETURNING *",
-      [id, options.phone ?? "+2348030000002", options.amount ?? "1000000"],
-      c,
-    );
-    return { user: user!, link: link!, slot: slot! };
+    const slots = [];
+    for (const [index, recipient] of recipients.entries())
+      slots.push(
+        await one(
+          "INSERT INTO link_slots(link_id,slot_index,recipient_phone_e164,amount_base_units,status) VALUES($1,$2,$3,$4,'funded') RETURNING *",
+          [id, index, recipient.phone, recipient.amount],
+          c,
+        ),
+      );
+    return { user: user!, link: link!, slot: slots[0]! };
   });
 }
 export async function makeSession(

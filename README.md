@@ -16,6 +16,11 @@ No frontend is included. Fiat payouts, rates and bank resolution are mocks.
 Read the [owner-approved decisions](docs/backend-decisions.md), then the
 [setup, devnet and recovery runbook](docs/backend-runbook.md).
 
+Current continuation: [Textbee and four-minute demo handoff](docs/handoff/2026-10-30-textbee-demo-expiry.md),
+[setup](docs/textbee-and-demo-expiry.md) and
+[reviewed authority/funding scope](docs/demo-expiry-approval.md). Local verification
+is separate from hosted deployment; existing funded deadlines remain unchanged.
+
 ```sh
 pnpm install --frozen-lockfile
 pnpm check

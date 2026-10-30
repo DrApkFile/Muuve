@@ -1,0 +1,12 @@
+{
+  "name": "textbee-render-blueprint",
+  "command": [
+    "pnpm",
+    "check:render"
+  ],
+  "started_at": "2026-10-30T08:44:14.055Z",
+  "duration_ms": 22554,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-10-30T01:17:24.207Z",
+  "state": "passed",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--fund-main"
+  ],
+  "expected_exit_code": 1,
+  "actual_exit_code": 1,
+  "error_code": "explicit_approved_devnet_test_required",
+  "evidence_file": "evidence/backend-payment/run-fund-main-dc94c209-fff7-4e1e-86e0-ba904fb41698.json"
+}

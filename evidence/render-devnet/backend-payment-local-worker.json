@@ -1,0 +1,17 @@
+{
+  "name": "backend-payment-local-worker",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-services.ts",
+    "--local-worker-only",
+    "--allow-test-records",
+    "--evidence-file=evidence/backend-payment/local-worker.json"
+  ],
+  "started_at": "2026-10-30T01:05:55.663Z",
+  "duration_ms": 13740,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

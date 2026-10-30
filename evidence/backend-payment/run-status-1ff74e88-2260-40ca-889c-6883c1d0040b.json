@@ -1,0 +1,12 @@
+{
+  "started_at": "2026-10-30T07:30:55.637Z",
+  "action": "--status",
+  "requests": [],
+  "checks": [],
+  "transactions": [],
+  "state": "blocked_or_failed_reconcile_before_retry",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "error_class": "Error",
+  "code": "payment_stage_already_running_reconcile_stale_lock_before_retry",
+  "finished_at": "2026-10-30T07:30:55.644Z"
+}

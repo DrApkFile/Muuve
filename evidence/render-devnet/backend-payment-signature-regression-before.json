@@ -1,0 +1,13 @@
+{
+  "name": "backend-payment-signature-regression-before",
+  "command": [
+    "node",
+    "scripts/test-db.mjs",
+    "tests/db/finality.test.ts"
+  ],
+  "started_at": "2026-10-30T07:14:28.623Z",
+  "duration_ms": 9580,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

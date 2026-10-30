@@ -1,0 +1,123 @@
+{
+  "started_at": "2026-10-30T07:32:06.074Z",
+  "action": "--negative-auth",
+  "requests": [
+    {
+      "path": "/api/auth/wallet/challenge",
+      "status": 200
+    },
+    {
+      "path": "/api/auth/wallet/login",
+      "status": 200
+    },
+    {
+      "path": "/api/links/eaccb3c3-3434-4db9-9a30-209025be3c9f",
+      "status": 404,
+      "error": "not_found"
+    },
+    {
+      "path": "/api/links/eaccb3c3-3434-4db9-9a30-209025be3c9f/recall/prepare",
+      "status": 404,
+      "error": "not_found"
+    },
+    {
+      "path": "/api/auth/logout",
+      "status": 200
+    },
+    {
+      "path": "/api/links/eaccb3c3-3434-4db9-9a30-209025be3c9f/recall/prepare",
+      "status": 400,
+      "error": "invalid_slot_index"
+    },
+    {
+      "path": "/api/links/eaccb3c3-3434-4db9-9a30-209025be3c9f/recall/prepare",
+      "status": 400,
+      "error": "invalid_body"
+    },
+    {
+      "path": "/api/claims/eaccb3c3-3434-4db9-9a30-209025be3c9f/intent/prepare",
+      "status": 401,
+      "error": "unauthorized"
+    }
+  ],
+  "checks": [
+    "foreign_sender_cannot_read_or_recall_funded_link",
+    "out_of_range_slot_rejected",
+    "client_refund_redirect_rejected",
+    "sender_wallet_cannot_authorize_claim_intent_without_otp"
+  ],
+  "transactions": [],
+  "state": "passed_requested_backend_stage",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "stage": "/api/claims/eaccb3c3-3434-4db9-9a30-209025be3c9f/intent/prepare",
+  "database": {
+    "links": [
+      {
+        "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "status": "open",
+        "total_base_units": "1500000",
+        "expires_at": "2026-11-01T01:18:31.000Z",
+        "capacity_state": "open"
+      },
+      {
+        "id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "status": "settled",
+        "total_base_units": "200000",
+        "expires_at": "2026-11-01T07:21:05.000Z",
+        "capacity_state": "released"
+      },
+      {
+        "id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+        "status": "open",
+        "total_base_units": "200000",
+        "expires_at": "2026-11-01T07:23:52.000Z",
+        "capacity_state": "open"
+      }
+    ],
+    "slots": [
+      {
+        "link_id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+        "slot_index": 0,
+        "amount_base_units": "100000",
+        "status": "funded"
+      },
+      {
+        "link_id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+        "slot_index": 1,
+        "amount_base_units": "100000",
+        "status": "funded"
+      },
+      {
+        "link_id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "slot_index": 0,
+        "amount_base_units": "100000",
+        "status": "recalled"
+      },
+      {
+        "link_id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "slot_index": 1,
+        "amount_base_units": "100000",
+        "status": "recalled"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 0,
+        "amount_base_units": "500000",
+        "status": "funded"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 1,
+        "amount_base_units": "1000000",
+        "status": "funded"
+      }
+    ],
+    "payouts": []
+  },
+  "budget": {
+    "funding_reserved_base_units": "1900000",
+    "fee_and_rent_reserved_lamports": 36750000
+  },
+  "sender_balance_base_units": "300000",
+  "finished_at": "2026-10-30T07:32:27.555Z"
+}

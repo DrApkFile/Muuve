@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-10-30T01:09:36.479Z",
+  "original_records": {
+    "users": {
+      "count": 3,
+      "unchanged": true
+    },
+    "sessions": {
+      "count": 11,
+      "unchanged": true
+    },
+    "otp_challenges": {
+      "count": 8,
+      "unchanged": true
+    }
+  },
+  "state": "passed_original_record_preservation"
+}

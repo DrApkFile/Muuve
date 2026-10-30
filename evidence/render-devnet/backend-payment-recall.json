@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-recall",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--recall-fixture",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T07:09:14.644Z",
+  "duration_ms": 23578,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

@@ -1,0 +1,78 @@
+   Compiling muuve_escrow v0.1.0 (/home/kingghidorah/Documents/projects/bounties/Muuve/programs/muuve_escrow)
+warning: use of deprecated method `anchor_lang::prelude::AccountInfo::<'a>::realloc`: Use AccountInfo::resize() instead
+  --> programs/muuve_escrow/src/lib.rs:18:1
+   |
+18 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+   = note: this warning originates in the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: `muuve_escrow` (lib test) generated 1 warning (1 duplicate)
+warning: `muuve_escrow` (lib) generated 1 warning
+warning: variable does not need to be mutable
+    --> programs/muuve_escrow/tests/runtime.rs:1156:9
+     |
+1156 |     let mut one = f.ctx.banks_client.clone();
+     |         ----^^^
+     |         |
+     |         help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> programs/muuve_escrow/tests/runtime.rs:1157:9
+     |
+1157 |     let mut two = f.ctx.banks_client.clone();
+     |         ----^^^
+     |         |
+     |         help: remove this `mut`
+
+warning: `muuve_escrow` (test "runtime") generated 2 warnings (run `cargo fix --test "runtime" -p muuve_escrow` to apply 2 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12m 27s
+    Blocking waiting for file lock on package cache
+warning: the following packages contain code that will be rejected by a future version of Rust: proc-macro-error2 v2.0.1
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running unittests src/lib.rs (target/debug/deps/muuve_escrow-3f834ce484680967)
+
+running 4 tests
+test test_id ... ok
+test tests::bounds_and_overflow ... ok
+test tests::priority_boundary ... ok
+test tests::token_2022_extension_allowlist ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/loader_layout.rs (target/debug/deps/loader_layout-d073b75b1638791f)
+
+running 1 test
+test typescript_loader_encoding_and_accounts_match_pinned_rust_sdk ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runtime.rs (target/debug/deps/runtime-3369eaca728f92d6)
+
+running 14 tests
+test bootstrap_requires_legitimate_upgrade_authority ... ignored, requires a built SBF artifact via MUUVE_SBF_SO; native processors cannot impersonate upgradeable-loader programs
+test both_token_programs_full_lifecycle ... ok
+test competing_claim_and_recall_release_principal_once_after_priority_ends ... ok
+test configuration_rotation_preserves_existing_terms_and_sender_local_ids ... ok
+test expiry_refunds_only_unclaimed_and_claim_boundary_is_exact ... ok
+test four_minute_demo_is_admin_only_and_preserves_existing_deadlines ... ok
+test invalid_funding_never_creates_link ... ok
+test operation_receipts_prevent_replacement_double_spend ... ok
+test original_rent_payer_receives_rent_when_someone_else_sponsors_final_claim ... ok
+test priority_is_nonrenewable_and_expiry_wins ... ok
+test recall_all_skips_protected_slots_then_closes_at_priority_boundary ... ok
+test reject_claim_authority_destination_and_rent_substitution ... ok
+test single_claim_surplus_and_rent_recovery ... ok
+test wrong_mint_and_timestamp_overflow_are_atomic_failures ... ok
+
+test result: ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 9.50s
+
+   Doc-tests muuve_escrow
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

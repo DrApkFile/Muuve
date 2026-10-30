@@ -1,5 +1,10 @@
 # Actual hosted wallet verification — 30 October 2026
 
+Later backend-only funding and recall results are recorded in the
+[backend payment verification report](2026-10-30-backend-payment-verification.md).
+The authentication results below remain the earlier baseline; its no-transaction
+statements describe that earlier verification phase.
+
 ## Done
 
 **The hosted wallet-only login, sessions, JWT/JWKS and negative authorization cases
@@ -194,3 +199,12 @@ handling is untested. Browser connector behavior is untested. Full funded paymen
 requires explicit operator transaction safeguards and actual recipient verification.
 The separate existing contract expiry fixture still matures 31 October 2026 at
 09:39:30 Lagos; it was not shortened or submitted in this task.
+
+## Client enrollment continuation preflight
+
+The next requested browser/Privy phase inspected local main `cee381f` and nearby
+projects but found no actual browser application to extend. It stopped at the owner's
+explicit client-availability gate, with no new live tests or financial operations.
+The original results above are unchanged. See the
+[client preflight report](2026-10-30-privy-client-preflight.md) for discovery scope,
+required repository/origin input and the preserved sender funding-wallet boundary.

@@ -1,0 +1,12 @@
+{
+  "name": "backend-payment-tooling-check",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-30T01:04:58.867Z",
+  "duration_ms": 16559,
+  "exit_code": 2,
+  "signal": null,
+  "passed": false
+}

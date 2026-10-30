@@ -275,6 +275,31 @@ impl Fixture {
         clock.unix_timestamp = time;
         self.ctx.set_sysvar(&clock);
     }
+    async fn window(
+        &mut self,
+        seconds: i64,
+        authorized: bool,
+    ) -> std::result::Result<(), solana_program_test::BanksClientError> {
+        let authority = if authorized {
+            &self.admin
+        } else {
+            &self.sender
+        };
+        let signer = Keypair::try_from(authority.to_bytes().as_slice()).unwrap();
+        let instruction = Instruction {
+            program_id: muuve_escrow::ID,
+            accounts: muuve_escrow::accounts::SetClaimWindow {
+                admin: signer.pubkey(),
+                config: self.config,
+            }
+            .to_account_metas(None),
+            data: muuve_escrow::instruction::SetClaimWindow {
+                claim_window: seconds,
+            }
+            .data(),
+        };
+        self.send(instruction, &[&signer]).await
+    }
     async fn start(
         &mut self,
         index: u8,
@@ -638,6 +663,50 @@ async fn reject_claim_authority_destination_and_rent_substitution() {
         EscrowError::WrongRentPayer,
     );
     assert_eq!(f.state().await.open_slots, 2);
+}
+
+#[tokio::test]
+async fn four_minute_demo_is_admin_only_and_preserves_existing_deadlines() {
+    for program in [anchor_spl::token::ID, token::ID] {
+        let mut f = Fixture::new(program).await;
+        f.create(vec![10_000_000]).await.unwrap();
+        let original = f.state().await;
+        error(f.window(240, false).await, EscrowError::BadAdmin);
+        for value in [0, -1, 1, 239, 241, i64::MAX] {
+            error(f.window(value, true).await, EscrowError::InvalidClaimWindow);
+        }
+        f.window(240, true).await.unwrap();
+        assert_eq!(f.state().await.expires_at, original.expires_at);
+        f.id = [8; 16];
+        f.link = Pubkey::find_program_address(
+            &[b"link", f.sender.pubkey().as_ref(), &f.id],
+            &muuve_escrow::ID,
+        )
+        .0;
+        f.create(vec![10_000_000, 20_000_000]).await.unwrap();
+        let demo = f.state().await;
+        assert_eq!(demo.expires_at - demo.created_at, 240);
+        f.window(CLAIM_WINDOW, true).await.unwrap();
+        assert_eq!(f.state().await.expires_at, demo.expires_at);
+        f.now(demo.expires_at - 1).await;
+        error(f.refund(None, true, false).await, EscrowError::NotExpired);
+        f.start(0, true, 0).await.unwrap();
+        assert_eq!(f.state().await.slots[0].priority_until, demo.expires_at);
+        f.now(demo.expires_at).await;
+        error(f.claim_slot(0, true).await, EscrowError::LinkExpired);
+        error(f.start(1, true, 0).await, EscrowError::LinkExpired);
+        error(f.refund(None, false, true).await, EscrowError::LinkExpired);
+        f.refund(None, true, false).await.unwrap();
+        assert_eq!(f.amount(f.sender.pubkey()).await, 990_000_000);
+        assert!(f
+            .ctx
+            .banks_client
+            .get_account(f.ata(f.link))
+            .await
+            .unwrap()
+            .is_none());
+        assert!(f.refund(None, true, false).await.is_err());
+    }
 }
 
 #[tokio::test]

@@ -89,7 +89,7 @@ export class Chain {
         state.mint === this.c.USDT_MINT &&
           state.tokenProgram === this.c.TOKEN_PROGRAM_ID &&
           state.treasury === this.c.TREASURY_TOKEN_ACCOUNT &&
-          state.claimWindow === 172800,
+          state.claimWindow === Number(this.c.CLAIM_WINDOW_SECS),
         "config_mismatch",
         503,
       );

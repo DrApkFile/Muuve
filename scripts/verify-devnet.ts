@@ -10,6 +10,7 @@ import {
 import { DEVNET_GENESIS, assertExtensions } from "../apps/web/lib/server/solana/chain";
 import { decodeConfig, decodeLink } from "../apps/web/lib/server/solana/codec";
 import { assert } from "../apps/web/lib/server/errors";
+import { chainConfig } from "../apps/web/lib/server/config";
 // Read-only verification deliberately requires public role identities, not private keys.
 async function main() {
   const required = [
@@ -64,7 +65,7 @@ async function main() {
     state.mint === process.env.USDT_MINT &&
       state.tokenProgram === process.env.TOKEN_PROGRAM_ID &&
       state.treasury === process.env.TREASURY_TOKEN_ACCOUNT &&
-      state.claimWindow === 172800,
+      state.claimWindow === Number(chainConfig().CLAIM_WINDOW_SECS),
     "config_mismatch",
   );
   const token = new PublicKey(state.tokenProgram),
@@ -108,7 +109,7 @@ async function main() {
     const info = await c.getAccountInfo(new PublicKey(process.env.MUUVE_DEVNET_LINK_PDA));
     assert(info && info.owner.equals(program), "fixture_missing");
     const link = decodeLink(info.data);
-    assert(link.expiresAt - link.createdAt === 172800, "claim_window_mismatch");
+    assert([172800, 240].includes(link.expiresAt - link.createdAt), "claim_window_mismatch");
     console.info(
       JSON.stringify({
         fixture: process.env.MUUVE_DEVNET_LINK_PDA,

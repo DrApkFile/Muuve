@@ -28,6 +28,7 @@ for (const name of [
   "DATABASE_URL",
   "PRIVY_APP_SECRET",
   "TWILIO_AUTH_TOKEN",
+  "TEXTBEE_API_KEY",
 ]) {
   const value = local[name];
   if (value && value.length >= 16) needles.push(Buffer.from(value));

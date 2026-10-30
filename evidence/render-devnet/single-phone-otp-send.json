@@ -1,0 +1,16 @@
+{
+  "name": "single-phone-otp-send",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-single-phone.ts",
+    "--send",
+    "--operator-approved-sms"
+  ],
+  "started_at": "2026-10-30T08:16:18.836Z",
+  "duration_ms": 59806,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

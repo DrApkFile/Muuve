@@ -1,0 +1,15 @@
+{
+  "name": "textbee-expiry-full-unit",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "tests/unit"
+  ],
+  "started_at": "2026-10-30T08:45:44.192Z",
+  "duration_ms": 267554,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

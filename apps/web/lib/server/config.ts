@@ -19,11 +19,11 @@ const envSchema = z.object({
   SESSION_SECRET: z.string().min(32),
   CRON_SECRET: z.string().min(32),
   MOCK_WEBHOOK_SECRET: z.string().min(32),
-  OTP_PROVIDER: z.enum(["mock", "twilio"]),
+  OTP_PROVIDER: z.enum(["mock", "twilio", "textbee"]),
   PAYOUT_PROVIDER: z.literal("mock"),
   RATE_PROVIDER: z.literal("mock"),
   WHATSAPP_OTP_ENABLED: z.enum(["true", "false"]).default("false"),
-  CLAIM_WINDOW_SECS: z.literal("172800"),
+  CLAIM_WINDOW_SECS: z.enum(["172800", "240"]),
   MOCK_NGN_PER_USD: z
     .string()
     .regex(/^\d+(\.\d{1,4})?$/)
@@ -42,6 +42,10 @@ const chainSchema = envSchema.pick({
 });
 export function chainConfig(input: NodeJS.ProcessEnv = process.env) {
   const c = chainSchema.parse(input);
+  assert(
+    c.CLAIM_WINDOW_SECS !== "240" || ["local", "preview"].includes(input.APP_ENV ?? ""),
+    "demo_expiry_preview_only",
+  );
   validateChain(c);
   return c;
 }
@@ -57,6 +61,7 @@ function validateChain(c: z.infer<typeof chainSchema>) {
 export function config(input: NodeJS.ProcessEnv = process.env): Config {
   const c = envSchema.parse(input);
   assert(c.OTP_PROVIDER !== "mock" || c.APP_ENV === "local", "mock_otp_local_only");
+  assert(c.CLAIM_WINDOW_SECS !== "240" || c.APP_ENV !== "production", "demo_expiry_preview_only");
   validateChain(c);
   return c;
 }

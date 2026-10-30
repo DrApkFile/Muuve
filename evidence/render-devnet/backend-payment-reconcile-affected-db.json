@@ -1,0 +1,17 @@
+{
+  "name": "backend-payment-reconcile-affected-db",
+  "command": [
+    "node",
+    "scripts/test-db.mjs",
+    "tests/db/finality.test.ts",
+    "tests/db/operations.test.ts",
+    "tests/db/payouts.test.ts",
+    "tests/db/reservations.test.ts",
+    "tests/db/worker.test.ts"
+  ],
+  "started_at": "2026-10-30T07:17:57.936Z",
+  "duration_ms": 29165,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

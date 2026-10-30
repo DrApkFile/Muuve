@@ -1,5 +1,13 @@
 # Frontend integration — current backend handoff
 
+Latest local implementation: [Textbee and four-minute demo setup](textbee-and-demo-expiry.md).
+Textbee has been added as an SMS provider; verify its deployment before assuming
+the hosted API uses it. Demo expiry needs a separate reviewed contract upgrade and
+Config change. Always display the link's returned `expires_at`; existing funded
+links retain their original 48-hour deadline. Account OTP success alone never grants
+recipient claim authorization. The hosted payment reports below remain the evidence
+for completed funding, recall and pending claim/payout stages.
+
 Updated 30 October 2026. This guide describes what the frontend can integrate now,
 what exists for later integration, and which hosted flows have actually been tested.
 It does not authorize real payments or claim that the full payment lifecycle works.
@@ -34,6 +42,11 @@ Do not assume the frontend files listed in the older guide already exist.
 | Recipient phone verification                         | OTP routes exist; hosted uses Twilio                                                    | Integrate SMS forms, subject to authorized live testing. Do not use mock OTP on Render.                 |
 | Privy embedded-wallet enrollment                     | Hosted JWT/JWKS passed; new hosted identity's Privy authorization exchange returned 404 | Complete legitimate client enrollment and verify identity ownership before enabling this path.          |
 | Cashout, recall, expiry/refund and worker settlement | Implemented paths; complete hosted lifecycle remains unverified                         | Keep gated until the planned hosted payment tests pass. Cashout remains simulated.                      |
+
+Later [backend-only verification](handoff/2026-10-30-backend-payment-verification.md)
+proved hosted funding, funding replay protection and sender recall. Recipient claims
+and mock cashouts remain blocked by Twilio verification. The table above describes
+the earlier authentication baseline; use that newer report for payment evidence.
 
 ## Browser origin and cookie prerequisite
 

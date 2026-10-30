@@ -1,0 +1,12 @@
+{
+  "name": "textbee-expiry-full-database-serial",
+  "command": [
+    "node",
+    "scripts/test-db.mjs"
+  ],
+  "started_at": "2026-10-30T09:33:35.628Z",
+  "duration_ms": 92835,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

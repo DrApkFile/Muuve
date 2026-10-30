@@ -43,6 +43,15 @@
       ]
     },
     {
+      "name": "set_claim_window",
+      "discriminator": [190, 124, 26, 181, 134, 231, 61, 190],
+      "accounts": [
+        { "name": "admin", "signer": true },
+        { "name": "config", "writable": true }
+      ],
+      "args": [{ "name": "claim_window", "type": "i64" }]
+    },
+    {
       "name": "create_link",
       "discriminator": [103, 114, 207, 84, 216, 71, 234, 61],
       "accounts": [
@@ -260,6 +269,17 @@
       }
     },
     {
+      "name": "muuve_escrow::ClaimWindowChanged",
+      "type": {
+        "fields": [
+          { "name": "admin", "type": "pubkey" },
+          { "name": "previous", "type": "i64" },
+          { "name": "current", "type": "i64" }
+        ],
+        "kind": "struct"
+      }
+    },
+    {
       "name": "muuve_escrow::Config",
       "type": {
         "kind": "struct",
@@ -412,6 +432,10 @@
       "discriminator": [120, 169, 163, 50, 247, 184, 250, 198],
       "name": "muuve_escrow::ClaimStarted"
     },
+    {
+      "discriminator": [25, 227, 67, 203, 113, 131, 98, 201],
+      "name": "muuve_escrow::ClaimWindowChanged"
+    },
     { "discriminator": [23, 29, 22, 108, 76, 67, 153, 254], "name": "muuve_escrow::LinkCreated" },
     { "discriminator": [43, 23, 56, 165, 205, 14, 140, 109], "name": "muuve_escrow::LinkExpired" },
     {
@@ -449,7 +473,12 @@
     { "code": 6018, "name": "WrongDestination", "msg": "Wrong token destination" },
     { "code": 6019, "name": "WrongRentPayer", "msg": "Wrong rent beneficiary" },
     { "code": 6020, "name": "BadIntent", "msg": "Stale or invalid claim intent" },
-    { "code": 6021, "name": "ClaimInProgress", "msg": "Recipient currently has priority" }
+    { "code": 6021, "name": "ClaimInProgress", "msg": "Recipient currently has priority" },
+    {
+      "code": 6022,
+      "name": "InvalidClaimWindow",
+      "msg": "Claim window must be 48 hours or the four-minute devnet demo window"
+    }
   ],
   "constants": []
 }

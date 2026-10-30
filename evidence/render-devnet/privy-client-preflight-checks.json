@@ -1,0 +1,12 @@
+{
+  "name": "privy-client-preflight-checks",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-30T00:56:58.692Z",
+  "duration_ms": 24517,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

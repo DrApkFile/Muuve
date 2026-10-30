@@ -1,0 +1,87 @@
+{
+  "checked_at": "2026-10-30T00:56:49.036Z",
+  "local_commit": "cee381f3ec11f7e556f06518bae1ccc9b26c0b43",
+  "branch": "main",
+  "initial_working_tree_clean": true,
+  "state": "blocked_actual_browser_client_not_located",
+  "report": "docs/handoff/2026-10-30-privy-client-preflight.md",
+  "discovery": {
+    "source_roots": [
+      "apps",
+      "packages"
+    ],
+    "only_application_route": "apps/web/app/api/[...path]/route.ts",
+    "browser_pages_found": false,
+    "privy_browser_dependency_found": false,
+    "nearby_search_root": "/home/kingghidorah/Documents/projects",
+    "nearby_matching_files": [
+      "package.json",
+      "packages/shared/package.json"
+    ],
+    "limitation": "Bounded local discovery only; client may exist at another path or remote repository."
+  },
+  "commands": [
+    {
+      "command": "git status --short --branch",
+      "exit_code": 0,
+      "result": "clean main tracking origin/main"
+    },
+    {
+      "command": "git rev-parse HEAD",
+      "exit_code": 0,
+      "result": "cee381f3ec11f7e556f06518bae1ccc9b26c0b43"
+    },
+    {
+      "command": "rg --files apps packages -g '!node_modules' -g '!.next'",
+      "exit_code": 0,
+      "result": "API/server/shared source only; no browser page, layout or client provider"
+    },
+    {
+      "command": "rg -l --hidden -g '*.tsx' -g '*.jsx' -g '*.html' -g package.json -g '!node_modules/**' -g '!**/node_modules/**' -g '!**/.git/**' -g '!**/.next/**' -g '!**/.cache/**' -g '!**/target/**' -g '!**/vendor/**' -g '!**/*baseline*/**' -g '!**/*backup*/**' -g '!**/.lastmile*/**' 'Muuve|muuve\\.onrender\\.com|cmvt5381d00ls0hjn44zaoz69' /home/kingghidorah/Documents/projects",
+      "exit_code": 1,
+      "result": "No case-sensitive matches; discovery exit 1 is not a failed behavior test"
+    },
+    {
+      "command": "rg -il --hidden -g '*.tsx' -g '*.jsx' -g '*.html' -g package.json -g '!**/node_modules/**' -g '!**/.git/**' -g '!**/.next/**' -g '!**/.cache/**' -g '!**/target/**' -g '!**/vendor/**' -g '!**/*baseline*/**' -g '!**/*backup*/**' -g '!**/.lastmile*/**' 'muuve|@privy-io/react-auth' /home/kingghidorah/Documents/projects",
+      "exit_code": 0,
+      "result": "Only this repository and shared package manifests matched"
+    }
+  ],
+  "historical_hosted_privy_exchange_http_status": 404,
+  "current_privy_exchange_retested": false,
+  "browser_tests_run": 0,
+  "behavior_tests_rerun": 0,
+  "hosted_database_operations": 0,
+  "chain_transactions_signed": 0,
+  "chain_transactions_submitted": 0,
+  "payout_requests": 0,
+  "worker_processes_started": 0,
+  "required_input": [
+    "Actual client repository local path or URL",
+    "Deployed frontend origin if available"
+  ],
+  "checks": [
+    {
+      "name": "privy-client-preflight-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T00:56:58.692Z",
+      "duration_ms": 24517,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/privy-client-preflight-checks.json"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": "node --input-type=module (report local-link verification)",
+      "exit_code": 0,
+      "local_links_checked": 4
+    }
+  ]
+}

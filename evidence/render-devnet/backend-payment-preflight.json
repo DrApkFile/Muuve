@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-preflight",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-payments.ts",
+    "--preflight",
+    "--operator-approved-test-records"
+  ],
+  "started_at": "2026-10-30T01:04:58.852Z",
+  "duration_ms": 28322,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

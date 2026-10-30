@@ -12,6 +12,7 @@ export async function sendOtp(req: Request, body: z.infer<typeof schemas.otpSend
     body.channel !== "whatsapp" || process.env.WHATSAPP_OTP_ENABLED === "true",
     "channel_unavailable",
   );
+  assert(process.env.OTP_PROVIDER !== "textbee" || body.channel === "sms", "channel_unavailable");
   const forwarded =
     process.env.TRUSTED_PROXY === "true"
       ? req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
@@ -42,7 +43,10 @@ export async function sendOtp(req: Request, body: z.infer<typeof schemas.otpSend
     );
   });
   try {
-    const ref = await otpProvider().send(body.phone_e164, body.channel);
+    const ref = await otpProvider().send(body.phone_e164, body.channel, {
+      challengeId: id,
+      phone: body.phone_e164,
+    });
     await transaction((c) =>
       c.query("UPDATE otp_challenges SET provider_ref=$2,status='sent' WHERE id=$1", [id, ref]),
     );
@@ -64,7 +68,10 @@ export async function verifyOtp(body: z.infer<typeof schemas.otpVerify>) {
     assert(row, "invalid_challenge", 401);
     return row;
   });
-  const ok = await otpProvider().check(challenge.provider_ref, body.code);
+  const ok = await otpProvider(challenge.provider_ref).check(challenge.provider_ref, body.code, {
+    challengeId: challenge.id,
+    phone: challenge.phone_e164,
+  });
   assert(ok, "invalid_code", 401);
   return transaction(async (c) => {
     const consumed = await one(

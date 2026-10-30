@@ -1,0 +1,85 @@
+{
+  "started_at": "2026-10-30T08:00:01.659Z",
+  "action": "--logout",
+  "requests": [
+    {
+      "path": "/api/auth/logout",
+      "status": 200
+    }
+  ],
+  "checks": [],
+  "transactions": [],
+  "state": "passed_requested_backend_stage",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "stage": "/api/auth/logout",
+  "database": {
+    "links": [
+      {
+        "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "status": "open",
+        "total_base_units": "1500000",
+        "expires_at": "2026-11-01T01:18:31.000Z",
+        "capacity_state": "open"
+      },
+      {
+        "id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "status": "settled",
+        "total_base_units": "200000",
+        "expires_at": "2026-11-01T07:21:05.000Z",
+        "capacity_state": "released"
+      },
+      {
+        "id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+        "status": "open",
+        "total_base_units": "200000",
+        "expires_at": "2026-11-01T07:23:52.000Z",
+        "capacity_state": "open"
+      }
+    ],
+    "slots": [
+      {
+        "link_id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+        "slot_index": 0,
+        "amount_base_units": "100000",
+        "status": "funded"
+      },
+      {
+        "link_id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+        "slot_index": 1,
+        "amount_base_units": "100000",
+        "status": "funded"
+      },
+      {
+        "link_id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "slot_index": 0,
+        "amount_base_units": "100000",
+        "status": "recalled"
+      },
+      {
+        "link_id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "slot_index": 1,
+        "amount_base_units": "100000",
+        "status": "recalled"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 0,
+        "amount_base_units": "500000",
+        "status": "funded"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 1,
+        "amount_base_units": "1000000",
+        "status": "funded"
+      }
+    ],
+    "payouts": []
+  },
+  "budget": {
+    "funding_reserved_base_units": "1900000",
+    "fee_and_rent_reserved_lamports": 36750000
+  },
+  "sender_balance_base_units": "300000",
+  "finished_at": "2026-10-30T08:00:13.003Z"
+}

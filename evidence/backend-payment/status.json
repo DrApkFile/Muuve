@@ -1,0 +1,22 @@
+{
+  "updated_at": "2026-10-30T08:00:01.408Z",
+  "state": "backend_funding_recall_verified_recipient_otp_and_natural_expiry_pending",
+  "report": "docs/handoff/2026-10-30-backend-payment-verification.md",
+  "actual_finalized_transactions": 5,
+  "actual_hosted_recipient_claims": 0,
+  "actual_hosted_mock_payouts": 0,
+  "provider": "twilio",
+  "hosted_sms_status": 503,
+  "hosted_sms_error": "otp_provider_unavailable",
+  "trial_account": true,
+  "assigned_recipients_verified": false,
+  "owner_reported_country_restriction": true,
+  "upstream_numeric_error_code": "not_observed",
+  "budget_approved": true,
+  "full_e2e_verified": false,
+  "provider_change_requested": true,
+  "provider_change_implemented": false,
+  "replacement_selection_pending": true,
+  "replacement_recommendation": "Termii managed OTP",
+  "provider_research": "docs/otp-provider-research.md"
+}

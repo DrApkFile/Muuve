@@ -1,0 +1,9 @@
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+
+ Test Files  2 passed (2)
+      Tests  16 passed (16)
+   Start at  02:05:04
+   Duration  5.74s (import 73%, transform 15%, tests 11%, worker 1%)
+

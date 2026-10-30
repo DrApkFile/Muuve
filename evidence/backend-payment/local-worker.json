@@ -1,0 +1,69 @@
+{
+  "started_at": "2026-10-30T01:05:57.342Z",
+  "scope": "Local worker against intended hosted Supabase only; does not verify Render database access",
+  "checks": [
+    {
+      "name": "schema_checksums_and_verified_database_tls",
+      "state": "passed",
+      "details": {
+        "project": "yirelxmcveyxcqofzayq",
+        "migrations": [
+          "001_backend.sql",
+          "002_state_guards.sql",
+          "003_treasury_origin.sql",
+          "004_immutable_terms.sql",
+          "005_worker_leases.sql",
+          "006_wallet_login.sql"
+        ],
+        "client_tls_authorized": true
+      }
+    },
+    {
+      "name": "single_local_worker_processes_hosted_job_and_drains",
+      "state": "passed",
+      "details": {
+        "job_id": "c905edc1-b0d1-4b49-b519-ed47b6e12321",
+        "expired_lease_fixture_id": "1a2adc55-1463-4691-b7a5-fdd3c2cc9502",
+        "expired_lease_recovered": true,
+        "stale_owner_update_rejected": true,
+        "processed_once": true,
+        "exit_code": 0,
+        "database_target": "hosted Supabase",
+        "only_connection_difference": "local public CA file path",
+        "principal_released": false
+      }
+    }
+  ],
+  "worker_events": [
+    {
+      "event": "worker.started"
+    },
+    {
+      "event": "worker.jobs_processed"
+    },
+    {
+      "event": "worker.task_completed",
+      "code": "reconcile"
+    },
+    {
+      "event": "worker.stopped"
+    }
+  ],
+  "http_requests": [],
+  "fixture_jobs": [
+    {
+      "id": "c905edc1-b0d1-4b49-b519-ed47b6e12321",
+      "purpose": "local-worker"
+    },
+    {
+      "id": "1a2adc55-1463-4691-b7a5-fdd3c2cc9502",
+      "purpose": "expired-lease-fixture"
+    }
+  ],
+  "live_sms_sent": false,
+  "principal_release_submitted": false,
+  "state": "passed",
+  "origin": "https://muuve.onrender.com",
+  "worker_pid": 1061523,
+  "finished_at": "2026-10-30T01:06:09.256Z"
+}

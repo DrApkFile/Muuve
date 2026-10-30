@@ -1,0 +1,53 @@
+{
+  "started_at": "2026-10-30T01:05:06.739Z",
+  "mode": "--preflight",
+  "scope": "Hosted backend payment preflight/preparation only; no principal release",
+  "checks": [],
+  "requests": [
+    {
+      "path": "/api/health",
+      "status": 200
+    }
+  ],
+  "transactions_submitted": 0,
+  "sender_transactions_signed": 0,
+  "sms_requests": 0,
+  "payout_requests": 0,
+  "target": {
+    "api": "https://muuve.onrender.com",
+    "database_project": "yirelxmcveyxcqofzayq",
+    "same_api_worker_database": true,
+    "cluster": "devnet",
+    "payouts": "mock"
+  },
+  "chain": {
+    "program": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+    "mint": "H9d97DiVPydaxKTWFxVYfAg3FLSsicqx9u2boCoMksQJ",
+    "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "treasury": "29vE2HKDM5MLmDytaFQXDCp4ejSBam8FrGqZhTC85XuC",
+    "sender": "BrMxuBfhPhXfyzpX8Hpnv1xo6W6nMyomKh8gXt4acT85",
+    "sender_balance_base_units": "2000000",
+    "fee_payer_lamports": 971641080,
+    "claim_window_seconds": 172800,
+    "max_slot_base_units": "500000000",
+    "max_link_base_units": "1000000000"
+  },
+  "migrations": [
+    "001_backend.sql",
+    "002_state_guards.sql",
+    "003_treasury_origin.sql",
+    "004_immutable_terms.sql",
+    "005_worker_leases.sql",
+    "006_wallet_login.sql"
+  ],
+  "before": {
+    "active_operations": 0,
+    "payouts": 0,
+    "principals": 0,
+    "active_jobs": 0,
+    "active_maintenance_leases": 0
+  },
+  "authorized_recipient_count": 2,
+  "state": "passed_readonly_backend_preflight",
+  "finished_at": "2026-10-30T01:05:26.963Z"
+}

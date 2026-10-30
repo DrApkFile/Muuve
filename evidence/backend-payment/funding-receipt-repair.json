@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-10-30T07:28:58.302Z",
+  "scope": "Local scoped reconciliation with regression-fixed source, hosted SQL and finalized devnet receipts; not a deployed API fix retest",
+  "links": [
+    {
+      "name": "main",
+      "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+      "previously_missing_signature": true,
+      "signature": "4aKsZwmbJKJMCoPavMjU7ZxDxGAUDL5JJPqJfB5wB1CFRR8yio8Ek3mn2yDTDRpnooLgL4HqyRprTHX3oRY2WUQC",
+      "status": "open"
+    },
+    {
+      "name": "recall",
+      "id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+      "previously_missing_signature": false,
+      "signature": "3eV3dfMtYeivuCVzGLcBcmGxCYmLvz4JCPEGhjaEiQ7mscpChA7G9rh7VVh9XkMYPCEeV2ob2ZuPzmFGPbq8X9Ky",
+      "status": "settled"
+    },
+    {
+      "name": "expiry",
+      "id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+      "previously_missing_signature": false,
+      "signature": "5SvRwYBmsdaJKE8VwBRCY5JhSaZdFuihSYifXpZgYdrY3DUFtwwKrSZqxSbrFVGMxzZtue4VD9NFvYSUKDnXqEWc",
+      "status": "open"
+    }
+  ],
+  "state": "passed_scoped_receipt_repair"
+}

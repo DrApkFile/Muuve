@@ -1,0 +1,19 @@
+{
+  "started_at": "2026-10-30T08:21:48.519Z",
+  "mode": "--audit",
+  "scope": "Actual hosted account OTP to the owner's already verified number; no financial operations",
+  "requests": [
+    {
+      "path": "/api/me",
+      "status": 401,
+      "error": "unauthorized"
+    }
+  ],
+  "transactions_submitted": 0,
+  "stage": "/api/me",
+  "state": "passed_phone_verification_and_logout_audit",
+  "test_session_revoked_in_hosted_database": true,
+  "logged_out_me_rejected": true,
+  "code_file_cleared": true,
+  "finished_at": "2026-10-30T08:21:50.678Z"
+}

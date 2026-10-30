@@ -1,0 +1,100 @@
+{
+  "started_at": "2026-10-30T01:17:57.460Z",
+  "action": "--fund-main",
+  "requests": [
+    {
+      "path": "/api/auth/wallet/challenge",
+      "status": 200
+    },
+    {
+      "path": "/api/auth/wallet/login",
+      "status": 200
+    },
+    {
+      "path": "/api/links/prepare",
+      "status": 200
+    },
+    {
+      "path": "/api/links/submit",
+      "status": 200
+    },
+    {
+      "path": "/api/links/eaccb3c3-3434-4db9-9a30-209025be3c9f",
+      "status": 200
+    },
+    {
+      "path": "/api/links/submit",
+      "status": 200
+    },
+    {
+      "path": "/api/public/links/eaccb3c3-3434-4db9-9a30-209025be3c9f",
+      "status": 200
+    },
+    {
+      "path": "/api/claims/eaccb3c3-3434-4db9-9a30-209025be3c9f/share",
+      "status": 401,
+      "error": "unauthorized"
+    }
+  ],
+  "checks": [
+    "funding_replay_idempotent",
+    "batch_preview_private",
+    "sender_wallet_session_is_not_claim_proof"
+  ],
+  "transactions": [
+    {
+      "operation_id": "939995e0-78c4-4a7d-b007-0553c09462b6",
+      "signature": "4aKsZwmbJKJMCoPavMjU7ZxDxGAUDL5JJPqJfB5wB1CFRR8yio8Ek3mn2yDTDRpnooLgL4HqyRprTHX3oRY2WUQC",
+      "explorer": "https://explorer.solana.com/tx/4aKsZwmbJKJMCoPavMjU7ZxDxGAUDL5JJPqJfB5wB1CFRR8yio8Ek3mn2yDTDRpnooLgL4HqyRprTHX3oRY2WUQC?cluster=devnet",
+      "commitment": "finalized",
+      "chain_error": null,
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 7467440,
+      "hosted_operation_state": "finalized"
+    }
+  ],
+  "state": "passed_requested_backend_stage",
+  "fixture": {
+    "name": "main",
+    "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+    "pda": "3QLc3eBgxvaj2nL8CtkqZnhzsqdW6Re3gk7HW98kpY4b",
+    "amounts": [
+      "500000",
+      "1000000"
+    ],
+    "expires_at": "2026-11-01T01:18:31.000Z",
+    "vault_balance_base_units": "1500000"
+  },
+  "database": {
+    "links": [
+      {
+        "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "status": "open",
+        "total_base_units": "1500000",
+        "expires_at": "2026-11-01T01:18:31.000Z",
+        "capacity_state": "open"
+      }
+    ],
+    "slots": [
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 0,
+        "amount_base_units": "500000",
+        "status": "funded"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 1,
+        "amount_base_units": "1000000",
+        "status": "funded"
+      }
+    ],
+    "payouts": []
+  },
+  "budget": {
+    "funding_reserved_base_units": "1500000",
+    "fee_and_rent_reserved_lamports": 12000000
+  },
+  "sender_balance_base_units": "500000",
+  "finished_at": "2026-10-30T01:18:47.818Z"
+}

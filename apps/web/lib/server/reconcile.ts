@@ -20,6 +20,8 @@ async function syncLink(c: PoolClient, id: string, state: ChainLink, signature?:
   const slots = (
     await c.query("SELECT * FROM link_slots WHERE link_id=$1 ORDER BY slot_index FOR UPDATE", [id])
   ).rows;
+  if (signature)
+    assert(!link.create_sig || link.create_sig === signature, "create_signature_conflict", 503);
   if (link.status === "pending") {
     await transition(c, "links", id, "open");
     await c.query(
@@ -27,6 +29,11 @@ async function syncLink(c: PoolClient, id: string, state: ChainLink, signature?:
       [id, new Date(state.expiresAt * 1000), signature ?? null],
     );
   }
+  if (signature && link.status !== "pending" && !link.create_sig)
+    await c.query("UPDATE links SET create_sig=$2 WHERE id=$1 AND create_sig IS NULL", [
+      id,
+      signature,
+    ]);
   for (const slot of slots) {
     const onchain = state.slots[slot.slot_index];
     assert(onchain && onchain.amount === slot.amount_base_units, "chain_database_mismatch", 503);
@@ -61,8 +68,14 @@ export async function reconcileLink(id: string, chain = new Chain()) {
   assert(db, "not_found", 404);
   const state = await chain.link(db.pda);
   if (!state) return;
+  const funding = await one(
+    `SELECT a.signature FROM operations o JOIN transaction_attempts a ON a.operation_id=o.id
+     WHERE o.link_id=$1 AND o.kind='create' AND o.state='finalized' AND a.state='finalized'
+     ORDER BY a.created_at DESC LIMIT 1`,
+    [id],
+  );
   await transaction(async (c) => {
-    await syncLink(c, id, state);
+    await syncLink(c, id, state, funding?.signature);
     await settleLink(c, id);
   });
 }

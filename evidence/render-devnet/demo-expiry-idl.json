@@ -1,0 +1,12 @@
+{
+  "name": "demo-expiry-idl",
+  "command": [
+    "node",
+    "scripts/build-idl.mjs"
+  ],
+  "started_at": "2026-10-30T08:51:37.676Z",
+  "duration_ms": 702350,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

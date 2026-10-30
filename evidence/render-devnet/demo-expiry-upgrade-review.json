@@ -1,0 +1,14 @@
+{
+  "name": "demo-expiry-upgrade-review",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/review-demo-upgrade.ts"
+  ],
+  "started_at": "2026-10-30T08:51:06.677Z",
+  "duration_ms": 150267,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

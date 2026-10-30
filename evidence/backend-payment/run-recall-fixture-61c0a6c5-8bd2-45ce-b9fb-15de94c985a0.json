@@ -1,0 +1,135 @@
+{
+  "started_at": "2026-10-30T07:20:46.836Z",
+  "action": "--recall-fixture",
+  "requests": [
+    {
+      "path": "/api/links/prepare",
+      "status": 200
+    },
+    {
+      "path": "/api/links/submit",
+      "status": 200
+    },
+    {
+      "path": "/api/links/bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+      "status": 200
+    },
+    {
+      "path": "/api/links/bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b/recall/prepare",
+      "status": 200
+    },
+    {
+      "path": "/api/links/bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b/recall/submit",
+      "status": 200
+    },
+    {
+      "path": "/api/links/bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b/recall/prepare",
+      "status": 200
+    },
+    {
+      "path": "/api/links/bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b/recall/submit",
+      "status": 200
+    }
+  ],
+  "checks": [
+    "recall_one_and_all_to_original_sender",
+    "recall_vault_closed"
+  ],
+  "transactions": [
+    {
+      "operation_id": "30e697fb-d221-4fd0-a209-1f2859381ff8",
+      "signature": "3eV3dfMtYeivuCVzGLcBcmGxCYmLvz4JCPEGhjaEiQ7mscpChA7G9rh7VVh9XkMYPCEeV2ob2ZuPzmFGPbq8X9Ky",
+      "explorer": "https://explorer.solana.com/tx/3eV3dfMtYeivuCVzGLcBcmGxCYmLvz4JCPEGhjaEiQ7mscpChA7G9rh7VVh9XkMYPCEeV2ob2ZuPzmFGPbq8X9Ky?cluster=devnet",
+      "commitment": "finalized",
+      "chain_error": null,
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 7467440,
+      "hosted_operation_state": "finalized"
+    },
+    {
+      "operation_id": "01cfe4b9-b2ed-4d0b-84a0-2a35cf9fabda",
+      "signature": "5e1KwhYziq6tuuFLDDBcx9zhNyFmBqc6EPkG5CmcVAGKR3Eww8wmTKzr5Me577iR3EtxUuzCzLtANNcbu5MXr6ZC",
+      "explorer": "https://explorer.solana.com/tx/5e1KwhYziq6tuuFLDDBcx9zhNyFmBqc6EPkG5CmcVAGKR3Eww8wmTKzr5Me577iR3EtxUuzCzLtANNcbu5MXr6ZC?cluster=devnet",
+      "commitment": "finalized",
+      "chain_error": null,
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 10000,
+      "hosted_operation_state": "finalized"
+    },
+    {
+      "operation_id": "f749fb61-1e0e-4db1-a59b-e6247f5386cf",
+      "signature": "2YhbpAWUfo1EFad7szi7nvPFYx13T1fU7Y3wh6Q3P2UQMvpH9uFf4S1BL1Ca613Cd1spHpT7cZAqRW6btL9M9mAK",
+      "explorer": "https://explorer.solana.com/tx/2YhbpAWUfo1EFad7szi7nvPFYx13T1fU7Y3wh6Q3P2UQMvpH9uFf4S1BL1Ca613Cd1spHpT7cZAqRW6btL9M9mAK?cluster=devnet",
+      "commitment": "finalized",
+      "chain_error": null,
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": -1478440,
+      "hosted_operation_state": "finalized"
+    }
+  ],
+  "state": "passed_requested_backend_stage",
+  "http_transport": "curl_ipv4_verified_tls_no_retries",
+  "stage": "/api/links/bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b/recall/submit",
+  "fixture": {
+    "name": "recall",
+    "id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+    "pda": "8S2KY7K7bgtoM5XSPqQFV4N5AoyHPWuhrmyGGiSBka7A",
+    "amounts": [
+      "100000",
+      "100000"
+    ],
+    "expires_at": "2026-11-01T07:21:05.000Z",
+    "vault_balance_base_units": "200000"
+  },
+  "database": {
+    "links": [
+      {
+        "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "status": "open",
+        "total_base_units": "1500000",
+        "expires_at": "2026-11-01T01:18:31.000Z",
+        "capacity_state": "open"
+      },
+      {
+        "id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "status": "settled",
+        "total_base_units": "200000",
+        "expires_at": "2026-11-01T07:21:05.000Z",
+        "capacity_state": "released"
+      }
+    ],
+    "slots": [
+      {
+        "link_id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "slot_index": 0,
+        "amount_base_units": "100000",
+        "status": "recalled"
+      },
+      {
+        "link_id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+        "slot_index": 1,
+        "amount_base_units": "100000",
+        "status": "recalled"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 0,
+        "amount_base_units": "500000",
+        "status": "funded"
+      },
+      {
+        "link_id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+        "slot_index": 1,
+        "amount_base_units": "1000000",
+        "status": "funded"
+      }
+    ],
+    "payouts": []
+  },
+  "budget": {
+    "funding_reserved_base_units": "1700000",
+    "fee_and_rent_reserved_lamports": 24500000
+  },
+  "sender_balance_base_units": "500000",
+  "finished_at": "2026-10-30T07:21:54.931Z"
+}

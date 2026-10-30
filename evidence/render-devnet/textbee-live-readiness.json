@@ -1,0 +1,14 @@
+{
+  "name": "textbee-live-readiness",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-textbee.ts"
+  ],
+  "started_at": "2026-10-30T08:44:56.654Z",
+  "duration_ms": 455,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

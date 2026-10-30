@@ -55,7 +55,9 @@ async function main() {
   for (let i = 0; i < fixtures.length; i++) {
     const link = await chain.link(fixtures[i].pda);
     assert(
-      link && link.sender === sender.toBase58() && link.expiresAt - link.createdAt === 172800,
+      link &&
+        link.sender === sender.toBase58() &&
+        [172800, 240].includes(link.expiresAt - link.createdAt),
       "fixture_terms_mismatch",
     );
     assert(

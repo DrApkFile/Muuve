@@ -30,7 +30,9 @@ for (const service of blueprint.services) {
   }
 }
 const worker = blueprint.services.find((s) => s.type === "worker");
-if (worker.envVars.some((e) => /PRIVY|TWILIO|SESSION_SECRET|CRON_SECRET|AUTH_JWT/.test(e.key)))
+if (
+  worker.envVars.some((e) => /PRIVY|TWILIO|TEXTBEE|SESSION_SECRET|CRON_SECRET|AUTH_JWT/.test(e.key))
+)
   throw new Error("Unnecessary worker secret");
 console.info(
   JSON.stringify({

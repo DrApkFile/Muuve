@@ -1,0 +1,9 @@
+{
+  "checked_at": "2026-10-30T07:23:38.944Z",
+  "scope": "Read-only verified caller ID membership; no numbers or credentials in evidence",
+  "http_status": 200,
+  "verified_number_count": 1,
+  "recipient_a_verified": false,
+  "recipient_b_verified": false,
+  "more_pages_present": false
+}

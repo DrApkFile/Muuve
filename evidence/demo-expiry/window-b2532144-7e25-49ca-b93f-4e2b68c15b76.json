@@ -1,0 +1,19 @@
+{
+  "started_at": "2026-10-30T08:47:22.872Z",
+  "network": "devnet",
+  "target_window_seconds": 240,
+  "transaction_submitted": false,
+  "program_id": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+  "config": "9qa5jB5TrW1TBB9rk2t422cUTSoWTWJWoQYPgbZryy22",
+  "current_window_seconds": 172800,
+  "existing_link_deadlines_modified": false,
+  "simulation_error": {
+    "InstructionError": [
+      0,
+      {
+        "Custom": 101
+      }
+    ]
+  },
+  "state": "blocked_review_program_upgrade_or_simulation_failure"
+}

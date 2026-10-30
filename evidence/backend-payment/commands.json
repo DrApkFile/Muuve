@@ -1,0 +1,479 @@
+{
+  "updated_at": "2026-10-30T08:02:38.898Z",
+  "checks": [
+    {
+      "name": "backend-payment-preflight",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-payments.ts",
+        "--preflight",
+        "--operator-approved-test-records"
+      ],
+      "started_at": "2026-10-30T01:04:58.852Z",
+      "duration_ms": 28322,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-preflight.json"
+    },
+    {
+      "name": "backend-payment-review-unit",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/hosted-payment-review.test.ts",
+        "tests/unit/worker.test.ts"
+      ],
+      "started_at": "2026-10-30T01:04:58.855Z",
+      "duration_ms": 11641,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-review-unit.json"
+    },
+    {
+      "name": "backend-payment-tooling-check",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T01:04:58.867Z",
+      "duration_ms": 16559,
+      "exit_code": 2,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/backend-payment-tooling-check.json"
+    },
+    {
+      "name": "backend-payment-tooling-fixed",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T01:05:34.567Z",
+      "duration_ms": 28582,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-tooling-fixed.json"
+    },
+    {
+      "name": "backend-payment-local-worker",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-services.ts",
+        "--local-worker-only",
+        "--allow-test-records",
+        "--evidence-file=evidence/backend-payment/local-worker.json"
+      ],
+      "started_at": "2026-10-30T01:05:55.663Z",
+      "duration_ms": 13740,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-local-worker.json"
+    },
+    {
+      "name": "backend-payment-focused-database",
+      "command": [
+        "node",
+        "scripts/test-db.mjs",
+        "tests/db/worker.test.ts",
+        "tests/db/payouts.test.ts",
+        "tests/db/operations.test.ts",
+        "tests/db/finality.test.ts",
+        "tests/db/reservations.test.ts"
+      ],
+      "started_at": "2026-10-30T01:05:55.677Z",
+      "duration_ms": 27984,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-focused-database.json"
+    },
+    {
+      "name": "backend-payment-unsigned-preparation",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-payments.ts",
+        "--prepare",
+        "--operator-approved-test-records"
+      ],
+      "started_at": "2026-10-30T01:06:32.433Z",
+      "duration_ms": 22511,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-unsigned-preparation.json"
+    },
+    {
+      "name": "backend-payment-unsigned-cleanup",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-payments.ts",
+        "--cleanup",
+        "--operator-approved-test-records"
+      ],
+      "started_at": "2026-10-30T01:09:07.647Z",
+      "duration_ms": 24019,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-unsigned-cleanup.json"
+    },
+    {
+      "name": "backend-payment-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-30T01:10:04.826Z",
+      "duration_ms": 1703,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-secret-audit.json"
+    },
+    {
+      "name": "backend-payment-final-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T01:10:04.830Z",
+      "duration_ms": 28664,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-final-checks.json"
+    },
+    {
+      "name": "backend-payment-main-funding",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--fund-main",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T01:17:55.716Z",
+      "duration_ms": 52261,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-main-funding.json"
+    },
+    {
+      "name": "backend-payment-sms-a",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--send-otp=a",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:09:14.641Z",
+      "duration_ms": 23581,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/backend-payment-sms-a.json"
+    },
+    {
+      "name": "backend-payment-recall",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--recall-fixture",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:09:14.644Z",
+      "duration_ms": 23578,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/backend-payment-recall.json"
+    },
+    {
+      "name": "backend-payment-signature-regression-before",
+      "command": [
+        "node",
+        "scripts/test-db.mjs",
+        "tests/db/finality.test.ts"
+      ],
+      "started_at": "2026-10-30T07:14:28.623Z",
+      "duration_ms": 9580,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/backend-payment-signature-regression-before.json"
+    },
+    {
+      "name": "backend-payment-signature-regression-fixed",
+      "command": [
+        "node",
+        "scripts/test-db.mjs",
+        "tests/db/finality.test.ts"
+      ],
+      "started_at": "2026-10-30T07:16:05.118Z",
+      "duration_ms": 8145,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-signature-regression-fixed.json"
+    },
+    {
+      "name": "backend-payment-reconcile-affected-db",
+      "command": [
+        "node",
+        "scripts/test-db.mjs",
+        "tests/db/finality.test.ts",
+        "tests/db/operations.test.ts",
+        "tests/db/payouts.test.ts",
+        "tests/db/reservations.test.ts",
+        "tests/db/worker.test.ts"
+      ],
+      "started_at": "2026-10-30T07:17:57.936Z",
+      "duration_ms": 29165,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-reconcile-affected-db.json"
+    },
+    {
+      "name": "backend-payment-sms-a-recovered",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--send-otp=a",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:19:17.451Z",
+      "duration_ms": 6233,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/backend-payment-sms-a-recovered.json"
+    },
+    {
+      "name": "backend-payment-recall-recovered",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--recall-fixture",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:20:45.324Z",
+      "duration_ms": 69757,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-recall-recovered.json"
+    },
+    {
+      "name": "backend-payment-reconciliation-build",
+      "command": [
+        "pnpm",
+        "build"
+      ],
+      "started_at": "2026-10-30T07:23:33.162Z",
+      "duration_ms": 52328,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-reconciliation-build.json"
+    },
+    {
+      "name": "backend-payment-expiry-funding",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--expiry-fixture",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:23:33.175Z",
+      "duration_ms": 32311,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-expiry-funding.json"
+    },
+    {
+      "name": "backend-payment-hosted-negative-auth",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--negative-auth",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:32:04.391Z",
+      "duration_ms": 23310,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-hosted-negative-auth.json"
+    },
+    {
+      "name": "backend-payment-postfix-review-unit",
+      "command": [
+        "pnpm",
+        "exec",
+        "vitest",
+        "run",
+        "tests/unit/hosted-payment-review.test.ts",
+        "tests/unit/worker.test.ts"
+      ],
+      "started_at": "2026-10-30T07:32:05.595Z",
+      "duration_ms": 4329,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-postfix-review-unit.json"
+    },
+    {
+      "name": "backend-payment-reconciliation-http",
+      "command": [
+        "pnpm",
+        "test:http"
+      ],
+      "started_at": "2026-10-30T07:32:05.632Z",
+      "duration_ms": 7867,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-reconciliation-http.json"
+    },
+    {
+      "name": "backend-payment-current-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T07:37:42.803Z",
+      "duration_ms": 101330,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-current-checks.json"
+    },
+    {
+      "name": "backend-payment-current-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-30T07:37:42.816Z",
+      "duration_ms": 19270,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-current-secret-audit.json"
+    },
+    {
+      "name": "backend-payment-session-pause",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--logout",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T07:53:19.398Z",
+      "duration_ms": 53150,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/backend-payment-session-pause.json"
+    },
+    {
+      "name": "backend-payment-session-pause-retry",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/run-hosted-payments.ts",
+        "--logout",
+        "--operator-approved-test-budget"
+      ],
+      "started_at": "2026-10-30T08:00:00.219Z",
+      "duration_ms": 12941,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-session-pause-retry.json"
+    },
+    {
+      "name": "backend-payment-finish-docs",
+      "command": [
+        "pnpm",
+        "exec",
+        "prettier",
+        "--check",
+        "docs/otp-provider-research.md",
+        "docs/backend-payment-approval.md",
+        "docs/frontend-integration.md",
+        "docs/handoff/2026-10-30-backend-payment-verification.md",
+        "docs/handoff/2026-10-30-hosted-wallet-verification.md",
+        "docs/handoff/2026-10-30-privy-client-preflight.md"
+      ],
+      "started_at": "2026-10-30T08:01:05.113Z",
+      "duration_ms": 1277,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-finish-docs.json"
+    },
+    {
+      "name": "backend-payment-finish-secrets",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-30T08:01:05.119Z",
+      "duration_ms": 6891,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/backend-payment-finish-secrets.json"
+    }
+  ],
+  "financial_invocation_environment": {
+    "OPERATOR_APPROVED_DEVNET": "1",
+    "MUUVE_RUN_DEVNET_TRANSACTIONS": "1"
+  },
+  "approval": "evidence/backend-payment/approval.json",
+  "additional_checks": [
+    "approval-guard.json",
+    "stage-lock-guard.json",
+    "approved-transaction-audit.json",
+    "funding-receipt-repair.json",
+    "twilio-readonly-diagnosis.json",
+    "twilio-trial-recipient-membership.json",
+    "twilio-readonly-alerts.json",
+    "logout-reconciliation.json"
+  ],
+  "note": "Failed regression, transport, provider and authoring checks remain recorded; no earlier artifact overwritten."
+}

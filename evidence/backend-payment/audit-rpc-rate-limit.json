@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-10-30T07:38:51.902Z",
+  "state": "read_only_audit_interrupted",
+  "provider_http_status": 429,
+  "provider_code": "connection_rate_limits_exceeded",
+  "transaction_submissions_during_audit": 0,
+  "recovery": "Paced reads through existing devnet operator connection; no financial retry"
+}

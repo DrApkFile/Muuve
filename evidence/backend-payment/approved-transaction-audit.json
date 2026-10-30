@@ -1,0 +1,145 @@
+{
+  "checked_at": "2026-10-30T07:38:58.349Z",
+  "scope": "Read-only paced devnet and hosted SQL audit after five approved transactions",
+  "fixtures": [
+    {
+      "name": "main",
+      "id": "eaccb3c3-3434-4db9-9a30-209025be3c9f",
+      "status": "open",
+      "create_sig": "4aKsZwmbJKJMCoPavMjU7ZxDxGAUDL5JJPqJfB5wB1CFRR8yio8Ek3mn2yDTDRpnooLgL4HqyRprTHX3oRY2WUQC",
+      "total_base_units": "1500000",
+      "expires_at": "2026-11-01T01:18:31.000Z",
+      "capacity_state": "open",
+      "pda": "3QLc3eBgxvaj2nL8CtkqZnhzsqdW6Re3gk7HW98kpY4b",
+      "allocations": [
+        "500000",
+        "1000000"
+      ],
+      "onchain_slot_statuses": [
+        1,
+        1
+      ],
+      "open_slots": 2,
+      "vault_exists": true,
+      "vault_balance_base_units": "1500000",
+      "recorded_rent_payer": "EXCRqXUPPtVsDLgYsqsd2Uo88NawAT5sUy35sqVk4hg8"
+    },
+    {
+      "name": "recall",
+      "id": "bde1fffd-df0b-4ff5-a5dd-7a7778db3f9b",
+      "status": "settled",
+      "create_sig": "3eV3dfMtYeivuCVzGLcBcmGxCYmLvz4JCPEGhjaEiQ7mscpChA7G9rh7VVh9XkMYPCEeV2ob2ZuPzmFGPbq8X9Ky",
+      "total_base_units": "200000",
+      "expires_at": "2026-11-01T07:21:05.000Z",
+      "capacity_state": "released",
+      "pda": "8S2KY7K7bgtoM5XSPqQFV4N5AoyHPWuhrmyGGiSBka7A",
+      "allocations": [
+        "100000",
+        "100000"
+      ],
+      "onchain_slot_statuses": [
+        3,
+        3
+      ],
+      "open_slots": 0,
+      "vault_exists": false,
+      "vault_balance_base_units": "0",
+      "recorded_rent_payer": "EXCRqXUPPtVsDLgYsqsd2Uo88NawAT5sUy35sqVk4hg8"
+    },
+    {
+      "name": "expiry",
+      "id": "a31f8e22-a5cf-49e7-b10f-ff5f5c1f4c8a",
+      "status": "open",
+      "create_sig": "5SvRwYBmsdaJKE8VwBRCY5JhSaZdFuihSYifXpZgYdrY3DUFtwwKrSZqxSbrFVGMxzZtue4VD9NFvYSUKDnXqEWc",
+      "total_base_units": "200000",
+      "expires_at": "2026-11-01T07:23:52.000Z",
+      "capacity_state": "open",
+      "pda": "MBaMt6hkScbzsqU1VJYFq5tQ6GwT4g7pVtMFqaWg6Fb",
+      "allocations": [
+        "100000",
+        "100000"
+      ],
+      "onchain_slot_statuses": [
+        1,
+        1
+      ],
+      "open_slots": 2,
+      "vault_exists": true,
+      "vault_balance_base_units": "200000",
+      "recorded_rent_payer": "EXCRqXUPPtVsDLgYsqsd2Uo88NawAT5sUy35sqVk4hg8"
+    }
+  ],
+  "transactions": [
+    {
+      "operation_id": "939995e0-78c4-4a7d-b007-0553c09462b6",
+      "signature": "4aKsZwmbJKJMCoPavMjU7ZxDxGAUDL5JJPqJfB5wB1CFRR8yio8Ek3mn2yDTDRpnooLgL4HqyRprTHX3oRY2WUQC",
+      "explorer": "https://explorer.solana.com/tx/4aKsZwmbJKJMCoPavMjU7ZxDxGAUDL5JJPqJfB5wB1CFRR8yio8Ek3mn2yDTDRpnooLgL4HqyRprTHX3oRY2WUQC?cluster=devnet",
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 7467440,
+      "sender_token_delta_base_units": "-1500000",
+      "rent_return_lamports": 0
+    },
+    {
+      "operation_id": "30e697fb-d221-4fd0-a209-1f2859381ff8",
+      "signature": "3eV3dfMtYeivuCVzGLcBcmGxCYmLvz4JCPEGhjaEiQ7mscpChA7G9rh7VVh9XkMYPCEeV2ob2ZuPzmFGPbq8X9Ky",
+      "explorer": "https://explorer.solana.com/tx/3eV3dfMtYeivuCVzGLcBcmGxCYmLvz4JCPEGhjaEiQ7mscpChA7G9rh7VVh9XkMYPCEeV2ob2ZuPzmFGPbq8X9Ky?cluster=devnet",
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 7467440,
+      "sender_token_delta_base_units": "-200000",
+      "rent_return_lamports": 0
+    },
+    {
+      "operation_id": "01cfe4b9-b2ed-4d0b-84a0-2a35cf9fabda",
+      "signature": "5e1KwhYziq6tuuFLDDBcx9zhNyFmBqc6EPkG5CmcVAGKR3Eww8wmTKzr5Me577iR3EtxUuzCzLtANNcbu5MXr6ZC",
+      "explorer": "https://explorer.solana.com/tx/5e1KwhYziq6tuuFLDDBcx9zhNyFmBqc6EPkG5CmcVAGKR3Eww8wmTKzr5Me577iR3EtxUuzCzLtANNcbu5MXr6ZC?cluster=devnet",
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 10000,
+      "sender_token_delta_base_units": "100000",
+      "rent_return_lamports": 0
+    },
+    {
+      "operation_id": "f749fb61-1e0e-4db1-a59b-e6247f5386cf",
+      "signature": "2YhbpAWUfo1EFad7szi7nvPFYx13T1fU7Y3wh6Q3P2UQMvpH9uFf4S1BL1Ca613Cd1spHpT7cZAqRW6btL9M9mAK",
+      "explorer": "https://explorer.solana.com/tx/2YhbpAWUfo1EFad7szi7nvPFYx13T1fU7Y3wh6Q3P2UQMvpH9uFf4S1BL1Ca613Cd1spHpT7cZAqRW6btL9M9mAK?cluster=devnet",
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": -1478440,
+      "sender_token_delta_base_units": "100000",
+      "rent_return_lamports": 1488440
+    },
+    {
+      "operation_id": "19898dd8-7cf6-4944-a712-ff03109298dc",
+      "signature": "5SvRwYBmsdaJKE8VwBRCY5JhSaZdFuihSYifXpZgYdrY3DUFtwwKrSZqxSbrFVGMxzZtue4VD9NFvYSUKDnXqEWc",
+      "explorer": "https://explorer.solana.com/tx/5SvRwYBmsdaJKE8VwBRCY5JhSaZdFuihSYifXpZgYdrY3DUFtwwKrSZqxSbrFVGMxzZtue4VD9NFvYSUKDnXqEWc?cluster=devnet",
+      "fee_lamports": 10000,
+      "payer_net_debit_lamports": 7467440,
+      "sender_token_delta_base_units": "-200000",
+      "rent_return_lamports": 0
+    }
+  ],
+  "original_records": {
+    "users": {
+      "count": 3,
+      "unchanged": true
+    },
+    "sessions": {
+      "count": 11,
+      "unchanged": true
+    },
+    "otp_challenges": {
+      "count": 8,
+      "unchanged": true
+    }
+  },
+  "counts": {
+    "active_operations": 0,
+    "payouts": 0,
+    "principals": 0,
+    "active_jobs": 0
+  },
+  "sender_balance_base_units": "300000",
+  "fee_payer_lamports": 5950707200,
+  "funding_budget_base_units": "1900000",
+  "fee_rent_reserved_lamports": 36750000,
+  "actual_gross_fee_rent_debit_lamports": 22422320,
+  "state": "passed_partial_backend_audit_claims_blocked_by_twilio"
+}

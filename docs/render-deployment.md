@@ -1,5 +1,13 @@
 # Render API and background worker deployment
 
+Textbee and short devnet expiry: see [the setup guide](textbee-and-demo-expiry.md).
+The API supports `OTP_PROVIDER=textbee` with API-only `TEXTBEE_API_KEY`,
+`TEXTBEE_DEVICE_ID` and optional `TEXTBEE_SIM_SUBSCRIPTION_ID`. The worker needs none
+of those values. Keep the 172800-second default until the separately approved
+contract upgrade and admin configuration change; preview demo mode can then use
+`CLAIM_WINDOW_SECS=240`, consistently in API and local worker. The local worker
+also needs `APP_ENV=preview` in that mode. Do not deploy a hosted worker for this task.
+
 This repository deploys a backend-only Next.js Node service and a separate continuous
 Node worker. Solana is devnet only. Fiat payouts, rates, bank resolution and Cleva are
 mocks. Local tests, devnet execution and hosted Render execution are separate evidence.

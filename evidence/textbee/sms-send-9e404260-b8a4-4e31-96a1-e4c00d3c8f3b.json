@@ -1,0 +1,8 @@
+{
+  "started_at": "2026-10-30T08:58:26.278Z",
+  "mode": "send",
+  "scope": "Local real-Textbee SMS probe; not hosted Render authentication",
+  "transactions_submitted": 0,
+  "sessions_created": 0,
+  "state": "real_textbee_request_accepted_delivery_unverified"
+}

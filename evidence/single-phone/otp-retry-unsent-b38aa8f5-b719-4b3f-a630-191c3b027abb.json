@@ -1,0 +1,28 @@
+{
+  "started_at": "2026-10-30T08:20:06.839Z",
+  "mode": "--retry-unsent",
+  "scope": "Actual hosted account OTP to the owner's already verified number; no financial operations",
+  "requests": [
+    {
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "path": "/api/auth/otp/send",
+      "status": 200
+    }
+  ],
+  "transactions_submitted": 0,
+  "prior_send_confirmed_without_challenge": true,
+  "stage": "/api/auth/otp/send",
+  "twilio_verified_destination_confirmed": true,
+  "phone_rate_counts": {
+    "ten": 0,
+    "day": 2,
+    "live": 0
+  },
+  "challenge_id": "08418751-4abd-4fb4-a7dd-b9ae9321e73e",
+  "state": "sms_request_accepted_waiting_for_owner_code",
+  "private_code_file": "keys/single-phone-code.json",
+  "finished_at": "2026-10-30T08:20:23.539Z"
+}

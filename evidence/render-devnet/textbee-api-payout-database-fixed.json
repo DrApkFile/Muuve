@@ -1,0 +1,17 @@
+{
+  "name": "textbee-api-payout-database-fixed",
+  "command": [
+    "node",
+    "scripts/test-db.mjs",
+    "tests/api/textbee.test.ts",
+    "tests/api/auth.test.ts",
+    "tests/db/payouts.test.ts",
+    "tests/db/finality.test.ts",
+    "tests/db/worker.test.ts"
+  ],
+  "started_at": "2026-10-30T08:43:25.932Z",
+  "duration_ms": 56996,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

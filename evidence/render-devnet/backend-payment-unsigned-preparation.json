@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-unsigned-preparation",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-payments.ts",
+    "--prepare",
+    "--operator-approved-test-records"
+  ],
+  "started_at": "2026-10-30T01:06:32.433Z",
+  "duration_ms": 22511,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

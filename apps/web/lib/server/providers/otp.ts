@@ -1,7 +1,9 @@
 import { assert, AppError } from "../errors";
+import { TextbeeOtpProvider } from "./textbee";
+export type OtpContext = { challengeId: string; phone: string };
 export interface OtpProvider {
-  send(phone: string, channel: "sms" | "whatsapp"): Promise<string>;
-  check(reference: string, code: string): Promise<boolean>;
+  send(phone: string, channel: "sms" | "whatsapp", context?: OtpContext): Promise<string>;
+  check(reference: string, code: string, context?: OtpContext): Promise<boolean>;
 }
 export class MockOtpProvider implements OtpProvider {
   constructor() {
@@ -54,8 +56,19 @@ export class TwilioVerifyOtpProvider implements OtpProvider {
     );
   }
 }
-export function otpProvider(): OtpProvider {
+export function otpProvider(reference?: string): OtpProvider {
+  if (reference !== undefined) {
+    if (reference.startsWith("textbee:v1:")) return new TextbeeOtpProvider();
+    if (/^VE[a-f0-9]{32}$/i.test(reference)) return new TwilioVerifyOtpProvider();
+    assert(
+      reference === "local-only" && process.env.OTP_PROVIDER === "mock",
+      "invalid_otp_reference",
+      401,
+    );
+    return new MockOtpProvider();
+  }
   if (process.env.OTP_PROVIDER === "mock") return new MockOtpProvider();
+  if (process.env.OTP_PROVIDER === "textbee") return new TextbeeOtpProvider();
   assert(process.env.OTP_PROVIDER === "twilio", "otp_not_configured", 503);
   return new TwilioVerifyOtpProvider();
 }

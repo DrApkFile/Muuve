@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-10-30T07:30:55.677Z",
+  "state": "passed",
+  "expected_exit_code": 1,
+  "actual_exit_code": 1,
+  "error_code": "payment_stage_already_running_reconcile_stale_lock_before_retry",
+  "existing_lock_preserved": true,
+  "private_progress_unchanged": true,
+  "external_calls_started": 0
+}

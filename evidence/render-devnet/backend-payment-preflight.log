@@ -1,0 +1,2 @@
+bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+{"state":"passed_readonly_backend_preflight","evidence":"evidence/backend-payment/preflight-433cc0ea-69d7-4588-9d32-70e3295441d1.json"}

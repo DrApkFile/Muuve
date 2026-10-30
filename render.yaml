@@ -59,6 +59,14 @@ services:
         sync: false
       - key: OTP_PROVIDER
         value: twilio
+      # Switch OTP_PROVIDER only after setting up the Android device and these
+      # API-only secrets. Do not copy Textbee credentials into the worker.
+      - key: TEXTBEE_API_KEY
+        sync: false
+      - key: TEXTBEE_DEVICE_ID
+        sync: false
+      - key: TEXTBEE_SIM_SUBSCRIPTION_ID
+        sync: false
       - key: TWILIO_ACCOUNT_SID
         sync: false
       - key: TWILIO_AUTH_TOKEN
@@ -91,6 +99,8 @@ services:
         value: production
       - key: WORKER_POLL_MS
         value: "2000"
+      - key: APP_ENV
+        value: preview
       - key: PAYOUT_PROVIDER
         value: mock
       - key: DATABASE_URL
@@ -110,7 +120,7 @@ services:
       - key: TREASURY_TOKEN_ACCOUNT
         fromService: { type: web, name: muuve-api, envVarKey: TREASURY_TOKEN_ACCOUNT }
       - key: CLAIM_WINDOW_SECS
-        value: "172800"
+        fromService: { type: web, name: muuve-api, envVarKey: CLAIM_WINDOW_SECS }
       - key: FEE_PAYER_SECRET
         fromService: { type: web, name: muuve-api, envVarKey: FEE_PAYER_SECRET }
       - key: ATTESTOR_SECRET

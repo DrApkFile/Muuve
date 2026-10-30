@@ -1,0 +1,17 @@
+{
+  "name": "textbee-expiry-full-unit-serial",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "tests/unit",
+    "--maxWorkers=1",
+    "--no-file-parallelism"
+  ],
+  "started_at": "2026-10-30T09:32:18.968Z",
+  "duration_ms": 58355,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

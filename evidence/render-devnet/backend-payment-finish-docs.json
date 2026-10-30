@@ -1,0 +1,20 @@
+{
+  "name": "backend-payment-finish-docs",
+  "command": [
+    "pnpm",
+    "exec",
+    "prettier",
+    "--check",
+    "docs/otp-provider-research.md",
+    "docs/backend-payment-approval.md",
+    "docs/frontend-integration.md",
+    "docs/handoff/2026-10-30-backend-payment-verification.md",
+    "docs/handoff/2026-10-30-hosted-wallet-verification.md",
+    "docs/handoff/2026-10-30-privy-client-preflight.md"
+  ],
+  "started_at": "2026-10-30T08:01:05.113Z",
+  "duration_ms": 1277,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

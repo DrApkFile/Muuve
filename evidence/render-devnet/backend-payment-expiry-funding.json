@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-expiry-funding",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--expiry-fixture",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T07:23:33.175Z",
+  "duration_ms": 32311,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

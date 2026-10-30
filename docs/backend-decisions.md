@@ -11,7 +11,8 @@ funding and live-service credentials are operator responsibilities.
   its canonical upgradeable-loader ProgramData account. Arbitrary first callers fail.
 - Admin, attestor, fee payer, treasury owner and test-mint authority are distinct.
 - Config's mint and token-program identity are immutable. Six decimals are required;
-  a freeze authority is rejected. The claim window is exactly 172800 seconds.
+  a freeze authority is rejected. The default claim window is 172800 seconds;
+  the owner's 30 October four-minute devnet demo override is documented below.
 - Both legacy SPL Token and Token-2022 are supported. Token-2022 mint extensions:
   **none**. Token-account extensions: **ImmutableOwner only**, including extension-free
   accounts. Transfer fees/hooks, permanent delegates, confidential/nontransferable,
@@ -61,16 +62,16 @@ This adds an explicit intent prepare/submit API before final claim preparation.
 
 ## Instruction accounts and signers
 
-| Instruction              | Required signers                   | Account constraints                                                                                              |
-| ------------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| init_config              | admin, deployment authority, payer | canonical executable program/ProgramData; upgrade authority; Config PDA; validated mint/program and treasury ATA |
-| update_config            | stored admin                       | Config PDA; validated new treasury; immutable mint/program/window                                                |
-| create_link              | sender, configured fee/rent payer  | Config; sender-local Link PDA; sender ATA; Link vault ATA; mint/program                                          |
-| start_claim              | stored claim key, Link attestor    | Link PDA; slot bounds/funded; expected version; valid destination                                                |
-| claim_to_wallet          | claim key, Link attestor, payer    | current intent; destination ATA; Link vault; sender refund ATA; recorded rent recipient                          |
-| claim_to_treasury        | claim key, Link attestor, payer    | above; exact snapshotted treasury ATA                                                                            |
-| recall_slot / recall_all | original sender, payer             | pre-expiry; unprotected funded slots; original sender ATA; recorded rent recipient                               |
-| expire                   | transaction payer                  | deadline reached; remaining funded slots; original sender ATA; recorded rent recipient                           |
+| Instruction              | Required signers                   | Account constraints                                                                                               |
+| ------------------------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| init_config              | admin, deployment authority, payer | canonical executable program/ProgramData; upgrade authority; Config PDA; validated mint/program and treasury ATA  |
+| update_config            | stored admin                       | Config PDA; validated new treasury; immutable mint/program; window changed only by its separate admin instruction |
+| create_link              | sender, configured fee/rent payer  | Config; sender-local Link PDA; sender ATA; Link vault ATA; mint/program                                           |
+| start_claim              | stored claim key, Link attestor    | Link PDA; slot bounds/funded; expected version; valid destination                                                 |
+| claim_to_wallet          | claim key, Link attestor, payer    | current intent; destination ATA; Link vault; sender refund ATA; recorded rent recipient                           |
+| claim_to_treasury        | claim key, Link attestor, payer    | above; exact snapshotted treasury ATA                                                                             |
+| recall_slot / recall_all | original sender, payer             | pre-expiry; unprotected funded slots; original sender ATA; recorded rent recipient                                |
+| expire                   | transaction payer                  | deadline reached; remaining funded slots; original sender ATA; recorded rent recipient                            |
 
 All transfers use checked decimals/mint/program constraints. Canonical PDAs sign CPIs.
 Only positive recorded principal is released per slot; closed/terminal receipts cannot
@@ -107,8 +108,9 @@ and events atomically; inbox/outbox workers reconcile external actions after cra
 Contract negative cases precede backend chain dependence. Include both token programs,
 mint/account extension rejection, all claim/recall/expiry boundaries, intent races,
 sender-local IDs, bootstrap takeover, rotations, donations, rent and arithmetic.
-Local native/runtime tests are not devnet deployment evidence. Devnet expiry needs
-an actually aged 48-hour fixture; never shorten Config to manufacture evidence.
+Local native/runtime tests are not devnet deployment evidence. A 48-hour expiry
+claim needs an actually aged 48-hour fixture. Four-minute demo evidence is distinct
+and cannot replace that proof or modify existing funded deadlines.
 Security-sensitive code remains subject to the repository's human review requirements.
 
 ## Wallet-only sender login (owner clarification, 30 October 2026)
@@ -135,3 +137,19 @@ Privy live verification uses an explicitly opted-in dedicated test identity and 
 Privy-managed test wallet. Test message/transaction signing without broadcasting,
 exporting a wallet key, adding a server signer or changing Privy dashboard settings.
 A local API/SQL proof is recorded separately from hosted API authentication evidence.
+
+## Four-minute demo and Textbee (owner request, 30 October 2026)
+
+The owner requested a four-minute expiry for testing and Textbee SMS integration.
+Implement 240 seconds as a separate admin-controlled Config option for new devnet
+demo links, preserving all existing allocations and deadlines. Initialization and
+production configuration keep the 48-hour default. Reject arbitrary windows and
+production use of the demo value. Contract activation requires a reviewed upgrade;
+an environment-only change does not alter deployed contract behavior.
+
+Textbee transports SMS only; Muuve generates and verifies the code with a salted,
+challenge/phone-bound HMAC keyed by the existing session secret. Preserve OTP limits,
+atomic consumption, real phone verification and pending provider references during
+rotation. The Android device and credentials are operator prerequisites. No live
+delivery or mock cashout is claimed until actually executed. See
+[setup and execution](textbee-and-demo-expiry.md).

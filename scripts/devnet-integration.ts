@@ -192,7 +192,7 @@ async function main() {
     const link = await chain.link(pda);
     assert(
       link &&
-        link.expiresAt - link.createdAt === 172800 &&
+        link.expiresAt - link.createdAt === Number(chain.c.CLAIM_WINDOW_SECS) &&
         link.total === amounts.reduce((s, x) => s + BigInt(x), 0n).toString(),
       "incorrect_created_link",
     );

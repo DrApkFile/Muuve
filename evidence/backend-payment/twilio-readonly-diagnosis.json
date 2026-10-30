@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-30T07:21:30.184Z",
+  "scope": "Read-only Twilio service/account diagnosis; no SMS or account change",
+  "checks": [
+    {
+      "kind": "service",
+      "http_status": 200,
+      "code_length": 6
+    },
+    {
+      "kind": "account",
+      "http_status": 200,
+      "account_status": "active",
+      "account_type": "Trial"
+    }
+  ]
+}

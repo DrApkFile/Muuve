@@ -1,0 +1,12 @@
+{
+  "name": "textbee-expiry-http",
+  "command": [
+    "pnpm",
+    "test:http"
+  ],
+  "started_at": "2026-10-30T09:32:20.494Z",
+  "duration_ms": 33035,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

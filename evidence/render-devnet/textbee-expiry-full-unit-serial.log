@@ -1,0 +1,13 @@
+
+ RUN  v5.0.5 /home/kingghidorah/Documents/projects/bounties/Muuve
+
+
+ Test Files  11 passed (11)
+      Tests  79 passed (79)
+   Start at  10:32:31
+   Duration  45.41s (tests 59%, import 35%, transform 6%)
+
+     Import  49 modules were evaluated 67 times · 14.32s total, 35% of tracked time
+             ~3.85s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

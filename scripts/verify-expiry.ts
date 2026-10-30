@@ -15,7 +15,7 @@ async function main() {
   chain.connections.splice(0, chain.connections.length, connection);
   const before = await chain.link(pda);
   assert(before, "fixture_missing");
-  assert(before.expiresAt - before.createdAt === 172800, "invalid_claim_window");
+  assert([172800, 240].includes(before.expiresAt - before.createdAt), "invalid_claim_window");
   const clock = await connection.getAccountInfo(SYSVAR_CLOCK_PUBKEY, "finalized");
   assert(clock && clock.data.length >= 40, "chain_clock_unavailable");
   if (Number(clock.data.readBigInt64LE(32)) < before.expiresAt) {

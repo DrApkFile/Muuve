@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-unsigned-cleanup",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-payments.ts",
+    "--cleanup",
+    "--operator-approved-test-records"
+  ],
+  "started_at": "2026-10-30T01:09:07.647Z",
+  "duration_ms": 24019,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

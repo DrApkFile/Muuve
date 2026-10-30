@@ -1,0 +1,17 @@
+{
+  "name": "backend-payment-focused-database",
+  "command": [
+    "node",
+    "scripts/test-db.mjs",
+    "tests/db/worker.test.ts",
+    "tests/db/payouts.test.ts",
+    "tests/db/operations.test.ts",
+    "tests/db/finality.test.ts",
+    "tests/db/reservations.test.ts"
+  ],
+  "started_at": "2026-10-30T01:05:55.677Z",
+  "duration_ms": 27984,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

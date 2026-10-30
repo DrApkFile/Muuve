@@ -1,0 +1,16 @@
+{
+  "name": "textbee-real-sms-fresh-send",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-textbee-sms.ts",
+    "--resend-expired",
+    "--operator-approved-sms"
+  ],
+  "started_at": "2026-10-30T09:33:43.701Z",
+  "duration_ms": 21855,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

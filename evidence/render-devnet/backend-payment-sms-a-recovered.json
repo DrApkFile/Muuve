@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-sms-a-recovered",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--send-otp=a",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T07:19:17.451Z",
+  "duration_ms": 6233,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

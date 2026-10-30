@@ -1,0 +1,10 @@
+{
+  "started_at": "2026-10-30T08:17:41.066Z",
+  "mode": "--reconcile",
+  "scope": "Actual hosted account OTP to the owner's already verified number; no financial operations",
+  "requests": [],
+  "transactions_submitted": 0,
+  "challenges": [],
+  "state": "sms_not_ready_or_expired_no_resend_performed",
+  "finished_at": "2026-10-30T08:17:46.980Z"
+}

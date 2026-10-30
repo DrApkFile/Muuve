@@ -1,0 +1,16 @@
+{
+  "name": "textbee-expiry-first-unit",
+  "command": [
+    "pnpm",
+    "exec",
+    "vitest",
+    "run",
+    "tests/unit/textbee.test.ts",
+    "tests/unit/security.test.ts"
+  ],
+  "started_at": "2026-10-30T08:40:34.883Z",
+  "duration_ms": 53267,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

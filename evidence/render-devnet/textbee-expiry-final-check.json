@@ -1,0 +1,12 @@
+{
+  "name": "textbee-expiry-final-check",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-30T09:33:36.766Z",
+  "duration_ms": 102337,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -12,6 +12,7 @@ include!(concat!(env!("OUT_DIR"), "/program_id.rs"));
 
 pub const MAX_SLOTS: usize = 10;
 pub const CLAIM_WINDOW: i64 = 172_800;
+pub const DEMO_CLAIM_WINDOW: i64 = 240;
 pub const PRIORITY_WINDOW: i64 = 120;
 
 #[program]
@@ -106,6 +107,20 @@ pub mod muuve_escrow {
         Ok(())
     }
 
+    // Owner-approved devnet demo mode. Existing Link deadlines are snapshots and
+    // are never rewritten by this instruction. No arbitrary shortened windows.
+    pub fn set_claim_window(ctx: Context<SetClaimWindow>, claim_window: i64) -> Result<()> {
+        validate_claim_window(claim_window)?;
+        let previous = ctx.accounts.config.claim_window;
+        ctx.accounts.config.claim_window = claim_window;
+        emit!(ClaimWindowChanged {
+            admin: ctx.accounts.admin.key(),
+            previous,
+            current: claim_window
+        });
+        Ok(())
+    }
+
     pub fn create_link(
         ctx: Context<CreateLink>,
         link_id: [u8; 16],
@@ -125,6 +140,7 @@ pub mod muuve_escrow {
             ctx.accounts.token_program.key(),
         )?;
         require!(claim_pubkey != Pubkey::default(), EscrowError::BadClaimKey);
+        validate_claim_window(ctx.accounts.config.claim_window)?;
         let now = Clock::get()?.unix_timestamp;
         let total = checked_total(
             &amounts,
@@ -479,6 +495,14 @@ fn close_if_done(a: &mut Settle) -> Result<()> {
     ))
 }
 
+pub fn validate_claim_window(window: i64) -> Result<()> {
+    require!(
+        window == CLAIM_WINDOW || window == DEMO_CLAIM_WINDOW,
+        EscrowError::InvalidClaimWindow
+    );
+    Ok(())
+}
+
 pub fn checked_total(amounts: &[u64], max_slot: u64, max_link: u64) -> Result<u64> {
     require!(
         !amounts.is_empty() && amounts.len() <= MAX_SLOTS,
@@ -655,6 +679,12 @@ pub struct InitConfig<'info> {
     pub system_program: Program<'info, System>,
 }
 #[derive(Accounts)]
+pub struct SetClaimWindow<'info> {
+    pub admin: Signer<'info>,
+    #[account(mut, seeds=[b"config"], bump=config.bump, has_one=admin @ EscrowError::BadAdmin)]
+    pub config: Box<Account<'info, Config>>,
+}
+#[derive(Accounts)]
 pub struct UpdateConfig<'info> {
     pub admin: Signer<'info>,
     #[account(mut, seeds=[b"config"], bump=config.bump, has_one=admin @ EscrowError::BadAdmin)]
@@ -815,6 +845,12 @@ pub struct LinkExpired {
     pub amount: u64,
 }
 #[event]
+pub struct ClaimWindowChanged {
+    pub admin: Pubkey,
+    pub previous: i64,
+    pub current: i64,
+}
+#[event]
 pub struct SurplusReturned {
     pub link: Pubkey,
     pub amount: u64,
@@ -867,6 +903,8 @@ pub enum EscrowError {
     BadIntent,
     #[msg("Recipient currently has priority")]
     ClaimInProgress,
+    #[msg("Claim window must be 48 hours or the four-minute devnet demo window")]
+    InvalidClaimWindow,
 }
 
 #[cfg(test)]

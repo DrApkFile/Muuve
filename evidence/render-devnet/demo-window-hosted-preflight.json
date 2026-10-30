@@ -1,0 +1,16 @@
+{
+  "name": "demo-window-hosted-preflight",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/set-claim-window.ts",
+    "--seconds=240",
+    "--review"
+  ],
+  "started_at": "2026-10-30T08:46:08.191Z",
+  "duration_ms": 85980,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

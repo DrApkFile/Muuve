@@ -1,0 +1,6 @@
+{
+  "checked_at": "2026-10-30T07:56:35.144Z",
+  "scope": "Read-only reconciliation after logout transport timeout",
+  "account_session_inactive": false,
+  "state": "logout_not_observed_retry_idempotent_route_required"
+}

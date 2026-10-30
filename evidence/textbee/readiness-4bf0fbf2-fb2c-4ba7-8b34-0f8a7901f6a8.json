@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-30T08:44:57.084Z",
+  "sms_requests": 0,
+  "live_delivery_verified": false,
+  "missing_configuration_names": [
+    "TEXTBEE_API_KEY",
+    "TEXTBEE_DEVICE_ID"
+  ],
+  "state": "blocked",
+  "code": "textbee_not_configured"
+}

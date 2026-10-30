@@ -1,0 +1,16 @@
+{
+  "name": "textbee-real-sms-verify",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-textbee-sms.ts",
+    "--verify",
+    "--operator-approved-sms"
+  ],
+  "started_at": "2026-10-30T09:32:17.866Z",
+  "duration_ms": 12688,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

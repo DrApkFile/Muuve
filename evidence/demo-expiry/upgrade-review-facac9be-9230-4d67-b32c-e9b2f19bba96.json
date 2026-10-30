@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-30T08:53:16.907Z",
+  "network": "devnet",
+  "transactions_submitted": 0,
+  "state": "review_only_no_upgrade_authorized_by_this_script",
+  "program_id": "147uqUCHmuUgziXH31v352QycgSuxLgZfzN2MYE67Sxe",
+  "upgrade_authority": "8QdwEAfREtpycxbCLEm8YhAC8CE5D941sqEmrXLx5HnD",
+  "program_data": "8CszHBvLekcr4zwpKdiZPM7BGg3oaQAaEVnPsZcKQH9V",
+  "source_sha256": "f5b85839f848405c6b760d1f9d33c994371516d3bf2e8fa9ace52726acb555b5",
+  "artifact_sha256": "2aeacaeeee96893acb856944acec0c2d1c4d501614c25c53a12ed7df8877f456",
+  "artifact_bytes": 591808,
+  "current_program_capacity_bytes": 586896,
+  "program_extension_required": true,
+  "existing_binary_matches": false,
+  "buffer_rent_lamports": 3007222840,
+  "additional_program_rent_lamports": 24952960,
+  "authority_balance_lamports": 7013901360,
+  "conservative_upfront_lamports_including_fee_margin": 3082175800,
+  "upfront_balance_sufficient": true,
+  "note": "Buffer rent is generally returned on successful upgrade; upfront balance is distinct from final cost. No faucet or funding request performed."
+}

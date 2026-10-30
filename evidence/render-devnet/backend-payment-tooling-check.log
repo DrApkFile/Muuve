@@ -1,0 +1,6 @@
+$ tsc --noEmit && prettier --check .
+scripts/verify-hosted-payments.ts(39,3): error TS2322: Type 'Dict<string>' is not assignable to type 'Record<string, string>'.
+  'string' index signatures are incompatible.
+    Type 'string | undefined' is not assignable to type 'string'.
+      Type 'undefined' is not assignable to type 'string'.
+[ELIFECYCLE] Command failed with exit code 2.

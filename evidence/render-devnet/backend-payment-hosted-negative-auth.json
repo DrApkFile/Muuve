@@ -1,0 +1,16 @@
+{
+  "name": "backend-payment-hosted-negative-auth",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/run-hosted-payments.ts",
+    "--negative-auth",
+    "--operator-approved-test-budget"
+  ],
+  "started_at": "2026-10-30T07:32:04.391Z",
+  "duration_ms": 23310,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}
