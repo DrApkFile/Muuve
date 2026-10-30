@@ -1,0 +1,16 @@
+{
+  "name": "wallet-hosted-finish",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-wallet.ts",
+    "--finish",
+    "--operator-approved-auth-test"
+  ],
+  "started_at": "2026-10-30T00:17:40.820Z",
+  "duration_ms": 38949,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

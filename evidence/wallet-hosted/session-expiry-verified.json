@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-10-30T00:19:24.204Z",
+  "scope": "owner-approved expiry change for exactly one real hosted test session",
+  "approved_session_id": "0f2cd97f-f01d-4e33-b4f7-9a31121aa008",
+  "requests": [
+    {
+      "path": "/api/me",
+      "status": 200
+    },
+    {
+      "path": "/api/me",
+      "status": 401,
+      "error_code": "unauthorized"
+    },
+    {
+      "path": "/api/auth/privy-token",
+      "status": 401,
+      "error_code": "unauthorized"
+    },
+    {
+      "path": "/api/auth/logout",
+      "status": 200
+    }
+  ],
+  "fabricated_sessions": false,
+  "updated_rows": 1,
+  "sql_sha256": "c20b417d4aaed7a8d17571fcf84c374a84db2652d97e78492879dd9cdbad425f",
+  "other_sessions_unchanged": true,
+  "unchanged_cookie_jwt_still_cryptographically_valid": true,
+  "state": "real_hosted_session_database_expiry_rejected"
+}

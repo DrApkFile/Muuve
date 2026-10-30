@@ -1,5 +1,17 @@
 # Hosted wallet rollout: migration verified, owner deployment pending
 
+## Latest status — actual hosted authentication verified
+
+The owner has deployed main commit `294f5e73a007928888f083902dd3d4c6dcf4e903`
+and confirmed it in Render Live. Actual hosted wallet login, sessions, JWT/JWKS and
+negative authorization tests now pass. One additional approved real test-session expiry
+was verified; the unsubmitted batch preparation was reconciled and its capacity released.
+The new hosted identity still has no Privy enrollment (real exchange returned 404),
+and funded payment E2E remains untested. See the
+[hosted verification report](2026-10-30-hosted-wallet-verification.md).
+
+The approval/preflight and deployment-pending notes below are historical records.
+
 ## Current status after owner approval
 
 The owner explicitly approved migration 006. It was applied to the intended hosted

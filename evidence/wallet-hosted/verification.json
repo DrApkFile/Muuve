@@ -1,0 +1,96 @@
+{
+  "updated_at": "2026-10-30T00:34:44.210Z",
+  "state": "hosted_wallet_auth_verified_privy_enrollment_and_funded_payments_pending",
+  "report": "docs/handoff/2026-10-30-hosted-wallet-verification.md",
+  "api": "https://muuve.onrender.com",
+  "main_commit": "294f5e73a007928888f083902dd3d4c6dcf4e903",
+  "render_live_commit_confirmation": "owner checked dashboard; local and remote main match",
+  "database_project": "yirelxmcveyxcqofzayq",
+  "migrations": 6,
+  "actual_hosted": {
+    "wallet_challenge_login_and_me": true,
+    "cookie_security_and_sql_correlation": true,
+    "jwt_jwks_contract": true,
+    "refresh_logout": true,
+    "wrong_origin_wallet_message_cookie_replay_rejected": true,
+    "natural_challenge_expiry": true,
+    "controlled_real_session_expiry": true,
+    "missing_operation_404": true,
+    "genuine_foreign_operation_404": true,
+    "unowned_privy_wallet_403": true,
+    "wallet_session_without_phone_proof_rejected": true,
+    "batch_preparation_fixed_allocations": true
+  },
+  "privy": {
+    "existing_local_test_identity_recognized": true,
+    "new_hosted_identity_enrollment_complete": false,
+    "hosted_jwt_authorization_exchange_status": 404
+  },
+  "cleanup": {
+    "checked_at": "2026-10-30T00:23:14.247Z",
+    "scope": "read-only final hosted data and devnet effect verification",
+    "state": "passed",
+    "original_records": {
+      "users": {
+        "count": 3,
+        "unchanged": true
+      },
+      "sessions": {
+        "count": 11,
+        "unchanged": true
+      },
+      "otp_challenges": {
+        "count": 8,
+        "unchanged": true
+      }
+    },
+    "counts": {
+      "users": 5,
+      "sessions": 15,
+      "otp_challenges": 8,
+      "payouts": 0,
+      "principals": 0,
+      "funding_reservations": 0,
+      "active_jobs": 0,
+      "active_test_sessions": 0
+    },
+    "test_link": {
+      "id": "9887fa84-94f2-4688-8372-507155598cf1",
+      "pda": "GLCvrcwTZuKhYusY5qZ3sWCk9gGubyDKFRxKfhvj9TJm",
+      "status": "cancelled",
+      "capacity_state": "released",
+      "create_sig": null,
+      "total_base_units": "1500000",
+      "slot_count": 2
+    },
+    "test_slots": [
+      {
+        "slot_index": 0,
+        "amount_base_units": "500000",
+        "status": "pending"
+      },
+      {
+        "slot_index": 1,
+        "amount_base_units": "1000000",
+        "status": "pending"
+      }
+    ],
+    "test_operation": {
+      "id": "a49a616a-0064-4f86-97c9-a0b6909cbdba",
+      "state": "failed",
+      "kind": "create"
+    },
+    "onchain_test_link_exists": false,
+    "sender_test_token_balance_base_units": "2000000",
+    "blockchain_transactions_submitted": 0
+  },
+  "blockchain_transactions_submitted": 0,
+  "payout_requests": 0,
+  "full_funded_payment_e2e_passed": false,
+  "remaining": [
+    "Real hosted identity Privy enrollment / outside-repository client integration",
+    "Hosted upstream provider outage 503 handling not forced; local regression only",
+    "Explicitly approved funded devnet payment lifecycle with real eligible recipient OTP and mock cashout",
+    "Natural 48-hour hosted expiry/refund test"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "wallet-hosted-tooling-final",
+  "command": [
+    "pnpm",
+    "check"
+  ],
+  "started_at": "2026-10-30T00:14:59.807Z",
+  "duration_ms": 24993,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

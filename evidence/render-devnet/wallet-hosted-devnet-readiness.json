@@ -1,0 +1,14 @@
+{
+  "name": "wallet-hosted-devnet-readiness",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-devnet.ts"
+  ],
+  "started_at": "2026-10-30T00:14:15.856Z",
+  "duration_ms": 8375,
+  "exit_code": 0,
+  "signal": null,
+  "passed": true
+}

@@ -1,0 +1,16 @@
+{
+  "name": "wallet-hosted-privy-jwt",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/verify-hosted-wallet.ts",
+    "--privy-token-check",
+    "--operator-approved-auth-test"
+  ],
+  "started_at": "2026-10-30T00:14:15.533Z",
+  "duration_ms": 12928,
+  "exit_code": 1,
+  "signal": null,
+  "passed": false
+}

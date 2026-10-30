@@ -181,3 +181,13 @@ indexes, RLS/PUBLIC restrictions and unchanged existing-record fingerprints were
 verified. Work remains on main. The owner can now commit/push the API source; Render
 deployment and hosted wallet authentication tests are still pending. See
 [the rollout handoff](2026-10-30-wallet-rollout.md) and `evidence/wallet-rollout/after.json`.
+
+## Hosted API verification follow-up
+
+The owner deployed commit `294f5e73a007928888f083902dd3d4c6dcf4e903`; the new
+wallet-only flow is now verified against the actual hosted API and Supabase, including
+negative authorization, refresh/logout, natural challenge expiry and an approved
+real test-session expiry. New-hosted-identity Privy enrollment still returns 404;
+funded hosted payments remain untested. See
+[actual hosted evidence](2026-10-30-hosted-wallet-verification.md) and
+[the payment continuation plan](../hosted-payment-e2e-plan.md).

@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-10-30T00:23:14.247Z",
+  "scope": "read-only final hosted data and devnet effect verification",
+  "state": "passed",
+  "original_records": {
+    "users": {
+      "count": 3,
+      "unchanged": true
+    },
+    "sessions": {
+      "count": 11,
+      "unchanged": true
+    },
+    "otp_challenges": {
+      "count": 8,
+      "unchanged": true
+    }
+  },
+  "counts": {
+    "users": 5,
+    "sessions": 15,
+    "otp_challenges": 8,
+    "payouts": 0,
+    "principals": 0,
+    "funding_reservations": 0,
+    "active_jobs": 0,
+    "active_test_sessions": 0
+  },
+  "test_link": {
+    "id": "9887fa84-94f2-4688-8372-507155598cf1",
+    "pda": "GLCvrcwTZuKhYusY5qZ3sWCk9gGubyDKFRxKfhvj9TJm",
+    "status": "cancelled",
+    "capacity_state": "released",
+    "create_sig": null,
+    "total_base_units": "1500000",
+    "slot_count": 2
+  },
+  "test_slots": [
+    {
+      "slot_index": 0,
+      "amount_base_units": "500000",
+      "status": "pending"
+    },
+    {
+      "slot_index": 1,
+      "amount_base_units": "1000000",
+      "status": "pending"
+    }
+  ],
+  "test_operation": {
+    "id": "a49a616a-0064-4f86-97c9-a0b6909cbdba",
+    "state": "failed",
+    "kind": "create"
+  },
+  "onchain_test_link_exists": false,
+  "sender_test_token_balance_base_units": "2000000",
+  "blockchain_transactions_submitted": 0
+}

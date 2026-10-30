@@ -1,0 +1,218 @@
+{
+  "updated_at": "2026-10-30T00:39:19.033Z",
+  "checks": [
+    {
+      "name": "wallet-hosted-start",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-wallet.ts",
+        "--start",
+        "--operator-approved-auth-test"
+      ],
+      "started_at": "2026-10-30T00:11:07.180Z",
+      "duration_ms": 49823,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-start.json"
+    },
+    {
+      "name": "wallet-hosted-prepare-only",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-wallet.ts",
+        "--prepare-only",
+        "--operator-approved-auth-test"
+      ],
+      "started_at": "2026-10-30T00:12:05.236Z",
+      "duration_ms": 16768,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-prepare-only.json"
+    },
+    {
+      "name": "wallet-hosted-tooling-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T00:12:06.408Z",
+      "duration_ms": 43971,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-tooling-checks.json"
+    },
+    {
+      "name": "wallet-hosted-privy-jwt",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-wallet.ts",
+        "--privy-token-check",
+        "--operator-approved-auth-test"
+      ],
+      "started_at": "2026-10-30T00:14:15.533Z",
+      "duration_ms": 12928,
+      "exit_code": 1,
+      "signal": null,
+      "passed": false,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-privy-jwt.json"
+    },
+    {
+      "name": "wallet-hosted-devnet-readiness",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-devnet.ts"
+      ],
+      "started_at": "2026-10-30T00:14:15.856Z",
+      "duration_ms": 8375,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-devnet-readiness.json"
+    },
+    {
+      "name": "wallet-hosted-schema",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/database-status.ts"
+      ],
+      "started_at": "2026-10-30T00:14:58.631Z",
+      "duration_ms": 2262,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-schema.json"
+    },
+    {
+      "name": "wallet-hosted-tooling-final",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T00:14:59.807Z",
+      "duration_ms": 24993,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-tooling-final.json"
+    },
+    {
+      "name": "wallet-hosted-finish",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "scripts/verify-hosted-wallet.ts",
+        "--finish",
+        "--operator-approved-auth-test"
+      ],
+      "started_at": "2026-10-30T00:17:40.820Z",
+      "duration_ms": 38949,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-finish.json"
+    },
+    {
+      "name": "wallet-hosted-final-secret-audit",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-30T00:23:13.884Z",
+      "duration_ms": 6433,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-final-secret-audit.json"
+    },
+    {
+      "name": "wallet-hosted-completion-checks",
+      "command": [
+        "pnpm",
+        "check"
+      ],
+      "started_at": "2026-10-30T00:35:38.523Z",
+      "duration_ms": 24836,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-completion-checks.json"
+    },
+    {
+      "name": "wallet-hosted-completion-secrets",
+      "command": [
+        "node",
+        "scripts/audit-local-secrets.mjs"
+      ],
+      "started_at": "2026-10-30T00:35:38.496Z",
+      "duration_ms": 834,
+      "exit_code": 0,
+      "signal": null,
+      "passed": true,
+      "evidence_file": "evidence/render-devnet/wallet-hosted-completion-secrets.json"
+    }
+  ],
+  "additional_commands": [
+    {
+      "command": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main"
+      ],
+      "exit_code": 0,
+      "result": "294f5e73a007928888f083902dd3d4c6dcf4e903"
+    },
+    {
+      "command": [
+        "pnpm",
+        "exec",
+        "tsc",
+        "--noEmit"
+      ],
+      "exit_code": 0,
+      "note": "verifier authoring syntax/type issues fixed before live run"
+    },
+    {
+      "command": [
+        "node",
+        "--input-type=module"
+      ],
+      "exit_code": 0,
+      "scope": "real hosted session expiry fixture creation; see session-expiry-fixture.json"
+    },
+    {
+      "command": [
+        "node",
+        "--input-type=module"
+      ],
+      "exit_code": 0,
+      "scope": "owner-approved one-row expiry; exact SQL and hash in expire-test-session-review.sql / session-expiry-verified.json"
+    },
+    {
+      "command": [
+        "node",
+        "--env-file=.env.local",
+        "--import",
+        "tsx",
+        "--input-type=module"
+      ],
+      "exit_code": 0,
+      "scope": "final hosted SQL/real devnet read-only check; see final-data-state.json"
+    }
+  ],
+  "note": "Privy token-check exit 1 / HTTP 404 is a real unresolved provider enrollment boundary, not a passed test. Earlier unit/DB suites are not hosted test evidence."
+}

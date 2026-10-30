@@ -1,17 +1,20 @@
 {
-  "updated_at": "2026-10-29T23:59:34.796Z",
+  "updated_at": "2026-10-30T00:34:44.211Z",
   "branch": "main",
   "base_commit": "81d999288df15954b2cdf17c9884f4701602800e",
-  "state": "hosted_migration_006_verified_owner_can_push_main",
+  "state": "hosted_wallet_auth_verified_privy_enrollment_and_funded_payments_pending",
   "owner_explicitly_approved_migration": true,
   "migration_006_sha256": "cb438d6608c2212a22bbbf3c96c8a6dec19f77e19d71dadc5abcc8adb5c378b1",
   "shared_database_changed": true,
   "hosted_migration_count": 6,
   "existing_records_unchanged": true,
   "source_pushed_by_agent": false,
-  "deployment": "owner will perform; awaiting new hosted build",
+  "deployment": "owner confirmed Render Live; actual hosted auth tests passed",
   "worker_deployed": false,
   "program_changed": false,
-  "hosted_wallet_login_verified": false,
-  "report": "docs/handoff/2026-10-30-wallet-rollout.md"
+  "hosted_wallet_login_verified": true,
+  "report": "docs/handoff/2026-10-30-hosted-wallet-verification.md",
+  "owner_deployed_commit": "294f5e73a007928888f083902dd3d4c6dcf4e903",
+  "privy_new_hosted_identity_enrollment_verified": false,
+  "full_payment_e2e_verified": false
 }

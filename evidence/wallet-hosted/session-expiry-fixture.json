@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-30T00:18:12.223Z",
+  "scope": "real hosted wallet login; test-session expiry change NOT executed",
+  "requests": [
+    {
+      "path": "/api/auth/wallet/challenge",
+      "status": 200
+    },
+    {
+      "path": "/api/auth/wallet/login",
+      "status": 200
+    },
+    {
+      "path": "/api/me",
+      "status": 200
+    }
+  ],
+  "session_id": "0f2cd97f-f01d-4e33-b4f7-9a31121aa008",
+  "user_id": "b913dc4f-fe0e-4cd9-9d53-e3b492ae6b07",
+  "state": "real_hosted_test_session_created_expiry_change_pending_approval"
+}
