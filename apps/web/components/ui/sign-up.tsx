@@ -217,6 +217,7 @@ export function OnboardingFlow() {
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [resendAt, setResendAt] = useState(0);
+  const [sentTo, setSentTo] = useState<string | null>(null);
   // "link": a signed-in wallet user adds a phone. "login": a phone account signs in.
   const [phoneMode, setPhoneMode] = useState<"link" | "login">("link");
   const [now, setNow] = useState(() => Date.now());
@@ -291,6 +292,12 @@ export function OnboardingFlow() {
 
   async function sendCode() {
     if (!e164 || busy) return;
+    // Back-then-send within the cooldown reuses the code already on its way: each send
+    // counts toward 3 per 10 minutes, and SMS can take a minute to arrive.
+    if (challengeId && sentTo === e164 && Date.now() < resendAt) {
+      go("code");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -300,8 +307,9 @@ export function OnboardingFlow() {
         purpose: "account",
       });
       setChallengeId(res.challenge_id);
+      setSentTo(e164);
       setCode("");
-      setResendAt(Date.now() + 30_000);
+      setResendAt(Date.now() + 60_000);
       go("code");
     } catch (err) {
       setError(messageFor(err));
@@ -557,7 +565,7 @@ export function OnboardingFlow() {
               <motion.div key="code" {...stepMotion} className="flex flex-col items-center gap-8">
                 <StepTitle
                   title="Enter the code"
-                  sub={`Sent to the number ending ${e164?.slice(-4) ?? ""}.`}
+                  sub={`Sent to the number ending ${e164?.slice(-4) ?? ""}. Texts can take a minute to arrive.`}
                 />
                 <BlurFade delay={0.3} className="w-full">
                   <form

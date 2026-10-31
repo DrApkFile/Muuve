@@ -39,7 +39,7 @@ type Step =
   | "keeping"
   | "kept";
 
-const RESEND_AFTER_MS = 30_000;
+const RESEND_AFTER_MS = 60_000;
 
 function Screen({
   children,
@@ -106,6 +106,7 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
   const [challengeId, setChallengeId] = useState<string | null>(null);
   const [code, setCode] = useState("");
   const [resendAt, setResendAt] = useState(0);
+  const [sentTo, setSentTo] = useState<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [share, setShare] = useState<Share | null>(null);
   const [notOnPayment, setNotOnPayment] = useState(false);
@@ -179,6 +180,12 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
 
   async function sendCode() {
     if (!e164 || busy) return;
+    // Back-then-send within the cooldown reuses the code already on its way: each send
+    // counts toward 3 per 10 minutes, and SMS can take a minute to arrive.
+    if (challengeId && sentTo === e164 && Date.now() < resendAt) {
+      go("code");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -189,6 +196,7 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
         link_id: linkId,
       });
       setChallengeId(res.challenge_id);
+      setSentTo(e164);
       setCode("");
       setResendAt(Date.now() + RESEND_AFTER_MS);
       go("code");
@@ -551,7 +559,11 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
             void verify(code);
           }}
         >
-          <Title sub={`Sent to the number ending ${e164?.slice(-4) ?? ""}.`}>Enter the code</Title>
+          <Title
+            sub={`Sent to the number ending ${e164?.slice(-4) ?? ""}. Texts can take a minute to arrive.`}
+          >
+            Enter the code
+          </Title>
           <label htmlFor="otp" className="sr-only">
             6-digit code
           </label>
