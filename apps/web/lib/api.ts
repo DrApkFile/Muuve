@@ -1,4 +1,7 @@
-// Same-origin client for /api/*. Cookies are httpOnly; the browser sends them, we never read them.
+import { serverCall, type CallResult } from "./server-call";
+
+// Client for the backend. Calls run server-side through the serverCall action; the browser
+// never fetches /api/* directly. Cookies are httpOnly and only ever handled on the server.
 export class ApiError extends Error {
   constructor(
     public code: string,
@@ -11,33 +14,23 @@ export class ApiError extends Error {
 
 type Options = { headers?: Record<string, string>; signal?: AbortSignal };
 
+function aborted() {
+  return new DOMException("The operation was aborted.", "AbortError");
+}
+
 export async function api<T>(path: string, body?: unknown, options: Options = {}): Promise<T> {
-  let res: Response;
+  if (options.signal?.aborted) throw aborted();
+  let res: CallResult;
   try {
-    res = await fetch(path, {
-      method: body === undefined ? "GET" : "POST",
-      credentials: "include",
-      cache: "no-store",
-      signal: options.signal,
-      headers: {
-        ...(body === undefined ? {} : { "content-type": "application/json" }),
-        ...options.headers,
-      },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
-  } catch (error) {
-    if (error instanceof DOMException && error.name === "AbortError") throw error;
+    res = await serverCall(path, body, options.headers);
+  } catch {
+    if (options.signal?.aborted) throw aborted();
     throw new ApiError("network_error", 0);
   }
-  const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
-  if (!res.ok) {
-    throw new ApiError(
-      typeof json.error === "string" ? json.error : "unknown_error",
-      res.status,
-      typeof json.request_id === "string" ? json.request_id : undefined,
-    );
-  }
-  return json as T;
+  // Server actions can't be cancelled mid-flight; drop the result instead.
+  if (options.signal?.aborted) throw aborted();
+  if (!res.ok) throw new ApiError(res.error, res.status, res.request_id);
+  return res.data as T;
 }
 
 export const newIdempotencyKey = () => crypto.randomUUID();

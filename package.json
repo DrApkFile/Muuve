@@ -21,7 +21,7 @@
     "test:sbf": "node scripts/test-sbf.mjs",
     "test:devnet:transactions": "tsx scripts/devnet-integration.ts",
     "test:http": "node scripts/smoke-api.mjs",
-    "dev": "next dev apps/web --hostname 127.0.0.1",
+    "dev": "APP_ENV=local APP_BASE_URL=http://127.0.0.1:3000 next dev apps/web --hostname 127.0.0.1",
     "build": "next build apps/web",
     "check": "tsc --noEmit && prettier --check .",
     "typecheck": "tsc --noEmit",
