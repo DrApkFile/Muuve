@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { Check, Copy, Eye, MessageCircle, Share2 } from "lucide-react";
+import { useParams, useSearchParams } from "next/navigation";
+import { Check, Copy, Eye, MessageCircle, MessageSquare, Share2 } from "lucide-react";
 import { useLink, useNow } from "@/lib/hooks";
 import { useSession } from "@/lib/session";
 import { useWallet } from "@/lib/wallet";
@@ -27,8 +27,17 @@ function shareText(opts: { name: string | null; amount?: string; batch: boolean;
     : `${who} ${opts.amount} on Muuve 💸 Open it and verify your number to receive it. Available for 48 hours: ${opts.url}`;
 }
 
+/** WhatsApp chat with one number; wa.me wants digits only. */
+const whatsappTo = (e164: string, text: string) =>
+  `https://wa.me/${e164.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
+// "?&body=" is the form both iOS and Android Messages read.
+const smsTo = (e164: string, text: string) => `sms:${e164}?&body=${encodeURIComponent(text)}`;
+
 export default function SharePage() {
   const { id } = useParams<{ id: string }>();
+  // Set by the send flow once the network confirmed the payment; final settlement follows
+  // within seconds, so sharing can start right away.
+  const justSent = useSearchParams().get("sent") === "1";
   const { user } = useSession();
   const wallet = useWallet();
   const { link, loading, notFound } = useLink(id);
@@ -78,13 +87,19 @@ export default function SharePage() {
     : "";
   const left = timeLeft(link.expires_at, now);
   const open = link.status === "open";
+  const confirming = link.status === "pending" && justSent;
+  const canShare = open || confirming;
 
   return (
     <div className="mx-auto flex w-full max-w-[980px] flex-col gap-6">
       <div className="flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="m-0 text-[15px] text-ink/55">
-            {open ? "Your link is ready" : link.status === "pending" ? "Still confirming" : "Link"}
+            {canShare
+              ? "Your link is ready"
+              : link.status === "pending"
+                ? "Still confirming"
+                : "Link"}
           </p>
           <h1 className="m-0 mt-2 text-[44px] leading-[0.95] font-normal tracking-[-0.035em] md:text-[64px]">
             {formatUsd(link.total_base_units, { cents: true })} ·{" "}
@@ -110,14 +125,19 @@ export default function SharePage() {
             verify with a code.
           </p>
 
-          {link.status === "pending" ? (
+          {link.status === "pending" && !justSent ? (
             <Notice className="relative">
               We&apos;re still confirming this payment. Refresh in a moment before sharing.
             </Notice>
-          ) : !open ? (
+          ) : !canShare ? (
             <Notice className="relative">This link is settled. Nothing is left to claim.</Notice>
           ) : url ? (
             <>
+              {confirming && (
+                <p className="relative m-0 flex items-center gap-2 text-sm text-ink/60">
+                  <Spinner /> Finishing up. You can share now; it opens for them in a few seconds.
+                </p>
+              )}
               <div className="relative flex items-center gap-2 rounded-2xl bg-paper/80 p-2 pl-4">
                 <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-ink/70">
                   {url.replace(/#k=.*/, "#k=••••••••")}
@@ -185,7 +205,10 @@ export default function SharePage() {
           {link.note && <p className="m-0 mt-1 text-sm text-ink/55">“{link.note}”</p>}
           <ul className="m-0 mt-4 flex list-none flex-col divide-y divide-dashed divide-ink/15 p-0">
             {link.slots.map((s) => (
-              <li key={s.slot_index} className="flex items-center justify-between gap-3 py-3">
+              <li
+                key={s.slot_index}
+                className="flex flex-wrap items-center justify-between gap-3 py-3"
+              >
                 <span className="min-w-0">
                   <span className="block truncate font-medium">
                     {s.label || maskPhone(s.recipient_phone_e164)}
@@ -202,6 +225,28 @@ export default function SharePage() {
                   </span>
                   <SlotStatusPill status={s.status} />
                 </span>
+                {url && canShare && (s.status === "pending" || s.status === "funded") && (
+                  <span className="flex w-full gap-2">
+                    <Button asChild size="sm" variant="soft">
+                      <a
+                        href={whatsappTo(s.recipient_phone_e164, text)}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`Send on WhatsApp to ${s.label || maskPhone(s.recipient_phone_e164)}`}
+                      >
+                        <MessageCircle aria-hidden="true" /> WhatsApp
+                      </a>
+                    </Button>
+                    <Button asChild size="sm" variant="ghost">
+                      <a
+                        href={smsTo(s.recipient_phone_e164, text)}
+                        aria-label={`Send by text message to ${s.label || maskPhone(s.recipient_phone_e164)}`}
+                      >
+                        <MessageSquare aria-hidden="true" /> Text
+                      </a>
+                    </Button>
+                  </span>
+                )}
               </li>
             ))}
           </ul>

@@ -128,15 +128,30 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
     if (window.location.hash)
       history.replaceState(null, "", window.location.pathname + window.location.search);
 
-    api<PublicPreview>(`/api/public/links/${linkId}`)
-      .then((p) => {
+    // A link shared the moment it was sent can take a few seconds to open; retry a
+    // not-found briefly before saying so.
+    let cancelled = false;
+    async function load(tries: number): Promise<void> {
+      try {
+        const p = await api<PublicPreview>(`/api/public/links/${linkId}`);
+        if (cancelled) return;
         setPreview(p);
         setStep(secret.current ? "preview" : "missing");
-      })
-      .catch((err) => {
-        setPreviewError(err instanceof ApiError && err.status === 404 ? "not_found" : "other");
+      } catch (err) {
+        if (cancelled) return;
+        const notFound = err instanceof ApiError && err.status === 404;
+        if (notFound && tries > 0) {
+          await new Promise((r) => setTimeout(r, 3000));
+          return load(tries - 1);
+        }
+        setPreviewError(notFound ? "not_found" : "other");
         setStep("preview");
-      });
+      }
+    }
+    void load(5);
+    return () => {
+      cancelled = true;
+    };
   }, [linkId]);
 
   useEffect(() => {

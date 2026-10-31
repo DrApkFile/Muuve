@@ -74,21 +74,23 @@ export async function waitForOperation(
   operationId: string,
   onState?: (state: OperationState) => void,
   timeoutMs = 120_000,
+  stopAt: OperationState[] = TERMINAL_STATES,
 ): Promise<OperationState> {
   const started = Date.now();
-  let delay = 1200;
+  // Short, flat polling: the network settles in seconds, and a long backoff only adds wait.
+  let delay = 800;
   let last: OperationState = "submitted";
   while (Date.now() - started < timeoutMs) {
     try {
       const op = await api<{ state: OperationState }>(`/api/operations/${operationId}`);
       last = op.state;
       onState?.(last);
-      if (TERMINAL_STATES.includes(last)) return last;
+      if (stopAt.includes(last)) return last;
     } catch {
       // Transient read failures: keep polling within the time budget.
     }
     await new Promise((r) => setTimeout(r, delay));
-    delay = Math.min(delay * 1.4, 6000);
+    delay = Math.min(delay * 1.25, 2000);
   }
   return last;
 }

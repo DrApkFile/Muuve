@@ -50,16 +50,18 @@ export function useLinks() {
   return { ...res, links: res.data?.links ?? [] };
 }
 
-/** One link, polled every 5s while any money is still waiting or moving. */
+/** One link, polled every 5s while any money is still waiting or moving (2s while confirming). */
 export function useLink(id: string) {
   const res = useResource<{ link: LinkDetail }>(`/api/links/${id}`, [BALANCE_EVENT]);
   const link = res.data?.link ?? null;
-  const active = !!link?.slots.some((s) => s.status === "funded" || s.status === "cashing_out");
+  const confirming = link?.status === "pending";
+  const active =
+    confirming || !!link?.slots.some((s) => s.status === "funded" || s.status === "cashing_out");
   useEffect(() => {
     if (!active) return;
-    const t = setInterval(() => void res.reload(), 5000);
+    const t = setInterval(() => void res.reload(), confirming ? 2000 : 5000);
     return () => clearInterval(t);
-  }, [active, res.reload]);
+  }, [active, confirming, res.reload]);
   return { ...res, link, notFound: res.error instanceof ApiError && res.error.status === 404 };
 }
 

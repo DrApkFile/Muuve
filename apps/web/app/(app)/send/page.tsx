@@ -176,8 +176,14 @@ export default function SendPage() {
         idempotency_key: d.signed!.key,
       });
       setStep("confirm");
-      const state = await waitForOperation(d.operation!.operation_id);
-      if (state === "finalized") return finish(d);
+      // Open the share screen once the network has confirmed the payment; final settlement
+      // follows a few seconds later and the share screen waits for it.
+      const state = await waitForOperation(d.operation!.operation_id, undefined, 120_000, [
+        "confirmed",
+        "finalized",
+        "failed",
+      ]);
+      if (state === "confirmed" || state === "finalized") return finish(d);
       if (state === "failed") {
         // Nothing moved. Start a fresh payment next time.
         setDraft(null);
@@ -205,7 +211,7 @@ export default function SendPage() {
   function finish(d: Draft) {
     setStep("done");
     rememberClaimSecret(d.linkId!, d.claim!.secret);
-    router.push(`/send/${d.linkId}`);
+    router.push(`/send/${d.linkId}?sent=1`);
   }
 
   const startFlow = () => {
