@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -66,6 +67,7 @@ const WalletContext = createContext<WalletContextValue | null>(null);
 function rejected(error: unknown): never {
   const text = error instanceof Error ? `${error.name} ${error.message}` : String(error);
   if (/reject|denied|cancel|declined|closed/i.test(text)) throw new Error("wallet_rejected");
+  if (/chain id|network|cluster/i.test(text)) throw new Error("wallet_wrong_network");
   throw error;
 }
 
@@ -74,6 +76,11 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [account, setAccount] = useState<WalletAccount | null>(null);
   const [connecting, setConnecting] = useState(false);
+  // Signing right after connect (same click) must see the new wallet, not the last render's.
+  const current = useRef<{ wallet: Wallet | null; account: WalletAccount | null }>({
+    wallet: null,
+    account: null,
+  });
 
   useEffect(() => {
     const registry = getWallets();
@@ -92,6 +99,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     const { accounts } = await feature.connect(silent ? { silent: true } : undefined);
     const next = accounts.find((a) => a.chains.some((c) => c.startsWith("solana:"))) ?? accounts[0];
     if (!next) throw new Error("wallet_rejected");
+    current.current = { wallet: target, account: next };
     setWallet(target);
     setAccount(next);
     try {
@@ -117,6 +125,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     const events = (wallet.features as unknown as EventsFeature)["standard:events"];
     return events.on("change", ({ accounts }) => {
       if (!accounts) return;
+      current.current = { wallet, account: accounts[0] ?? null };
       setAccount(accounts[0] ?? null);
     });
   }, [wallet]);
@@ -146,10 +155,12 @@ export function WalletProvider({ children }: { children: ReactNode }) {
           await (wallet.features as unknown as DisconnectFeature)["standard:disconnect"]
             .disconnect()
             .catch(() => {});
+        current.current = { wallet: null, account: null };
         setWallet(null);
         setAccount(null);
       },
       async signMessage(message) {
+        const { wallet, account } = current.current;
         if (!wallet || !account) throw new Error("wallet_required");
         const feature = (wallet.features as unknown as SolanaSignMessageFeature)[SolanaSignMessage];
         try {
@@ -161,6 +172,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         }
       },
       async signTransaction(serialized) {
+        const { wallet, account } = current.current;
         if (!wallet || !account) throw new Error("wallet_required");
         const feature = (wallet.features as unknown as SolanaSignTransactionFeature)[
           SolanaSignTransaction
