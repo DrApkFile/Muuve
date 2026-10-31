@@ -85,50 +85,8 @@ services:
         value: "false"
       - key: NEXT_PUBLIC_CLAIMS_ENABLED
         value: "true"
-  - type: worker
-    name: muuve-worker
-    runtime: node
-    plan: starter
-    rootDir: .
-    autoDeployTrigger: off
-    buildCommand: node scripts/render-build.mjs worker
-    startCommand: node --import tsx scripts/worker.ts
-    maxShutdownDelaySeconds: 120
-    envVars:
-      - key: NODE_VERSION
-        value: 24.19.0
-      - key: NODE_ENV
-        value: production
+      # The background worker runs inside this service (scripts/start-api.mjs).
+      - key: RUN_WORKER
+        value: "true"
       - key: WORKER_POLL_MS
         value: "2000"
-      - key: APP_ENV
-        value: preview
-      - key: PAYOUT_PROVIDER
-        value: mock
-      - key: DATABASE_URL
-        fromService: { type: web, name: muuve-api, envVarKey: DATABASE_URL }
-      - key: MOCK_WEBHOOK_SECRET
-        fromService: { type: web, name: muuve-api, envVarKey: MOCK_WEBHOOK_SECRET }
-      - key: SOLANA_CLUSTER
-        value: devnet
-      - key: SOLANA_RPC_URL
-        fromService: { type: web, name: muuve-api, envVarKey: SOLANA_RPC_URL }
-      - key: MUUVE_PROGRAM_ID
-        fromService: { type: web, name: muuve-api, envVarKey: MUUVE_PROGRAM_ID }
-      - key: USDT_MINT
-        fromService: { type: web, name: muuve-api, envVarKey: USDT_MINT }
-      - key: TOKEN_PROGRAM_ID
-        fromService: { type: web, name: muuve-api, envVarKey: TOKEN_PROGRAM_ID }
-      - key: TREASURY_TOKEN_ACCOUNT
-        fromService: { type: web, name: muuve-api, envVarKey: TREASURY_TOKEN_ACCOUNT }
-      - key: CLAIM_WINDOW_SECS
-        fromService: { type: web, name: muuve-api, envVarKey: CLAIM_WINDOW_SECS }
-      - key: FEE_PAYER_SECRET
-        fromService: { type: web, name: muuve-api, envVarKey: FEE_PAYER_SECRET }
-      - key: ATTESTOR_SECRET
-        fromService: { type: web, name: muuve-api, envVarKey: ATTESTOR_SECRET }
-      - key: TREASURY_SECRET
-        fromService: { type: web, name: muuve-api, envVarKey: TREASURY_SECRET }
-      # Required to replace/reconcile interrupted devnet demo mint operations.
-      - key: TEST_MINT_AUTHORITY_SECRET
-        fromService: { type: web, name: muuve-api, envVarKey: TEST_MINT_AUTHORITY_SECRET }

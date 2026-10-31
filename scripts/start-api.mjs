@@ -24,11 +24,30 @@ const child = spawn(
   ["node_modules/next/dist/bin/next", "start", "apps/web", "--hostname", "0.0.0.0", "--port", port],
   { stdio: "inherit" },
 );
-for (const signal of ["SIGTERM", "SIGINT"]) process.on(signal, () => child.kill(signal));
+// RUN_WORKER=true runs the background worker next to the API in this one service.
+// Job and maintenance leases make it safe alongside a separate worker service too.
+let worker;
+let stopping = false;
+function startWorker() {
+  worker = spawn(process.execPath, ["--import", "tsx", "scripts/worker.ts"], { stdio: "inherit" });
+  worker.once("exit", () => {
+    worker = undefined;
+    if (!stopping) setTimeout(startWorker, 5000).unref();
+  });
+}
+if (process.env.RUN_WORKER === "true") startWorker();
+for (const signal of ["SIGTERM", "SIGINT"])
+  process.on(signal, () => {
+    stopping = true;
+    child.kill(signal);
+    worker?.kill(signal);
+  });
 child.once("error", () => {
   console.error("API startup failed");
   process.exitCode = 1;
 });
 child.once("exit", (code, signal) => {
+  stopping = true;
+  worker?.kill("SIGTERM");
   process.exitCode = code ?? (signal === "SIGTERM" ? 0 : 1);
 });

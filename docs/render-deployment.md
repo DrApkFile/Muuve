@@ -36,6 +36,12 @@ The worker uses `tsx` at runtime, so do not prune it from the deployment install
 Dependency hooks are explicitly allowlisted: esbuild only; optional native bigint
 and websocket addons are disabled. Their JavaScript fallbacks are used.
 
+**Single service:** `render.yaml` now runs the worker inside `muuve-api`. With
+`RUN_WORKER=true`, `scripts/start-api.mjs` starts `scripts/worker.ts` next to the web
+server and restarts it if it exits; the API service therefore needs the worker's
+variables too (it already has them). The separate `muuve-worker` settings below still
+work, and leases keep both safe if they ever run together.
+
 `render.yaml` selects Starter services and disables automatic deployments. Creating
 these services can incur Render charges; no service or billing authorization is
 created by adding the Blueprint. Review plans before creating it. Do not use a
