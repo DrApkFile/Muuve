@@ -87,7 +87,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [funding, setFunding] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) router.replace(`/start?next=${encodeURIComponent(pathname)}`);
+    // Signed out, or signed in without a verified phone: finish onboarding first.
+    if (!loading && (!user || !user.phone_linked))
+      router.replace(`/start?next=${encodeURIComponent(pathname)}`);
   }, [loading, user, pathname, router]);
 
   // The session belongs to one wallet. If the connected wallet changes, don't act as it.

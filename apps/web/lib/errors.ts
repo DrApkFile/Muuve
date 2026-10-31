@@ -19,6 +19,9 @@ const COPY: Record<string, string> = {
     "You've hit the $1,000 limit for unclaimed money. Recall or wait for claims first.",
   funding_limit: "That's over today's $200 limit for test dollars.",
   wallet_required: "Connect a wallet to your account first.",
+  phone_required: "Verify your phone number before sending or cashing out.",
+  phone_in_use: "That number is already on another Muuve account. Use a different number.",
+  phone_already_linked: "Your account already has a different number linked.",
   quote_expired: "That rate expired. We've fetched a new one.",
   account_not_found: "We couldn't find that account. Check the number and bank.",
   transaction_message_mismatch:
@@ -32,6 +35,8 @@ const COPY: Record<string, string> = {
   devnet_required: "Test dollars are only available on the demo network.",
   invalid_request: "Something in that request wasn't valid. Check the details.",
   wallet_rejected: "You cancelled the request in your wallet.",
+  wallet_wrong_network:
+    "Your wallet is on the wrong network. Switch it to Solana Devnet (in Phantom: Settings → Developer Settings → Testnet Mode), then try again.",
   wallet_unsupported: "This wallet can't sign the request. Try Phantom, Solflare or Backpack.",
 };
 

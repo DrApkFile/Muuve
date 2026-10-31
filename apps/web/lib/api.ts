@@ -42,6 +42,8 @@ export type User = {
   display_name: string;
   auth_origin: "muuve" | "cleva_preview" | "wallet";
   wallet_address: string | null;
+  phone_linked: boolean;
+  phone_last4: string | null;
 };
 
 export type Balance = {
