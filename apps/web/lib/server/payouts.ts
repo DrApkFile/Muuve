@@ -167,6 +167,7 @@ export async function preparePayout(
   } else {
     const user = await userFor(actor);
     assert(user.wallet_address, "wallet_required", 409);
+    assert(user.phone_e164, "phone_required", 403);
     prepared = await chain.tokenTransfer(
       "wallet",
       user.wallet_address,

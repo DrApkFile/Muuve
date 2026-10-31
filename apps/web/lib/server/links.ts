@@ -23,6 +23,7 @@ export async function senderLink(session: Session, id: string) {
 export async function createLink(actor: Session, body: z.infer<typeof schemas.create>) {
   const user = await userFor(actor);
   assert(user.wallet_address, "wallet_required", 409);
+  assert(user.phone_e164, "phone_required", 403);
   const total = totalAllocations(body.recipients.map((r) => r.amount_base_units));
   assert(
     new Set(body.recipients.map((r) => r.phone_e164)).size === body.recipients.length,

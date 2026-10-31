@@ -10,6 +10,7 @@ export async function fund(actor: Session, amount: string, key: string, cleva = 
   assert(process.env.SOLANA_CLUSTER === "devnet", "devnet_required", 503);
   const user = await userFor(actor);
   assert(user.wallet_address, "wallet_required", 409);
+  assert(user.phone_e164, "phone_required", 403);
   if (cleva) assert(user.auth_origin === "cleva_preview", "preview_account_required", 403);
   assert(BigInt(amount) > 0n && BigInt(amount) <= LIMITS.dailyFunding, "funding_limit");
   const id = randomUUID(),
