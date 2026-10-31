@@ -12,10 +12,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "allowJs": false,
-    "paths": { "@muuve/shared": ["./packages/shared/src/index.ts"] }
+    "paths": {
+      "@muuve/shared": ["./packages/shared/src/index.ts"],
+      "@/*": ["./apps/web/*"]
+    }
   },
   "include": [
     "apps/**/*.ts",
+    "apps/**/*.tsx",
     "packages/**/*.ts",
     "tests/**/*.ts",
     "scripts/**/*.ts",

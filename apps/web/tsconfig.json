@@ -3,8 +3,11 @@
   "compilerOptions": {
     "plugins": [{ "name": "next" }],
     "incremental": true,
-    "paths": { "@muuve/shared": ["../../packages/shared/src/index.ts"] }
+    "paths": {
+      "@muuve/shared": ["../../packages/shared/src/index.ts"],
+      "@/*": ["./*"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
