@@ -19,7 +19,7 @@ route group, so its public URL is `/`.
 The explicit `MUUVE_API_URL` is important: the current `dev` script sets
 `APP_BASE_URL=http://127.0.0.1:3000`, which otherwise selects the in-process backend.
 Using the hosted API avoids needing local database/provider/operator credentials
-for the frontend. The `serverCall` action handles API calls and cookies on the
+for the frontend. The `/api` route (`lib/server/forward.ts`) handles API calls and cookies on the
 server. Do not copy backend secret files into the frontend application.
 
 The previous missing `@tailwindcss/postcss` error was caused by frontend dependencies
@@ -55,7 +55,7 @@ MUUVE_API_URL=https://muuve.onrender.com
 Do not prefix it with `NEXT_PUBLIC_`.
 
 **Render must then use the Vercel address as `APP_BASE_URL`** (for example
-`https://muuve-web.vercel.app`, no trailing slash) and be redeployed. `serverCall`
+`https://muuve-web.vercel.app`, no trailing slash) and be redeployed. The `/api` route
 forwards the page's origin, the API checks it against `APP_BASE_URL`, and the wallet
 login message names that host. Phantom refuses to sign a login message whose domain
 differs from the page, so with Render's own address there, wallet sign-in on Vercel

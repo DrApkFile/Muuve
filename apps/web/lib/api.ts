@@ -1,7 +1,6 @@
-import { serverCall, type CallResult } from "./server-call";
-
-// Client for the backend. Calls run server-side through the serverCall action; the browser
-// never fetches /api/* directly. Cookies are httpOnly and only ever handled on the server.
+// Client for the backend. Calls go to this site's own /api/*, which the server answers or
+// forwards to the API (lib/server/forward.ts); the browser never talks to the API host.
+// Cookies are httpOnly and never visible to scripts.
 export class ApiError extends Error {
   constructor(
     public code: string,
@@ -14,23 +13,33 @@ export class ApiError extends Error {
 
 type Options = { headers?: Record<string, string>; signal?: AbortSignal };
 
-function aborted() {
-  return new DOMException("The operation was aborted.", "AbortError");
-}
-
 export async function api<T>(path: string, body?: unknown, options: Options = {}): Promise<T> {
-  if (options.signal?.aborted) throw aborted();
-  let res: CallResult;
+  if (!path.startsWith("/api/")) throw new ApiError("not_found", 404);
+  let res: Response;
   try {
-    res = await serverCall(path, body, options.headers);
-  } catch {
-    if (options.signal?.aborted) throw aborted();
+    res = await fetch(path, {
+      method: body === undefined ? "GET" : "POST",
+      headers: {
+        ...(body === undefined ? {} : { "content-type": "application/json" }),
+        ...options.headers,
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+      credentials: "same-origin",
+      cache: "no-store",
+      signal: options.signal,
+    });
+  } catch (err) {
+    if (options.signal?.aborted) throw err;
     throw new ApiError("network_error", 0);
   }
-  // Server actions can't be cancelled mid-flight; drop the result instead.
-  if (options.signal?.aborted) throw aborted();
-  if (!res.ok) throw new ApiError(res.error, res.status, res.request_id);
-  return res.data as T;
+  const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!res.ok)
+    throw new ApiError(
+      typeof json.error === "string" ? json.error : "unknown_error",
+      res.status,
+      typeof json.request_id === "string" ? json.request_id : undefined,
+    );
+  return json as T;
 }
 
 export const newIdempotencyKey = () => crypto.randomUUID();
