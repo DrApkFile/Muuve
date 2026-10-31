@@ -7,7 +7,13 @@ import { assert } from "./errors";
 import { assertCanAttestClaim } from "./claims";
 import { userFor } from "./links";
 import { Chain } from "./solana/chain";
-import { existingOperation, insertOperation, submitOperation } from "./operations";
+import {
+  existingOperation,
+  insertOperation,
+  submitOperation,
+  nudgeOperation,
+  IN_FLIGHT_STATES,
+} from "./operations";
 import { payoutProvider, verifyWebhook, type PayoutProvider } from "./providers/payout";
 import { mockRateProvider, mockBankDirectory } from "./providers/finance";
 import { transition, settleLink } from "./state";
@@ -251,12 +257,23 @@ export async function preparePayout(
   });
 }
 export async function payoutView(actor: Session, id: string) {
-  const row = await one(
-    `SELECT p.*,q.amount_ngn_kobo,q.rate,q.expires_at AS quote_expires_at FROM payouts p JOIN quotes q ON q.id=p.quote_id WHERE p.id=$1`,
-    [id],
-  );
+  const read = () =>
+    one(
+      `SELECT p.*,q.amount_ngn_kobo,q.rate,q.expires_at AS quote_expires_at FROM payouts p JOIN quotes q ON q.id=p.quote_id WHERE p.id=$1`,
+      [id],
+    );
+  let row = await read();
   assert(row, "not_found", 404);
   await ownedPrincipal(actor, row.principal_id);
+  if (row.status === "transferring") {
+    // The release to treasury is still settling; check the network rather than wait for the sweep.
+    const ops = await database().query(
+      "SELECT id FROM operations WHERE payout_id=$1 AND state=ANY($2)",
+      [id, IN_FLIGHT_STATES],
+    );
+    for (const op of ops.rows) await nudgeOperation(op.id);
+    if (ops.rows.length) row = (await read()) ?? row;
+  }
   return {
     id: row.id,
     status: row.status,

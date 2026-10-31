@@ -19,7 +19,13 @@ import { quote, preparePayout, payoutView, retryPayout, receiveWebhook } from ".
 import { mockRateProvider, mockBankDirectory, mockClevaGateway } from "./providers/finance";
 import { verifyWallet, ensureEmbeddedWallet } from "./providers/privy";
 import { walletChallenge, walletLogin } from "./wallet-auth";
-import { submitOperation, canAccessOperation, storedOperation } from "./operations";
+import {
+  submitOperation,
+  canAccessOperation,
+  storedOperation,
+  nudgeOperation,
+  IN_FLIGHT_STATES,
+} from "./operations";
 import { fund } from "./funding";
 import { Chain } from "./solana/chain";
 import { expireLinks, failedPayouts, reconcileAll, runJobs } from "./jobs";
@@ -253,11 +259,18 @@ export async function handle(req: Request): Promise<Response> {
     if (match && method === "GET") {
       const actor = await accountOrClaim(req),
         id = uuid.parse(match[1]);
-      return await transaction(async (c) => {
-        const op = await one("SELECT * FROM operations WHERE id=$1", [id], c);
-        assert(op && (await canAccessOperation(c, op, actor)), "not_found", 404);
-        return response({ ...(await storedOperation(c, id)), state: op.state });
-      });
+      const read = () =>
+        transaction(async (c) => {
+          const op = await one("SELECT * FROM operations WHERE id=$1", [id], c);
+          assert(op && (await canAccessOperation(c, op, actor)), "not_found", 404);
+          return { ...(await storedOperation(c, id)), state: op.state as string };
+        });
+      let view = await read();
+      if (IN_FLIGHT_STATES.includes(view.state)) {
+        await nudgeOperation(id);
+        view = await read();
+      }
+      return response(view);
     }
     match = path.match(/^\/api\/public\/links\/([^/]+)$/);
     if (match && method === "GET") {

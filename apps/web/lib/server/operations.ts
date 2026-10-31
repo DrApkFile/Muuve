@@ -303,6 +303,20 @@ export async function prepareReplacement(id: string, chain = new Chain()) {
     last_valid_block_height: p.lastValidBlockHeight,
   };
 }
+const lastNudge = new Map<string, number>();
+/**
+ * Status reads drive confirmation: check the network now instead of waiting for the worker's
+ * five-minute sweep. At most once per operation every 1.5s per process; errors are left to
+ * the sweep.
+ */
+export async function nudgeOperation(id: string) {
+  const now = Date.now();
+  if (now - (lastNudge.get(id) ?? 0) < 1500) return;
+  if (lastNudge.size > 5000) lastNudge.clear();
+  lastNudge.set(id, now);
+  await reconcileOperation(id).catch(() => {});
+}
+export const IN_FLIGHT_STATES = ["submitted", "confirmed", "unknown"];
 export async function reconcileOperation(id: string, chain = new Chain()) {
   const op = await one("SELECT * FROM operations WHERE id=$1", [id]);
   assert(op, "not_found", 404);
