@@ -105,6 +105,14 @@ describe.skipIf(process.env.MUUVE_TEST_DB !== "1")(
       expect((await request(`claims/${f.link.id}/share`, "GET", undefined, cookie)).status).toBe(
         404,
       );
+      // Holding the link and a verified number isn't enough: it must be the sender's number.
+      for (const path of ["cashout", "keep"])
+        expect(
+          (await request(`claims/${f.link.id}/intent/prepare`, "POST", { path }, cookie)).status,
+        ).toBe(404);
+      expect((await request(`claims/${f.link.id}/cashout/quote`, "POST", {}, cookie)).status).toBe(
+        404,
+      );
       expect((await request(`claims/${randomUUID()}/share`, "GET", undefined, cookie)).status).toBe(
         403,
       );
