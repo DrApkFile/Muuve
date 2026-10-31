@@ -12,7 +12,7 @@ import {
   privyToken,
   jwks,
 } from "./auth";
-import { sendOtp, verifyOtp, publicUser } from "./otp";
+import { sendOtp, verifyOtp, linkPhone, publicUser } from "./otp";
 import { userFor, createLink, listLinks, senderLink, linkView, preview, recall } from "./links";
 import { share, startIntent, keep, assertCanAttestClaim } from "./claims";
 import { quote, preparePayout, payoutView, retryPayout, receiveWebhook } from "./payouts";
@@ -202,6 +202,10 @@ export async function handle(req: Request): Promise<Response> {
       });
       return response({ linked: true });
     }
+    if (path === "/api/me/phone" && method === "POST")
+      return response(
+        await linkPhone(await session(req, "account"), await body(req, schemas.otpVerify)),
+      );
     if (path === "/api/me" && method === "GET")
       return response({ user: publicUser(await userFor(await session(req, "account"))) });
     if (path === "/api/balance" && method === "GET") {

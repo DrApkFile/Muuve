@@ -2,8 +2,8 @@ import { isIP } from "node:net";
 import { randomUUID } from "node:crypto";
 import type { z } from "zod";
 import { schemas } from "@muuve/shared";
-import { transaction, one } from "./db";
-import { issue } from "./auth";
+import { transaction, one, audit } from "./db";
+import { issue, type Session } from "./auth";
 import { assert } from "./errors";
 import { otpProvider } from "./providers/otp";
 export async function sendOtp(req: Request, body: z.infer<typeof schemas.otpSend>) {
@@ -98,11 +98,60 @@ export async function verifyOtp(body: z.infer<typeof schemas.otpVerify>) {
     return { body: user ? { user: publicUser(user) } : { needs_signup: true }, cookies };
   });
 }
+// Attach a verified phone to the signed-in account (wallet sign-ups start without one).
+// Uses an "account" challenge, but issues no cookies: the caller is already signed in.
+export async function linkPhone(account: Session, body: z.infer<typeof schemas.otpVerify>) {
+  assert(account.user_id, "account_required", 401);
+  const challenge = await transaction(async (c) => {
+    const row = await one(
+      "UPDATE otp_challenges SET attempts=attempts+1 WHERE id=$1 AND purpose='account' AND status='sent' AND attempts<5 AND expires_at>now() RETURNING *",
+      [body.challenge_id],
+      c,
+    );
+    assert(row, "invalid_challenge", 401);
+    return row;
+  });
+  const ok = await otpProvider(challenge.provider_ref).check(challenge.provider_ref, body.code, {
+    challengeId: challenge.id,
+    phone: challenge.phone_e164,
+  });
+  assert(ok, "invalid_code", 401);
+  return transaction(async (c) => {
+    const consumed = await one(
+      "UPDATE otp_challenges SET status='verified',verified_at=now() WHERE id=$1 AND status='sent' AND expires_at>now() RETURNING *",
+      [challenge.id],
+      c,
+    );
+    assert(consumed, "invalid_challenge", 401);
+    const phone = consumed.phone_e164 as string;
+    await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [`phone:link:${phone}`]);
+    const user = await one("SELECT * FROM users WHERE id=$1 FOR UPDATE", [account.user_id], c);
+    assert(user, "unauthorized", 401);
+    if (user.phone_e164 === phone) return { user: publicUser(user) };
+    assert(!user.phone_e164, "phone_already_linked", 409);
+    const owner = await one("SELECT id FROM users WHERE phone_e164=$1", [phone], c);
+    assert(!owner, "phone_in_use", 409);
+    const updated = await one(
+      "UPDATE users SET phone_e164=$2 WHERE id=$1 RETURNING *",
+      [user.id, phone],
+      c,
+    );
+    // Money already kept for this number before the account existed now belongs to it.
+    await c.query(
+      "UPDATE principals SET user_id=$2 WHERE owner_phone=$1 AND source='escrow_claim' AND user_id IS NULL",
+      [phone, user.id],
+    );
+    await audit(c, "user", user.id, "user.phone_linked");
+    return { user: publicUser(updated!) };
+  });
+}
 export function publicUser(user: Record<string, unknown>) {
   return {
     id: user.id,
     display_name: user.display_name,
     auth_origin: user.auth_origin,
     wallet_address: user.wallet_address,
+    phone_linked: !!user.phone_e164,
+    phone_last4: typeof user.phone_e164 === "string" ? user.phone_e164.slice(-4) : null,
   };
 }
