@@ -28,6 +28,7 @@ import {
   type ProgressStep,
 } from "@/components/app/kit";
 import { PhoneInput, toE164, type PhoneValue } from "@/components/app/PhoneInput";
+import { GlassLens } from "@/components/app/GlassLens";
 import { TintedIcon } from "@/components/app/TintedIcon";
 import { WalletGate } from "@/components/app/WalletGate";
 
@@ -251,12 +252,15 @@ export default function SendPage() {
               onClick={() => switchMode(value)}
               disabled={!!draft}
               className={cn(
-                "inline-flex h-11 items-center gap-2 rounded-full px-5 text-[15px] font-medium transition-colors disabled:opacity-60",
-                batch === value ? "bg-ink text-cream" : "hover:bg-paper",
+                "relative inline-flex h-11 items-center rounded-full px-5 text-[15px] font-medium transition-colors disabled:opacity-60",
+                batch !== value && "hover:bg-paper",
               )}
             >
-              <Icon className="h-4 w-4" aria-hidden="true" />
-              {label}
+              {batch === value && <GlassLens group="send-mode" />}
+              <span className="relative inline-flex items-center gap-2">
+                <Icon className="h-4 w-4" aria-hidden="true" />
+                {label}
+              </span>
             </button>
           ))}
         </div>

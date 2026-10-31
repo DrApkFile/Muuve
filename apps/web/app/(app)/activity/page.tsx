@@ -8,6 +8,7 @@ import { formatUsd, relativeDate, timeLeft } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, Pill, Spinner } from "@/components/app/kit";
+import { GlassLens } from "@/components/app/GlassLens";
 import {
   Empty,
   EmptyContent,
@@ -53,11 +54,12 @@ export default function ActivityPage() {
               aria-pressed={filter === f.key}
               onClick={() => setFilter(f.key)}
               className={cn(
-                "h-10 rounded-full px-5 text-[15px] font-medium transition-colors",
-                filter === f.key ? "bg-ink text-cream" : "hover:bg-paper",
+                "relative h-10 rounded-full px-5 text-[15px] font-medium transition-colors",
+                filter !== f.key && "hover:bg-paper",
               )}
             >
-              {f.label}
+              {filter === f.key && <GlassLens group="activity-filter" />}
+              <span className="relative">{f.label}</span>
             </button>
           ))}
         </div>

@@ -140,7 +140,7 @@ export default function SharePage() {
               )}
               <div className="relative flex items-center gap-2 rounded-2xl bg-paper/80 p-2 pl-4">
                 <span className="min-w-0 flex-1 truncate font-mono text-[13px] text-ink/70">
-                  {url.replace(/#k=.*/, "#k=••••••••")}
+                  {url.replace(/#.*/, "")}
                 </span>
                 <Button
                   size="sm"
@@ -176,7 +176,8 @@ export default function SharePage() {
                 )}
               </div>
               <p className="relative m-0 text-[13px] text-ink/50">
-                The part after #k= is the key to this money. Share it only with the people you paid.
+                Anyone you paid can open this link and claim with their own number. Share it only
+                with them.
               </p>
             </>
           ) : (

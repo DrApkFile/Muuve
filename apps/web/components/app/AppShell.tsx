@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Copy, LogOut, Plus, UserRound } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,6 +10,7 @@ import { useWallet } from "@/lib/wallet";
 import { displayName, shortAddress } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { AppBackdrop, Notice, Spinner } from "./kit";
+import { GlassLens } from "./GlassLens";
 import { FundSheet } from "./FundSheet";
 
 const NAV = [
@@ -116,17 +118,18 @@ export function AppShell({ children }: { children: ReactNode }) {
             {NAV.map((item) => {
               const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
               return (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "inline-flex h-11 shrink-0 items-center rounded-full px-5 text-[15px] font-medium transition-colors",
-                    active ? "bg-ink text-cream" : "bg-paper/70 hover:bg-paper md:bg-transparent",
+                    "relative inline-flex h-11 shrink-0 items-center rounded-full px-5 text-[15px] font-medium transition-colors",
+                    active ? "" : "bg-paper/70 hover:bg-paper md:bg-transparent",
                   )}
                 >
-                  {item.label}
-                </a>
+                  {active && <GlassLens group="nav" />}
+                  <span className="relative">{item.label}</span>
+                </Link>
               );
             })}
           </nav>

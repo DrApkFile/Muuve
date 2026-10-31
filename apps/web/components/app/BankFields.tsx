@@ -5,6 +5,7 @@ import { CheckCircle2 } from "lucide-react";
 import { api, type Bank } from "@/lib/api";
 import { messageFor } from "@/lib/errors";
 import { cn } from "@/lib/utils";
+import { GlassLens } from "./GlassLens";
 
 export type BankAccount = { bankCode: string; accountNumber: string; accountName: string | null };
 
@@ -61,13 +62,12 @@ export function BankFields({
             disabled={disabled}
             onClick={() => onChange({ ...value, bankCode: b.code, accountName: null })}
             className={cn(
-              "h-14 rounded-2xl text-[16px] font-medium transition-colors",
-              value.bankCode === b.code
-                ? "bg-ink text-cream"
-                : "border border-ink/10 bg-paper/80 hover:border-ink/30",
+              "relative h-14 rounded-2xl text-[16px] font-medium transition-colors",
+              value.bankCode !== b.code && "border border-ink/10 bg-paper/80 hover:border-ink/30",
             )}
           >
-            {b.name}
+            {value.bankCode === b.code && <GlassLens group="bank" className="rounded-[19px]" />}
+            <span className="relative">{b.name}</span>
           </button>
         ))}
       </div>

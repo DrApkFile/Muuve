@@ -8,6 +8,7 @@ import { waitForOperation } from "@/lib/solana";
 import { useSession } from "@/lib/session";
 import { Button } from "@/components/ui/button";
 import { Notice, Sheet, Spinner } from "./kit";
+import { GlassLens } from "./GlassLens";
 
 const AMOUNTS = ["25000000", "50000000", "100000000", "200000000"];
 
@@ -93,11 +94,12 @@ export function FundSheet({ open, onClose }: { open: boolean; onClose(): void })
                 disabled={phase === "working"}
                 className={
                   amount === a
-                    ? "h-14 rounded-2xl bg-ink text-[17px] font-medium text-cream"
-                    : "h-14 rounded-2xl border border-ink/10 bg-paper text-[17px] font-medium hover:border-ink/30"
+                    ? "relative h-14 rounded-2xl text-[17px] font-medium"
+                    : "relative h-14 rounded-2xl border border-ink/10 bg-paper text-[17px] font-medium hover:border-ink/30"
                 }
               >
-                {formatUsd(a)}
+                {amount === a && <GlassLens group="fund-amount" className="rounded-[19px]" />}
+                <span className="relative">{formatUsd(a)}</span>
               </button>
             ))}
           </div>
