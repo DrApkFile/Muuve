@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* Muuve theme: the hero's warm cream, ink and four pastel word hues. */
+:root {
+  --ink: #0d0d0c;
+  --ink-56: rgba(13, 13, 12, 0.56);
+  --ink-42: rgba(13, 13, 12, 0.42);
+  --cream: #fbf6ef;
+  --paper: #fffdf9;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* shadcn-style names so ui/ components can use bg-background, text-foreground etc. */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --muted-foreground: var(--ink-56);
+  --border: rgba(13, 13, 12, 0.12);
+  --destructive: #c8402f;
+}
+
+@theme {
+  --font-sans: var(--font-inter-tight), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-ink: #0d0d0c;
+  --color-cream: #fbf6ef;
+  --color-paper: #fffdf9;
+
+  /* Word hues from the hero: pastel panel, glossy tint, readable text on the pastel. */
+  --color-sage-50: #e9ebe0;
+  --color-sage-100: #dfe9d4;
+  --color-sage-500: #3fb874;
+  --color-sage-700: #1f7a49;
+  --color-lemon-50: #f2ecdf;
+  --color-lemon-100: #f4ebc6;
+  --color-lemon-500: #e9c22e;
+  --color-lemon-700: #7d6200;
+  --color-peach-50: #f8dcc7;
+  --color-peach-100: #f9cba9;
+  --color-peach-500: #f2772f;
+  --color-peach-700: #a9441a;
+  --color-rose-50: #f0e4e6;
+  --color-rose-100: #ecd6e2;
+  --color-rose-500: #c564c4;
+  --color-rose-700: #873a86;
+
+  --animate-marquee: marquee var(--marquee-duration, 36s) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Fine fractal-noise grain, the same texture as the hero panel. */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Footer video tint: cycles slowly through the hero's word hues. */
+.footer-tint {
+  background: #3fb874;
+  animation: footer-tint 28s linear infinite;
+}
+
+@keyframes footer-tint {
+  0%,
+  100% {
+    background: #3fb874;
+  }
+  25% {
+    background: #e9c22e;
+  }
+  50% {
+    background: #f2772f;
+  }
+  75% {
+    background: #c564c4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-tint {
+    animation: none;
+  }
+}
