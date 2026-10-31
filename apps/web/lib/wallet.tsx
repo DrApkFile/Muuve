@@ -68,6 +68,7 @@ function rejected(error: unknown): never {
   const text = error instanceof Error ? `${error.name} ${error.message}` : String(error);
   if (/reject|denied|cancel|declined|closed/i.test(text)) throw new Error("wallet_rejected");
   if (/chain id|network|cluster/i.test(text)) throw new Error("wallet_wrong_network");
+  if (/domain|origin/i.test(text)) throw new Error("wallet_wrong_domain");
   throw error;
 }
 

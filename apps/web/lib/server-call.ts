@@ -71,12 +71,15 @@ export async function serverCall(
   if (body !== undefined) forward.set("content-type", "application/json");
 
   // Next.js already rejects server actions whose Origin doesn't match the host serving the
-  // page, so the cross-site check has happened by now. The API's own origin check then sees
-  // the address it is configured for, which keeps localhost and preview hosts working.
+  // page, so the cross-site check has happened by now.
+  // In-process: the API sees the address it is configured for (keeps localhost working).
+  // Remote API (e.g. pages on Vercel, API on Render): pass the page's real origin. The API
+  // must have APP_BASE_URL set to this site, because wallets only sign a login message
+  // whose domain matches the page they're on.
   const remote = remoteApi();
   const base =
     remote ?? process.env.APP_BASE_URL ?? `http://${incoming.get("host") ?? "localhost"}`;
-  forward.set("origin", new URL(base).origin);
+  forward.set("origin", (remote && incoming.get("origin")) || new URL(base).origin);
   const request = new Request(new URL(path, base), {
     method: body === undefined ? "GET" : "POST",
     headers: forward,

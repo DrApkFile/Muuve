@@ -52,7 +52,14 @@ Set this **server-side** Vercel environment variable for the intended environmen
 MUUVE_API_URL=https://muuve.onrender.com
 ```
 
-Do not prefix it with `NEXT_PUBLIC_`. Keep claim/cashout gates off until their actual
+Do not prefix it with `NEXT_PUBLIC_`.
+
+**Render must then use the Vercel address as `APP_BASE_URL`** (for example
+`https://muuve-web.vercel.app`, no trailing slash) and be redeployed. `serverCall`
+forwards the page's origin, the API checks it against `APP_BASE_URL`, and the wallet
+login message names that host. Phantom refuses to sign a login message whose domain
+differs from the page, so with Render's own address there, wallet sign-in on Vercel
+fails. Only one address can be the sign-in address at a time. Keep claim/cashout gates off until their actual
 hosted verification is complete. `NEXT_PUBLIC_CLAIMS_ENABLED` is a build-time flag;
 recipient keep remains disabled until legitimate Privy enrollment is verified.
 

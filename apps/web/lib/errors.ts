@@ -37,6 +37,8 @@ const COPY: Record<string, string> = {
   wallet_rejected: "You cancelled the request in your wallet.",
   wallet_wrong_network:
     "Your wallet is on the wrong network. Switch it to Solana Devnet (in Phantom: Settings → Developer Settings → Testnet Mode), then try again.",
+  wallet_wrong_domain:
+    "Your wallet blocked this sign-in because it was issued for a different web address. Open Muuve at its main address and try again.",
   wallet_unsupported: "This wallet can't sign the request. Try Phantom, Solflare or Backpack.",
 };
 
