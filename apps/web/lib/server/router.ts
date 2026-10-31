@@ -17,7 +17,7 @@ import { userFor, createLink, listLinks, senderLink, linkView, preview, recall }
 import { share, startIntent, keep, assertCanAttestClaim } from "./claims";
 import { quote, preparePayout, payoutView, retryPayout, receiveWebhook } from "./payouts";
 import { mockRateProvider, mockBankDirectory, mockClevaGateway } from "./providers/finance";
-import { verifyWallet } from "./providers/privy";
+import { verifyWallet, ensureEmbeddedWallet } from "./providers/privy";
 import { walletChallenge, walletLogin } from "./wallet-auth";
 import { submitOperation, canAccessOperation, storedOperation } from "./operations";
 import { fund } from "./funding";
@@ -75,6 +75,20 @@ async function publicLimit(req: Request) {
     );
     assert(Number(row!.n) < 60, "rate_limited", 429);
     await audit(c, "rate_limit", randomUUID(), bucket);
+  });
+}
+// Link a Privy wallet the user owns (ownership is checked against Privy's records).
+async function attachWallet(userId: string, address: string) {
+  const privy = await verifyWallet(userId, address);
+  await transaction(async (c) => {
+    const user = await one("SELECT * FROM users WHERE id=$1 FOR UPDATE", [userId], c);
+    assert(!user?.wallet_address || user.wallet_address === address, "wallet_already_linked", 409);
+    await c.query("UPDATE users SET wallet_address=$2,privy_user_id=$3 WHERE id=$1", [
+      userId,
+      address,
+      privy,
+    ]);
+    await audit(c, "user", userId, "user.wallet_linked");
   });
 }
 export async function handle(req: Request): Promise<Response> {
@@ -184,23 +198,16 @@ export async function handle(req: Request): Promise<Response> {
     }
     if (path === "/api/auth/wallet" && method === "POST") {
       const s = await session(req, "account"),
-        input = await body(req, schemas.wallet),
-        privy = await verifyWallet(s.user_id!, input.wallet_address);
-      await transaction(async (c) => {
-        const user = await one("SELECT * FROM users WHERE id=$1 FOR UPDATE", [s.user_id], c);
-        assert(
-          !user?.wallet_address || user.wallet_address === input.wallet_address,
-          "wallet_already_linked",
-          409,
-        );
-        await c.query("UPDATE users SET wallet_address=$2,privy_user_id=$3 WHERE id=$1", [
-          s.user_id,
-          input.wallet_address,
-          privy,
-        ]);
-        await audit(c, "user", s.user_id!, "user.wallet_linked");
-      });
+        input = await body(req, schemas.wallet);
+      await attachWallet(s.user_id!, input.wallet_address);
       return response({ linked: true });
+    }
+    if (path === "/api/auth/wallet/embedded" && method === "POST") {
+      const user = await userFor(await session(req, "account"));
+      if (user.wallet_address) return response({ wallet_address: user.wallet_address });
+      const address = await ensureEmbeddedWallet(user.id);
+      await attachWallet(user.id, address);
+      return response({ wallet_address: address });
     }
     if (path === "/api/me/phone" && method === "POST")
       return response(
