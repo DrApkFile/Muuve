@@ -83,6 +83,8 @@ services:
         value: "1520"
       - key: TRUSTED_PROXY
         value: "false"
+      - key: NEXT_PUBLIC_CLAIMS_ENABLED
+        value: "true"
   - type: worker
     name: muuve-worker
     runtime: node
