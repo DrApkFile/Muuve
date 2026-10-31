@@ -20,9 +20,11 @@ import {
   ArrowRight,
   Handshake,
   Loader,
+  MessageSquareText,
   PartyPopper,
   Wallet as WalletIcon,
 } from "lucide-react";
+import { PhoneInput, toE164, type PhoneValue } from "@/components/app/PhoneInput";
 import { api, type User } from "@/lib/api";
 import { messageFor } from "@/lib/errors";
 import { displayName, firstName, shortAddress } from "@/lib/format";
@@ -31,9 +33,10 @@ import { useWallet } from "@/lib/wallet";
 import { cn } from "@/lib/utils";
 
 // Sender sign-in, per docs/wallet-authentication.md: connect a Solana wallet, sign the
-// server's one-time login message, and the API sets the account cookie. No phone or OTP.
+// server's one-time login message, and the API sets the account cookie. Then the sender
+// verifies a phone number by SMS code; sending and cashing out need one.
 
-type Step = "choose" | "cleva" | "wallet" | "signing" | "done";
+type Step = "choose" | "cleva" | "wallet" | "signing" | "phone" | "code" | "done";
 
 // ---------- Backdrop: the hero's pastel panels, one per step ----------
 
@@ -49,6 +52,8 @@ const STEP_TONE: Record<Step, Tone> = {
   cleva: "lemon",
   wallet: "peach",
   signing: "rose",
+  phone: "lemon",
+  code: "sage",
   done: "sage",
 };
 
@@ -207,6 +212,15 @@ export function OnboardingFlow() {
   const [step, setStep] = useState<Step>("choose");
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [phone, setPhone] = useState<PhoneValue>({ country: "NG", number: "" });
+  const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [resendAt, setResendAt] = useState(0);
+  // "link": a signed-in wallet user adds a phone. "login": a phone account signs in.
+  const [phoneMode, setPhoneMode] = useState<"link" | "login">("link");
+  const [now, setNow] = useState(() => Date.now());
+  const e164 = toE164(phone);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const next = () => {
@@ -214,10 +228,21 @@ export function OnboardingFlow() {
     return target && target.startsWith("/") && !target.startsWith("//") ? target : "/home";
   };
 
-  // Already signed in? Go straight to the app.
+  // Already signed in? Go straight to the app, or finish the phone step first.
   useEffect(() => {
-    if (!session.loading && session.user && step === "choose") router.replace(next());
+    if (session.loading || !session.user || step !== "choose") return;
+    if (session.user.phone_linked) router.replace(next());
+    else {
+      setUser(session.user);
+      setStep("phone");
+    }
   }, [session.loading, session.user]);
+
+  useEffect(() => {
+    if (step !== "code") return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [step]);
 
   // Confetti in the hero's four hues once signed in.
   useEffect(() => {
@@ -256,16 +281,71 @@ export function OnboardingFlow() {
       });
       session.setUser(res.user);
       setUser(res.user);
-      go("done");
+      go(res.user.phone_linked ? "done" : "phone");
     } catch (err) {
+      if (process.env.NODE_ENV !== "production") console.error("wallet sign-in failed", err);
       setStep("wallet");
       setError(messageFor(err));
+    }
+  }
+
+  async function sendCode() {
+    if (!e164 || busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await api<{ challenge_id: string }>("/api/auth/otp/send", {
+        phone_e164: e164,
+        channel: "sms",
+        purpose: "account",
+      });
+      setChallengeId(res.challenge_id);
+      setCode("");
+      setResendAt(Date.now() + 30_000);
+      go("code");
+    } catch (err) {
+      setError(messageFor(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function verifyCode(value: string) {
+    if (!challengeId || busy || !/^\d{6}$/.test(value)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res =
+        phoneMode === "link"
+          ? await api<{ user: User }>("/api/me/phone", { challenge_id: challengeId, code: value })
+          : await api<{ user?: User; needs_signup?: true }>("/api/auth/otp/verify", {
+              challenge_id: challengeId,
+              code: value,
+            });
+      if (!res.user) {
+        setPhoneMode("link");
+        go("choose");
+        setError(
+          "There's no Muuve account for that number yet. Sign in with a wallet, or open a payment link you were sent.",
+        );
+        return;
+      }
+      session.setUser(res.user);
+      setUser(res.user);
+      go("done");
+    } catch (err) {
+      setCode("");
+      setError(messageFor(err));
+    } finally {
+      setBusy(false);
     }
   }
 
   const back: Partial<Record<Step, () => void>> = {
     cleva: () => go("choose"),
     wallet: () => go("choose"),
+    code: () => go("phone"),
+    phone: phoneMode === "login" ? () => go("choose") : undefined,
   };
   const stepMotion = {
     initial: reduce ? false : { y: 8, opacity: 0 },
@@ -345,6 +425,17 @@ export function OnboardingFlow() {
                     Received a payment? You don&apos;t need an account. Open the link you were sent
                     and verify your number.
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhoneMode("login");
+                      go("phone");
+                    }}
+                    className="text-sm font-semibold text-ink/75 underline-offset-4 hover:underline"
+                  >
+                    Kept dollars with Muuve? Sign in with your phone
+                  </button>
+                  <FieldError message={error} />
                 </BlurFade>
               </motion.div>
             )}
@@ -423,6 +514,93 @@ export function OnboardingFlow() {
                       : "Approve the sign-in message."
                   }
                 />
+              </motion.div>
+            )}
+
+            {step === "phone" && (
+              <motion.div key="phone" {...stepMotion} className="flex flex-col items-center gap-8">
+                <StepTitle
+                  title={phoneMode === "login" ? "Sign in with your phone" : "Verify your phone"}
+                  sub={
+                    phoneMode === "login"
+                      ? "Use the number your Muuve account was created with. We'll text you a 6-digit code."
+                      : "Your number is how recipients know it's you, and you'll need it to send or cash out. We'll text you a 6-digit code."
+                  }
+                />
+                <BlurFade delay={0.3} className="w-full">
+                  <form
+                    className="flex w-full flex-col items-center gap-5"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      void sendCode();
+                    }}
+                  >
+                    <label htmlFor="phone" className="sr-only">
+                      Phone number
+                    </label>
+                    <PhoneInput id="phone" size="lg" value={phone} onChange={setPhone} autoFocus />
+                    <GlassButton
+                      type="submit"
+                      disabled={!e164 || busy}
+                      contentClassName="flex items-center gap-2"
+                    >
+                      <MessageSquareText className="h-4 w-4" aria-hidden="true" />
+                      {busy ? "Sending…" : "Text me a code"}
+                    </GlassButton>
+                    <FieldError message={error} />
+                  </form>
+                </BlurFade>
+              </motion.div>
+            )}
+
+            {step === "code" && (
+              <motion.div key="code" {...stepMotion} className="flex flex-col items-center gap-8">
+                <StepTitle
+                  title="Enter the code"
+                  sub={`Sent to the number ending ${e164?.slice(-4) ?? ""}.`}
+                />
+                <BlurFade delay={0.3} className="w-full">
+                  <form
+                    className="flex w-full flex-col items-center gap-5"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      void verifyCode(code);
+                    }}
+                  >
+                    <label htmlFor="otp" className="sr-only">
+                      6-digit code
+                    </label>
+                    <input
+                      id="otp"
+                      autoFocus
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      maxLength={6}
+                      placeholder="••••••"
+                      value={code}
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/\D/g, "").slice(0, 6);
+                        setCode(digits);
+                        if (digits.length === 6) void verifyCode(digits);
+                      }}
+                      className="h-16 w-full rounded-2xl border border-ink/10 bg-paper/80 text-center text-[30px] font-medium tracking-[0.45em] tabular-nums focus:border-ink/40 focus:outline-none"
+                    />
+                    <GlassButton type="submit" disabled={code.length !== 6 || busy}>
+                      {busy ? "Checking…" : "Verify"}
+                    </GlassButton>
+                    <button
+                      type="button"
+                      disabled={resendAt > now || busy}
+                      onClick={() => void sendCode()}
+                      className="text-sm font-semibold text-ink/70 underline-offset-4 hover:underline disabled:font-normal disabled:text-ink/40 disabled:no-underline"
+                    >
+                      {resendAt > now
+                        ? `Resend in ${Math.ceil((resendAt - now) / 1000)}s`
+                        : "Resend code"}
+                    </button>
+                    <FieldError message={error} />
+                  </form>
+                </BlurFade>
               </motion.div>
             )}
 
