@@ -6,12 +6,26 @@ Muuve turns dollars into a claim link you share on WhatsApp. The recipient verif
 
 Built for the Cleva x Tether Future of Payments Hackathon (UNILAG Edition).
 
+## Frontend development
+
+Run from the repository root:
+
+```sh
+pnpm install --frozen-lockfile
+MUUVE_API_URL=https://muuve.onrender.com pnpm dev
+```
+
+Open the local URL Next.js prints (normally `http://127.0.0.1:3000`). Use pnpm rather than `npm install` inside `apps/web`;
+the package manifest is at the repository root. See
+[frontend running and Vercel settings](docs/frontend-running.md).
+
 ## Backend milestone
 
 Backend implementation lives in `apps/web/lib/server`, with Node route handlers in
 `apps/web/app/api`, fixed-allocation Anchor escrow in `programs/muuve_escrow`, shared
 schemas in `packages/shared`, and transactional Postgres migrations in `supabase/migrations`.
-No frontend is included. Fiat payouts, rates and bank resolution are mocks.
+A browser frontend now lives alongside the API in `apps/web`. Fiat payouts, rates
+and bank resolution are mocks.
 
 Read the [owner-approved decisions](docs/backend-decisions.md), then the
 [setup, devnet and recovery runbook](docs/backend-runbook.md).
