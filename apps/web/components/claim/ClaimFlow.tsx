@@ -34,7 +34,10 @@ type Step =
   | "preparing"
   | "bank"
   | "sending"
-  | "status";
+  | "status"
+  | "account"
+  | "keeping"
+  | "kept";
 
 const RESEND_AFTER_MS = 30_000;
 
@@ -116,6 +119,7 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
   const [retryOf, setRetryOf] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [name, setName] = useState("");
 
   // 1. Take the key from the fragment into memory, then wipe it from the address bar.
   useEffect(() => {
@@ -305,6 +309,81 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
     } finally {
       setBusy(false);
     }
+  }
+
+  // 3. Keep in dollars: needs a Muuve account for this number, which gets a dollar
+  // balance created for it on the server. Then reserve the share for keeping and release it.
+  async function startKeep() {
+    go("keeping");
+    try {
+      const signedIn = await api("/api/me")
+        .then(() => true)
+        .catch((err) => {
+          if (err instanceof ApiError && err.status === 401) return false;
+          throw err;
+        });
+      if (!signedIn) {
+        setStep("account");
+        return;
+      }
+      await finishKeep();
+    } catch (err) {
+      keepFailed(err);
+    }
+  }
+
+  async function createAccount() {
+    const displayName = name.trim();
+    if (!displayName || busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await api("/api/auth/signup", { display_name: displayName, origin: "muuve" });
+      go("keeping");
+      await finishKeep();
+    } catch (err) {
+      if (step === "account") setError(messageFor(err));
+      else keepFailed(err);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function finishKeep() {
+    await api("/api/auth/wallet/embedded", {});
+    // A failed bank payout already moved the share out of escrow; keep resolves it directly.
+    if (share?.status !== "cashing_out") {
+      const intent = await api<PreparedOperation>(`/api/claims/${linkId}/intent/prepare`, {
+        path: "keep",
+      });
+      if (intent.state !== "finalized") {
+        await signAndSubmit(`/api/claims/${linkId}/intent/submit`, intent);
+        const state = await waitForOperation(intent.operation_id);
+        if (state !== "finalized") throw new Error(state === "failed" ? "intent_failed" : "slow");
+      }
+    }
+    const res = await api<Partial<PreparedOperation> & { done?: boolean }>(
+      `/api/claims/${linkId}/keep/prepare`,
+      {},
+    );
+    if (!res.done && res.operation_id) {
+      if (res.tx)
+        await signAndSubmit(`/api/claims/${linkId}/keep/submit`, res as PreparedOperation);
+      const state = await waitForOperation(res.operation_id);
+      if (state !== "finalized") throw new Error(state === "failed" ? "intent_failed" : "slow");
+    }
+    go("kept");
+  }
+
+  function keepFailed(err: unknown) {
+    setStep(share?.status === "cashing_out" ? "status" : "share");
+    setError(
+      err instanceof Error && err.message === "slow"
+        ? "This is taking longer than usual. Try again in a minute."
+        : err instanceof Error && err.message === "intent_failed"
+          ? "That didn't go through. Your money is safe. Try again."
+          : messageFor(err),
+    );
   }
 
   async function followPayout(id: string) {
@@ -589,13 +668,16 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
             <button
               type="button"
               disabled={!KEEP_ENABLED}
-              className="flex w-full items-start gap-4 rounded-3xl border border-ink/10 bg-paper/70 p-5 text-left disabled:opacity-60"
+              onClick={() => void startKeep()}
+              className="flex w-full items-start gap-4 rounded-3xl border border-ink/10 bg-paper/70 p-5 text-left transition-transform enabled:hover:scale-[1.01] disabled:opacity-60 motion-reduce:hover:scale-100"
             >
               <PiggyBank className="mt-1 h-6 w-6 shrink-0" aria-hidden="true" />
               <span>
                 <span className="block text-[20px] font-medium">Keep in dollars</span>
                 <span className="block text-[15px] text-ink/60">
-                  {KEEP_ENABLED ? "Hold it in a Muuve balance and cash out later." : "Opening soon"}
+                  {KEEP_ENABLED
+                    ? "Hold it in a Muuve account and cash out whenever you like."
+                    : "Opening soon"}
                 </span>
               </span>
             </button>
@@ -611,6 +693,84 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
       </Screen>
     );
   }
+
+  if (step === "account")
+    return (
+      <Screen tone="sage">
+        <form
+          className="flex flex-1 flex-col"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void createAccount();
+          }}
+        >
+          <Title sub="Your dollars stay in your Muuve account, under this phone number. Cash out to your bank whenever you like.">
+            Create your Muuve account
+          </Title>
+          <label htmlFor="name" className="mb-2 text-[16px] font-medium text-ink/70">
+            Your name
+          </label>
+          <input
+            id="name"
+            autoFocus
+            autoComplete="name"
+            maxLength={60}
+            placeholder="e.g. Ada Okafor"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="h-14 w-full rounded-2xl border border-ink/10 bg-paper/80 px-4 text-[18px] placeholder:text-ink/35 focus:border-ink/40 focus:outline-none"
+          />
+          {error && <ErrorText>{error}</ErrorText>}
+          <div className="mt-auto flex flex-col gap-3 pt-10">
+            <Button
+              type="submit"
+              size="lg"
+              className="h-16 w-full text-[18px]"
+              disabled={!name.trim() || busy}
+            >
+              {busy ? "Creating…" : "Create account and keep"}
+            </Button>
+            <button
+              type="button"
+              onClick={() => go(share?.status === "cashing_out" ? "status" : "share")}
+              className="text-[16px] text-ink/60"
+            >
+              Back
+            </button>
+          </div>
+        </form>
+      </Screen>
+    );
+
+  if (step === "keeping")
+    return (
+      <Screen tone="sage">
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+          <span className="h-12 w-12 animate-spin rounded-full border-4 border-ink/15 border-t-ink" />
+          <p className="m-0 text-[20px] font-medium">Moving your dollars to your account…</p>
+          <p className="m-0 text-[16px] text-ink/55">This usually takes a few seconds.</p>
+        </div>
+      </Screen>
+    );
+
+  if (step === "kept")
+    return (
+      <Screen tone="sage">
+        <div className="flex flex-1 flex-col">
+          <span className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-sage-500 text-ink">
+            <Check className="h-8 w-8" aria-hidden="true" />
+          </span>
+          <Title sub="They're in your Muuve account. Cash out to your bank or send them on whenever you like.">
+            {amount ? formatUsd(amount, { cents: true }) : "Your dollars"} kept
+          </Title>
+          <div className="mt-auto">
+            <Button asChild size="lg" className="h-16 w-full text-[18px]">
+              <a href="/home">Open my account</a>
+            </Button>
+          </div>
+        </div>
+      </Screen>
+    );
 
   if (step === "preparing" || step === "sending")
     return (
@@ -704,10 +864,16 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
                 Try another account
               </Button>
               {KEEP_ENABLED && (
-                <Button size="lg" variant="outline" className="h-16 w-full text-[18px]">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-16 w-full text-[18px]"
+                  onClick={() => void startKeep()}
+                >
                   Keep in dollars
                 </Button>
               )}
+              {error && <ErrorText>{error}</ErrorText>}
             </div>
           </>
         ) : (
