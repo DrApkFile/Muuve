@@ -43,10 +43,11 @@ async function forward(request: Request, remote: string) {
       body: ["GET", "HEAD"].includes(request.method) ? undefined : await request.text(),
       cache: "no-store",
       redirect: "manual",
-      signal: AbortSignal.timeout(30000),
+      // A sleeping free-tier API can take most of a minute to wake.
+      signal: AbortSignal.timeout(60000),
     });
   } catch {
-    return Response.json({ error: "network_error" }, { status: 502 });
+    return Response.json({ error: "api_unavailable" }, { status: 502 });
   }
 }
 

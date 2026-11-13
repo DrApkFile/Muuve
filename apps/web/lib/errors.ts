@@ -3,6 +3,7 @@ import { ApiError } from "./api";
 // Plain-language copy for the backend's stable error codes. Never show raw codes or provider text.
 const COPY: Record<string, string> = {
   network_error: "You seem to be offline. Check your connection and try again.",
+  api_unavailable: "An error occurred, but don't fret. Try again.",
   unauthorized: "Your session has ended. Log in again to continue.",
   invalid_origin: "This page can't reach Muuve from here. Open it at the Muuve address.",
   rate_limited: "Too many tries. Wait a few minutes, then try again.",
@@ -49,6 +50,8 @@ export function messageFor(error: unknown): string {
     if (error.status === 429) return COPY.rate_limited!;
     if (error.status === 401) return COPY.unauthorized!;
     const ref = error.requestId ? ` (ref ${error.requestId.slice(0, 8)})` : "";
+    // The server failed or couldn't be reached (asleep, restarting, timed out).
+    if (error.status >= 500) return `${COPY.api_unavailable}${ref}`;
     return `Something went wrong. Try again.${ref}`;
   }
   if (error instanceof Error && COPY[error.message]) return COPY[error.message]!;
