@@ -1,5 +1,5 @@
 // Receiving from abroad: the same link, paid in dollars or any Solana token, claimed in naira or
-// kept in dollars. Card and any-token payments are not built yet, so they're marked as coming.
+// kept in dollars.
 const POINTS = [
   {
     title: "Arrives as dollars",
@@ -39,12 +39,6 @@ export function GetPaidSection() {
             </li>
           ))}
         </ul>
-        <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-paper/80 px-4 py-2 text-sm text-ink/70 shadow-[0_1px_0_white_inset]">
-          <span className="rounded-full bg-lemon-500 px-2 py-0.5 text-[12px] font-semibold text-ink">
-            Coming soon
-          </span>
-          Pay a Muuve link from a card, or with any Solana token.
-        </p>
       </div>
     </section>
   );
