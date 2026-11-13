@@ -20,10 +20,11 @@ export async function sendOtp(req: Request, body: z.infer<typeof schemas.otpSend
   const ip = forwarded && isIP(forwarded) ? forwarded : "127.0.0.1";
   const id = randomUUID();
   await transaction(async (c) => {
-    await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
-      `otp:phone:${body.phone_e164}`,
-    ]);
-    await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [`otp:ip:${ip}`]);
+    // Both locks in one round trip, phone first.
+    await c.query(
+      "SELECT pg_advisory_xact_lock(hashtextextended($1,0)), pg_advisory_xact_lock(hashtextextended($2,0))",
+      [`otp:phone:${body.phone_e164}`, `otp:ip:${ip}`],
+    );
     const rate = await one(
       `SELECT count(*) FILTER(WHERE phone_e164=$1 AND created_at>now()-interval '10 minutes') AS ten,
    count(*) FILTER(WHERE phone_e164=$1 AND created_at>now()-interval '24 hours') AS day,

@@ -9,7 +9,10 @@ export function database() {
       max: 10,
       connectionTimeoutMillis: 10000,
       query_timeout: 30000,
-      idleTimeoutMillis: 30000,
+      // Keep warm connections between taps: opening a new TLS connection to a distant
+      // database costs several round trips, which people feel as a slow button.
+      idleTimeoutMillis: 600000,
+      keepAlive: true,
       options: "-c search_path=muuve,public",
       application_name: "muuve-backend",
     });

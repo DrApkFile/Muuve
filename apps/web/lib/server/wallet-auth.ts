@@ -55,21 +55,23 @@ export async function walletChallenge(
   const id = randomUUID(),
     browser = randomBytes(32).toString("base64url");
   const body = await transaction(async (c) => {
-    await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
-      `wallet:address:${address}`,
-    ]);
-    await c.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [`wallet:ip:${ip}`]);
+    // One round trip each (the database may be far away): both locks, address first; then
+    // the rate counts with the transaction clock.
+    await c.query(
+      "SELECT pg_advisory_xact_lock(hashtextextended($1,0)), pg_advisory_xact_lock(hashtextextended($2,0))",
+      [`wallet:address:${address}`, `wallet:ip:${ip}`],
+    );
     const rate = await one(
       `SELECT count(*) FILTER(WHERE wallet_address=$1 AND created_at>now()-interval '10 minutes') AS wallet,
-       count(*) FILTER(WHERE ip=$2::inet AND created_at>now()-interval '1 hour') AS ip
+       count(*) FILTER(WHERE ip=$2::inet AND created_at>now()-interval '1 hour') AS ip,
+       (SELECT date_trunc('milliseconds',now())) AS now
        FROM wallet_auth_challenges WHERE created_at>now()-interval '1 hour'
        AND (wallet_address=$1 OR ip=$2::inet)`,
       [address, ip],
       c,
     );
     assert(Number(rate!.wallet) < 3 && Number(rate!.ip) < 20, "rate_limited", 429);
-    const clock = await one("SELECT date_trunc('milliseconds',now()) AS now", [], c);
-    const issued = clock!.now as Date,
+    const issued = rate!.now as Date,
       expires = new Date(issued.getTime() + 300000);
     const message = `${new URL(canonical).host} wants you to sign in with your Solana account:\n${address}\n\nSign in to Muuve as a sender. This does not authorize a transfer or verify a phone.\n\nURI: ${canonical}\nVersion: 1\nChain ID: devnet\nNonce: ${randomBytes(16).toString("hex")}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}\nRequest ID: ${id}`;
     await c.query(
