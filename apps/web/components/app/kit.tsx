@@ -236,9 +236,10 @@ export function StepProgress({
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border",
                 done && "border-transparent bg-lemon-500 text-ink",
-                active && !failed && "border-ink/20 bg-paper",
+                // currentColor-based so it reads on both paper and ink cards.
+                active && !failed && "border-current/25",
                 active && failed && "border-destructive/40 bg-destructive/10 text-destructive",
-                !done && !active && "border-ink/10 text-ink/30",
+                !done && !active && "border-current/15 opacity-45",
               )}
             >
               {done ? (
@@ -254,7 +255,7 @@ export function StepProgress({
             <span
               className={cn(
                 "text-[15px]",
-                done ? "text-ink/45 line-through" : active ? "font-medium" : "text-ink/45",
+                done ? "opacity-70" : active ? "font-medium" : "opacity-45",
               )}
             >
               {step.label}
