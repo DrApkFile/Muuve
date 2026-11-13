@@ -169,8 +169,7 @@ export function Hero() {
           </a>
           <div className={styles.navLinks}>
             <a href="#how-it-works">How it works</a>
-            <a href="#batch">Batch payments</a>
-            <a href="#safety">Safety</a>
+            <a href="#get-paid">Get paid from abroad</a>
             <a href="/start" className={styles.navButton}>
               Get started
             </a>
@@ -227,9 +226,9 @@ export function Hero() {
             </a>
           </div>
           <p className={styles.caption}>
-            Muuve turns dollars into a link you share on WhatsApp.
+            Get paid in dollars or crypto with one link.
             <br />
-            They verify their number, then cash out to naira or keep dollars.
+            Cash out to naira, or keep it in dollars. No conversion stress.
           </p>
         </div>
       </div>
