@@ -16,7 +16,8 @@ import { sendOtp, verifyOtp, linkPhone, publicUser } from "./otp";
 import { userFor, createLink, listLinks, senderLink, linkView, preview, recall } from "./links";
 import { share, startIntent, keep, assertCanAttestClaim } from "./claims";
 import { quote, preparePayout, payoutView, retryPayout, receiveWebhook } from "./payouts";
-import { mockRateProvider, mockBankDirectory, mockClevaGateway } from "./providers/finance";
+import { mockRateProvider, bankDirectory, mockClevaGateway } from "./providers/finance";
+import { payoutProviderName } from "./providers/payout";
 import { verifyWallet, ensureEmbeddedWallet } from "./providers/privy";
 import { walletChallenge, walletLogin } from "./wallet-auth";
 import {
@@ -125,7 +126,11 @@ export async function handle(req: Request): Promise<Response> {
     }
     checkOrigin(req);
     if (path === "/api/health" && method === "GET")
-      return response({ service: "muuve-backend", chain: "devnet", payouts: "mock" });
+      return response({
+        service: "muuve-backend",
+        chain: "devnet",
+        payouts: process.env.PAYOUT_PROVIDER ?? "mock",
+      });
     if (path === "/api/auth/wallet/challenge" && method === "POST") {
       const result = await walletChallenge(req, await body(req, schemas.walletChallenge));
       return response(result.body, 200, [result.cookie]);
@@ -340,16 +345,18 @@ export async function handle(req: Request): Promise<Response> {
     }
     if (path === "/api/banks" && method === "GET") {
       await accountOrClaim(req);
-      return response({ banks: await mockBankDirectory.listBanks(), mock: true });
+      return response({
+        banks: await bankDirectory().listBanks(),
+        mock: payoutProviderName() === "mock",
+      });
     }
     if (path === "/api/banks/resolve" && method === "POST") {
       await accountOrClaim(req);
       const input = await body(req, schemas.bank);
       return response({
-        account_name: (
-          await mockBankDirectory.resolveAccount(input.bank_code, input.account_number)
-        ).accountName,
-        mock: true,
+        account_name: (await bankDirectory().resolveAccount(input.bank_code, input.account_number))
+          .accountName,
+        mock: payoutProviderName() === "mock",
       });
     }
     if (path === "/api/payouts/quote" && method === "POST")

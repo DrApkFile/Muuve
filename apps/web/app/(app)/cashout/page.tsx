@@ -7,7 +7,7 @@ import { isCode, messageFor } from "@/lib/errors";
 import { CLAIMS_ENABLED } from "@/lib/flags";
 import { formatNgn, formatUsd, parseUsd } from "@/lib/format";
 import { useBalance, useNow } from "@/lib/hooks";
-import { waitForPayout } from "@/lib/payouts";
+import { payoutNote, waitForPayout } from "@/lib/payouts";
 import { signWithWallet } from "@/lib/solana";
 import { useWallet } from "@/lib/wallet";
 import { Button } from "@/components/ui/button";
@@ -174,10 +174,7 @@ export default function CashoutPage() {
               </p>
             </>
           )}
-          <Notice className="w-full text-left">
-            Demo payout: no real naira moves. A real payout partner replaces this step in
-            production.
-          </Notice>
+          <Notice className="w-full text-left">{payoutNote(payout)}</Notice>
           {payout?.status === "failed" && (
             <Notice tone="danger" className="w-full text-left">
               We couldn&apos;t send to that account. Your dollars are returned to your balance.

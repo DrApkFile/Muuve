@@ -77,6 +77,9 @@ services:
         value: "false"
       - key: PAYOUT_PROVIDER
         value: mock
+      # Set PAYOUT_PROVIDER=paystack in the dashboard once this test key (sk_test_…) is added.
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
       - key: RATE_PROVIDER
         value: mock
       - key: MOCK_NGN_PER_USD

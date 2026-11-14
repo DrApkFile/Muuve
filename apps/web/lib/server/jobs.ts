@@ -145,7 +145,8 @@ export async function runJobs(
       } else if (["mock_webhook", "provider_reconcile"].includes(job.kind)) {
         const p = await one("SELECT * FROM payouts WHERE id=$1", [job.entity_id]);
         assert(p, "missing_payout", 503);
-        const status = await payoutProvider().status(p.provider_key);
+        // The provider that took the payout settles it, whatever the current setting.
+        const status = await payoutProvider(p.provider).status(p.provider_key);
         assert(status && status.status !== "processing", "provider_pending", 409);
         const raw = JSON.stringify({
           event_id: `mock-${p.id}-${status.status}`,

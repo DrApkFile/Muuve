@@ -167,7 +167,8 @@ export type Payout = {
   provider_ref: string | null;
   account_name: string | null;
   account_last4: string;
-  mock: true;
+  provider: "mock" | "paystack";
+  mock: boolean;
 };
 
 export type Bank = { code: string; name: string };

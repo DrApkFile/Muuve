@@ -1,5 +1,12 @@
 import { api, type Payout } from "./api";
 
+/** Says plainly that no real naira moved, and through what. */
+export function payoutNote(p: Payout | null) {
+  return p?.provider === "paystack"
+    ? "Test payout through Paystack: no real naira moved."
+    : "Demo payout: simulated, no real naira moved.";
+}
+
 const DONE = new Set(["paid", "failed", "resolved", "quarantined"]);
 
 /** Polls a payout every ~2s until it reaches a terminal (or needs-review) state. */

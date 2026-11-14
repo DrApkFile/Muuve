@@ -14,8 +14,13 @@ import {
   nudgeOperation,
   IN_FLIGHT_STATES,
 } from "./operations";
-import { payoutProvider, verifyWebhook, type PayoutProvider } from "./providers/payout";
-import { mockRateProvider, mockBankDirectory } from "./providers/finance";
+import {
+  payoutProvider,
+  payoutProviderName,
+  verifyWebhook,
+  type PayoutProvider,
+} from "./providers/payout";
+import { mockRateProvider, bankDirectory } from "./providers/finance";
 import { transition, settleLink } from "./state";
 import { hash } from "./solana/codec";
 
@@ -143,7 +148,7 @@ export async function preparePayout(
       ...(await storedOperation(c, replay.operation_id)),
     }));
   }
-  const resolved = await mockBankDirectory.resolveAccount(body.bank_code, body.account_number),
+  const resolved = await bankDirectory().resolveAccount(body.bank_code, body.account_number),
     chain = new Chain();
   await chain.readiness();
   let treasuryOwner = chain.keys.treasury.publicKey.toBase58(),
@@ -229,8 +234,16 @@ export async function preparePayout(
     }
     const payout = await one(
       `INSERT INTO payouts(principal_id,quote_id,bank_code,account_number,account_name,provider,provider_key)
-   VALUES($1,$2,$3,$4,$5,'mock',$6) RETURNING id`,
-      [principal.id, q.id, body.bank_code, body.account_number, resolved.accountName, randomUUID()],
+   VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING id`,
+      [
+        principal.id,
+        q.id,
+        body.bank_code,
+        body.account_number,
+        resolved.accountName,
+        payoutProviderName(),
+        randomUUID(),
+      ],
       c,
     );
     await c.query(
@@ -283,10 +296,11 @@ export async function payoutView(actor: Session, id: string) {
     provider_ref: row.provider_ref,
     account_name: row.account_name,
     account_last4: row.account_number.slice(-4),
-    mock: true,
+    provider: row.provider,
+    mock: row.provider === "mock",
   };
 }
-export async function dispatchPayout(id: string, provider: PayoutProvider = payoutProvider()) {
+export async function dispatchPayout(id: string, override?: PayoutProvider) {
   const p = await one(
     `SELECT p.*,q.amount_ngn_kobo,r.state AS principal_state FROM payouts p JOIN quotes q ON q.id=p.quote_id JOIN principals r ON r.id=p.principal_id WHERE p.id=$1`,
     [id],
@@ -302,7 +316,9 @@ export async function dispatchPayout(id: string, provider: PayoutProvider = payo
     amountKobo: p.amount_ngn_kobo,
     bankCode: p.bank_code,
     accountNumber: p.account_number,
+    accountName: p.account_name,
   };
+  const provider = override ?? payoutProvider(p.provider);
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const result = await provider.createPayout(request);
@@ -364,18 +380,14 @@ export async function receiveWebhook(
     );
     assert(p, "missing_principal", 503);
     const payout = await one("SELECT * FROM payouts WHERE id=$1 FOR UPDATE", [event.payout_id], c);
-    assert(
-      payout && payout.provider === "mock" && payout.provider_ref === event.provider_ref,
-      "unknown_provider_reference",
-      409,
-    );
+    assert(payout && payout.provider_ref === event.provider_ref, "unknown_provider_reference", 409);
     await c.query(
       "INSERT INTO webhook_inbox(provider,event_id,body_hash,payout_id,status) VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING",
-      ["mock", event.event_id, digest, payout.id, event.status],
+      [payout.provider, event.event_id, digest, payout.id, event.status],
     );
     const inbox = await one(
       "SELECT * FROM webhook_inbox WHERE provider=$1 AND event_id=$2 FOR UPDATE",
-      ["mock", event.event_id],
+      [payout.provider, event.event_id],
       c,
     );
     assert(inbox?.body_hash === digest, "webhook_event_conflict", 409);
@@ -385,8 +397,8 @@ export async function receiveWebhook(
       (payout.status === "resolved" && event.status === "failed" && payout.failed_at)
     ) {
       await c.query(
-        "UPDATE webhook_inbox SET processed_at=now() WHERE provider='mock' AND event_id=$1",
-        [event.event_id],
+        "UPDATE webhook_inbox SET processed_at=now() WHERE provider=$2 AND event_id=$1",
+        [event.event_id, payout.provider],
       );
       return;
     }
@@ -429,10 +441,10 @@ export async function receiveWebhook(
         if (p.source === "wallet") await enqueue(c, "wallet_refund", p.id, `wallet-refund:${p.id}`);
       }
     }
-    await c.query(
-      "UPDATE webhook_inbox SET processed_at=now() WHERE provider='mock' AND event_id=$1",
-      [event.event_id],
-    );
+    await c.query("UPDATE webhook_inbox SET processed_at=now() WHERE provider=$2 AND event_id=$1", [
+      event.event_id,
+      payout.provider,
+    ]);
     if (p.link_slot_id) {
       const s = await one("SELECT link_id FROM link_slots WHERE id=$1", [p.link_slot_id], c);
       const principal = await one("SELECT state FROM principals WHERE id=$1", [p.id], c);
@@ -454,7 +466,7 @@ export async function retryPayout(
   assert(body.idempotency_key, "idempotency_key_required");
   const slot = await assertCanAttestClaim(actor, id, { allowTerminal: true });
   assert(slot.status === "cashing_out", "retry_not_available", 409);
-  const resolved = await mockBankDirectory.resolveAccount(body.bank_code, body.account_number);
+  const resolved = await bankDirectory().resolveAccount(body.bank_code, body.account_number);
   return transaction(async (c) => {
     const p = await one("SELECT * FROM principals WHERE link_slot_id=$1 FOR UPDATE", [slot.id], c);
     assert(p, "principal_not_available", 409);
@@ -504,7 +516,7 @@ export async function retryPayout(
     );
     const next = await one(
       `INSERT INTO payouts(principal_id,quote_id,retry_of,bank_code,account_number,account_name,status,provider,provider_key,client_idempotency_key)
-   VALUES($1,$2,$3,$4,$5,$6,'processing','mock',$7,$8) RETURNING id,status`,
+   VALUES($1,$2,$3,$4,$5,$6,'processing',$7,$8,$9) RETURNING id,status`,
       [
         p.id,
         q.id,
@@ -512,6 +524,7 @@ export async function retryPayout(
         body.bank_code,
         body.account_number,
         resolved.accountName,
+        payoutProviderName(),
         randomUUID(),
         body.idempotency_key,
       ],

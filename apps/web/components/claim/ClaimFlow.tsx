@@ -15,7 +15,7 @@ import {
 import { isCode, messageFor } from "@/lib/errors";
 import { CLAIMS_ENABLED, KEEP_ENABLED } from "@/lib/flags";
 import { formatNgn, formatUsd, timeLeft } from "@/lib/format";
-import { waitForPayout } from "@/lib/payouts";
+import { payoutNote, waitForPayout } from "@/lib/payouts";
 import { decodeClaimSecret, signWithClaimKey, waitForOperation } from "@/lib/solana";
 import { Button } from "@/components/ui/button";
 import { PhoneInput, toE164, type PhoneValue } from "@/components/app/PhoneInput";
@@ -845,7 +845,7 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
               Confirm
             </Button>
             <p className="m-0 mt-3 text-center text-[13px] text-ink/50">
-              Demo: payouts and rates are simulated. No real naira moves yet.
+              Demo: test payouts and a demo rate. No real naira moves yet.
             </p>
           </div>
         </div>
@@ -870,7 +870,7 @@ export function ClaimFlow({ linkId }: { linkId: string }) {
               <p className="m-0 -mt-4 text-[15px] text-ink/55">Reference {payout!.provider_ref}</p>
             )}
             <p className="m-0 mt-6 rounded-3xl bg-paper/70 px-5 py-4 text-[15px] text-ink/60">
-              Demo payout: simulated, no real naira moved.
+              {payoutNote(payout)}
             </p>
           </>
         ) : failed ? (

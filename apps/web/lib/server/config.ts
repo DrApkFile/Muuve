@@ -20,7 +20,7 @@ const envSchema = z.object({
   CRON_SECRET: z.string().min(32),
   MOCK_WEBHOOK_SECRET: z.string().min(32),
   OTP_PROVIDER: z.enum(["mock", "twilio", "textbee"]),
-  PAYOUT_PROVIDER: z.literal("mock"),
+  PAYOUT_PROVIDER: z.enum(["mock", "paystack"]),
   RATE_PROVIDER: z.literal("mock"),
   WHATSAPP_OTP_ENABLED: z.enum(["true", "false"]).default("false"),
   CLAIM_WINDOW_SECS: z.enum(["172800", "240"]),

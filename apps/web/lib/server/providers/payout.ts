@@ -4,12 +4,15 @@ import { transaction, one } from "../db";
 import { assert } from "../errors";
 import { canonical } from "../operations";
 import { hash } from "../solana/codec";
+import { PaystackPayoutProvider } from "./paystack";
 export type PayoutRequest = {
   payoutId: string;
   providerKey: string;
   amountKobo: string;
   bankCode: string;
   accountNumber: string;
+  // The resolved name; Paystack needs it for the transfer recipient.
+  accountName?: string;
 };
 export interface PayoutProvider {
   readonly safeIdempotency: boolean;
@@ -23,7 +26,7 @@ export class MockPayoutProvider implements PayoutProvider {
   constructor() {
     assert(process.env.SOLANA_CLUSTER === "devnet", "devnet_required", 503);
   }
-  async createPayout(p: PayoutRequest) {
+  async createPayout({ accountName: _name, ...p }: PayoutRequest) {
     return transaction(async (c) => {
       const fingerprint = hash(canonical(p)).toString("hex");
       await c.query(
@@ -58,9 +61,14 @@ export class MockPayoutProvider implements PayoutProvider {
     };
   }
 }
-export function payoutProvider(): PayoutProvider {
-  assert(process.env.PAYOUT_PROVIDER === "mock", "payout_provider_not_implemented", 503);
-  return new MockPayoutProvider();
+export type PayoutProviderName = "mock" | "paystack";
+export function payoutProviderName(): PayoutProviderName {
+  const name = process.env.PAYOUT_PROVIDER;
+  assert(name === "mock" || name === "paystack", "payout_provider_not_implemented", 503);
+  return name;
+}
+export function payoutProvider(name = payoutProviderName()): PayoutProvider {
+  return name === "paystack" ? new PaystackPayoutProvider() : new MockPayoutProvider();
 }
 export const webhookSchema = z
   .object({

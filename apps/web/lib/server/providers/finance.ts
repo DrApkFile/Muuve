@@ -1,4 +1,5 @@
-import { banks, resolveBank, rate } from "./payout";
+import { banks, resolveBank, rate, payoutProviderName } from "./payout";
+import { paystackBanks, paystackResolve } from "./paystack";
 import { assert } from "../errors";
 import { one } from "../db";
 export interface RateProvider {
@@ -25,6 +26,14 @@ export const mockBankDirectory: BankDirectory = {
     return { accountName: resolveBank(code, number).account_name };
   },
 };
+export const paystackBankDirectory: BankDirectory = {
+  listBanks: paystackBanks,
+  resolveAccount: paystackResolve,
+};
+/** Banks and account-name lookup come from the same provider that pays out. */
+export function bankDirectory(): BankDirectory {
+  return payoutProviderName() === "paystack" ? paystackBankDirectory : mockBankDirectory;
+}
 export const mockClevaGateway: ClevaGateway = {
   async getLinkedBalance(userId) {
     assert(process.env.SOLANA_CLUSTER === "devnet", "devnet_required", 503);

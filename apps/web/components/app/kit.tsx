@@ -148,7 +148,7 @@ export const PAYOUT_META: Record<PayoutStatus, { label: string; tone: Tone; done
   quoted: { label: "Rate locked", tone: "lemon" },
   transferring: { label: "Releasing your money…", tone: "lemon" },
   processing: { label: "Sending naira…", tone: "lemon" },
-  paid: { label: "Paid (simulated)", tone: "sage", done: true },
+  paid: { label: "Paid (test)", tone: "sage", done: true },
   failed: { label: "Couldn't send to that account", tone: "danger", done: true },
   resolved: { label: "Resolved", tone: "neutral", done: true },
   quarantined: { label: "Being checked", tone: "peach" },
