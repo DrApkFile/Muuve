@@ -9,6 +9,7 @@ import { useSession } from "@/lib/session";
 import { Button } from "@/components/ui/button";
 import { Notice, Sheet, Spinner } from "./kit";
 import { GlassLens } from "./GlassLens";
+import { UsdAccountPanel } from "./UsdAccountPanel";
 
 const AMOUNTS = ["25000000", "50000000", "100000000", "200000000"];
 
@@ -22,6 +23,7 @@ export function FundSheet({ open, onClose }: { open: boolean; onClose(): void })
   const [phase, setPhase] = useState<"idle" | "working" | "done">("idle");
   const [error, setError] = useState<string | null>(null);
   const cleva = user?.auth_origin === "cleva_preview";
+  const [source, setSource] = useState<"test" | "usd">("test");
 
   // A new amount is a new request; keep the key stable for retries of the same one.
   useEffect(() => setKey(newIdempotencyKey()), [amount]);
@@ -66,10 +68,39 @@ export function FundSheet({ open, onClose }: { open: boolean; onClose(): void })
     <Sheet
       open={open}
       onClose={onClose}
-      title={cleva ? "Fund from Cleva balance" : "Add test dollars"}
+      title={cleva ? "Fund from Cleva balance" : "Add money"}
       dismissible={phase !== "working"}
     >
-      {phase === "done" ? (
+      {!cleva && phase !== "done" && (
+        <div
+          role="radiogroup"
+          aria-label="Add money from"
+          className="mb-5 flex rounded-full bg-ink/[0.05] p-1"
+        >
+          {(
+            [
+              ["test", "Test dollars"],
+              ["usd", "US bank account"],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              role="radio"
+              aria-checked={source === value}
+              disabled={phase === "working"}
+              onClick={() => setSource(value)}
+              className="relative h-10 flex-1 rounded-full text-[15px] font-medium"
+            >
+              {source === value && <GlassLens group="fund-source" />}
+              <span className="relative">{label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      {!cleva && source === "usd" && phase !== "done" ? (
+        <UsdAccountPanel onCredited={announceBalanceChange} />
+      ) : phase === "done" ? (
         <div className="flex flex-col gap-5">
           <Notice tone="sage">
             <strong className="font-semibold">{formatUsd(amount)}</strong> added to your balance.

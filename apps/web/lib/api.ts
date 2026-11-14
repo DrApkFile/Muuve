@@ -55,6 +55,31 @@ export type User = {
   phone_last4: string | null;
 };
 
+export type UsdAccount = {
+  status: "none" | "pending" | "rejected" | "active";
+  sandbox: boolean;
+  sync_error?: boolean;
+  kyc_status?: string;
+  tos_status?: string;
+  kyc_url?: string | null;
+  tos_url?: string | null;
+  account?: {
+    bank_name: string | null;
+    bank_address: string | null;
+    routing_number: string | null;
+    account_number: string | null;
+    beneficiary_name: string | null;
+    rails: string[];
+  } | null;
+  deposits?: Array<{
+    id: string;
+    amount_base_units: string;
+    status: string;
+    created_at: string;
+    credited: boolean;
+  }>;
+};
+
 export type Balance = {
   amount_base_units: string;
   estimated_ngn_kobo: string;
