@@ -80,6 +80,12 @@ services:
       # Set PAYOUT_PROVIDER=paystack in the dashboard once this test key (sk_test_…) is added.
       - key: PAYSTACK_SECRET_KEY
         sync: false
+      - key: BRIDGE_ENV
+        value: sandbox
+      - key: BRIDGE_API_KEY
+        sync: false
+      - key: BRIDGE_WEBHOOK_PUBLIC_KEY
+        sync: false
       - key: RATE_PROVIDER
         value: mock
       - key: MOCK_NGN_PER_USD

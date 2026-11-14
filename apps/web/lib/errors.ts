@@ -3,6 +3,13 @@ import { ApiError } from "./api";
 // Plain-language copy for the backend's stable error codes. Never show raw codes or provider text.
 const COPY: Record<string, string> = {
   network_error: "You seem to be offline. Check your connection and try again.",
+  usd_accounts_not_configured: "US bank accounts aren't switched on yet.",
+  usd_provider_unavailable: "Our US account partner isn't responding. Try again in a minute.",
+  usd_provider_rejected:
+    "Our US account partner couldn't do that. Check your details and try again.",
+  usd_account_pending: "Finish the identity check first, then try again.",
+  usd_account_not_started: "Start your US account first.",
+  sandbox_only: "That's only available in the test setup.",
   api_unavailable: "An error occurred, but don't fret. Try again.",
   unauthorized: "Your session has ended. Log in again to continue.",
   invalid_origin: "This page can't reach Muuve from here. Open it at the Muuve address.",

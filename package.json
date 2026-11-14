@@ -32,7 +32,8 @@
     "test:e2e:local": "node scripts/e2e-local.mjs",
     "test:program": "cargo test --manifest-path programs/muuve_escrow/Cargo.toml",
     "test:devnet": "tsx scripts/verify-devnet.ts",
-    "db:migrate": "tsx scripts/migrate.ts"
+    "db:migrate": "tsx scripts/migrate.ts",
+    "bridge:webhook": "tsx scripts/bridge-webhook.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "0.31.1",

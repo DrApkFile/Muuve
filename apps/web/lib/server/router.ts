@@ -21,6 +21,15 @@ import { payoutProviderName } from "./providers/payout";
 import { verifyWallet, ensureEmbeddedWallet } from "./providers/privy";
 import { walletChallenge, walletLogin } from "./wallet-auth";
 import {
+  bridgeWebhook,
+  sandboxApprove,
+  sandboxDeposit,
+  startUsdAccount,
+  usdAccount,
+  usdSimulateSchema,
+  usdStartSchema,
+} from "./usd-accounts";
+import {
   submitOperation,
   canAccessOperation,
   storedOperation,
@@ -113,6 +122,11 @@ export async function handle(req: Request): Promise<Response> {
           req.headers.get("x-muuve-signature"),
         ),
       );
+    }
+    if (path === "/api/webhooks/bridge" && method === "POST") {
+      const raw = await req.text();
+      assert(Buffer.byteLength(raw) <= 65536, "body_too_large", 413);
+      return response(await bridgeWebhook(raw, req.headers.get("x-webhook-signature")));
     }
     if (path.startsWith("/api/cron/")) {
       assert(method === "POST", "method_not_allowed", 405);
@@ -248,6 +262,18 @@ export async function handle(req: Request): Promise<Response> {
       assert(key && key.length >= 8 && key.length <= 128, "idempotency_key_required");
       return response(await fund(s, input.amount_base_units, key, path.endsWith("cleva-preview")));
     }
+    if (path === "/api/usd-account" && method === "GET")
+      return response(await usdAccount(await session(req, "account")));
+    if (path === "/api/usd-account" && method === "POST")
+      return response(
+        await startUsdAccount(await session(req, "account"), await body(req, usdStartSchema)),
+      );
+    if (path === "/api/usd-account/sandbox/approve" && method === "POST")
+      return response(await sandboxApprove(await session(req, "account")));
+    if (path === "/api/usd-account/sandbox/deposit" && method === "POST")
+      return response(
+        await sandboxDeposit(await session(req, "account"), await body(req, usdSimulateSchema)),
+      );
     if (path === "/api/links" && method === "GET")
       return response({ links: await listLinks(await session(req, "account")) });
     if (path === "/api/links/prepare" && method === "POST")
