@@ -411,6 +411,9 @@ export function OnboardingFlow() {
                   >
                     <Handshake className="h-5 w-5" aria-hidden="true" />
                     <span className="font-semibold text-ink">Cleva</span>
+                    <span className="rounded-full bg-lemon-500 px-2 py-0.5 text-[11px] font-semibold text-ink">
+                      Soon
+                    </span>
                   </GlassButton>
                   <GlassButton
                     size="sm"
@@ -452,19 +455,19 @@ export function OnboardingFlow() {
               <motion.div key="cleva" {...stepMotion} className="flex flex-col items-center gap-8">
                 <BlurFade>
                   <span className="rounded-full border border-ink/20 bg-paper/60 px-3 py-1 text-xs font-semibold tracking-wide text-ink/70">
-                    Partnership preview
+                    Coming soon
                   </span>
                 </BlurFade>
                 <StepTitle
-                  title="Continue with Cleva"
-                  sub="With a Cleva partnership, you'd approve Muuve here and send straight from your Cleva USD balance. For this demo, sign in with a wallet and add test dollars."
+                  title="Cleva is coming soon"
+                  sub="Soon you'll fund Muuve straight from your Cleva USD account and cash out through Cleva. For now, continue with a wallet and add test dollars."
                 />
                 <BlurFade delay={0.3} className="flex flex-col items-center gap-4">
                   <GlassButton
                     onClick={() => go("wallet")}
                     contentClassName="flex items-center gap-2"
                   >
-                    Continue
+                    Continue with a wallet
                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </GlassButton>
                   <p className="m-0 max-w-[32ch] text-center text-xs text-ink/50">
