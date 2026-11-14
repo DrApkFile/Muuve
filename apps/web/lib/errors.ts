@@ -3,6 +3,7 @@ import { ApiError } from "./api";
 // Plain-language copy for the backend's stable error codes. Never show raw codes or provider text.
 const COPY: Record<string, string> = {
   network_error: "You seem to be offline. Check your connection and try again.",
+  funding_failed: "That didn't go through. Nothing was added. Try again.",
   usd_accounts_not_configured: "US bank accounts aren't switched on yet.",
   usd_provider_unavailable: "Our US account partner isn't responding. Try again in a minute.",
   usd_provider_rejected:

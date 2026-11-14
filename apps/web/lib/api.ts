@@ -58,6 +58,9 @@ export type User = {
 export type UsdAccount = {
   status: "none" | "pending" | "rejected" | "active";
   sandbox: boolean;
+  // No Bridge key yet: made-up details; simulated deposits add test dollars.
+  demo?: boolean;
+  operation_id?: string;
   sync_error?: boolean;
   kyc_status?: string;
   tos_status?: string;

@@ -1,7 +1,7 @@
 // US dollar accounts: start Bridge's identity check, issue US bank details once approved,
 // and record each deposit once. On devnet (Bridge sandbox) a deposit is credited by minting
 // the same amount of test dollars; on mainnet Bridge delivers the USDT itself.
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { z } from "zod";
 import type { Session } from "./auth";
 import { audit, database, one, transaction } from "./db";
@@ -10,8 +10,10 @@ import { userFor } from "./links";
 import { insertOperation } from "./operations";
 import { Chain } from "./solana/chain";
 import { safeLog } from "./log";
+import { fund } from "./funding";
 import {
   bridgeApi,
+  bridgeConfigured,
   bridgeEnv,
   verifyBridgeSignature,
   type ActivityEvent,
@@ -65,7 +67,48 @@ export function usdToBaseUnits(amount: string | undefined) {
   return units > 0n ? units : null;
 }
 
+/**
+ * Until Bridge is switched on (devnet only): a clearly labelled demo account with made-up
+ * details that can't receive money. "Simulate a deposit" adds test dollars instead.
+ */
+function demoMode() {
+  if (bridgeConfigured()) return false;
+  assert(process.env.SOLANA_CLUSTER === "devnet", "usd_accounts_not_configured", 503);
+  return true;
+}
+async function demoAccount(actor: Session, operationId?: string) {
+  const user = await userFor(actor);
+  // Stable per user, all made up: routing 000000000 is not a valid US routing number.
+  const digits = BigInt(
+    `0x${createHash("sha256").update(`muuve-demo:${user.id}`).digest("hex").slice(0, 15)}`,
+  )
+    .toString()
+    .padStart(10, "0")
+    .slice(-10);
+  return {
+    status: "active" as const,
+    sandbox: true,
+    demo: true,
+    ...(operationId ? { operation_id: operationId } : {}),
+    kyc_url: null,
+    tos_url: null,
+    account: {
+      bank_name: "Demo Bank (not a real account)",
+      bank_address: null,
+      routing_number: "000000000",
+      account_number: digits,
+      beneficiary_name:
+        user.display_name && user.display_name !== "Wallet sender"
+          ? user.display_name
+          : "Muuve user",
+      rails: ["ach_push", "wire"],
+    },
+    deposits: [],
+  };
+}
+
 export async function startUsdAccount(actor: Session, input: z.infer<typeof usdStartSchema>) {
+  if (demoMode()) return demoAccount(actor);
   const user = await eligibleUser(actor);
   if (!(await accountRow(user.id))) {
     // The name and email go to Bridge only; Muuve keeps the link and its status.
@@ -190,6 +233,7 @@ async function recordActivity(row: Pick<Row, "user_id" | "wallet_address">, even
 }
 
 export async function usdAccount(actor: Session, force = false) {
+  if (demoMode()) return demoAccount(actor);
   const user = await userFor(actor);
   const sandbox = bridgeEnv() === "sandbox";
   const row = await accountRow(user.id);
@@ -256,6 +300,13 @@ export async function sandboxApprove(actor: Session) {
   return usdAccount(actor, true);
 }
 export async function sandboxDeposit(actor: Session, input: z.infer<typeof usdSimulateSchema>) {
+  if (demoMode()) {
+    // Same path and daily limit as "Test dollars".
+    const units = usdToBaseUnits(input.amount_usd);
+    assert(units, "funding_limit");
+    const res = await fund(actor, units.toString(), `usd-demo-${randomUUID()}`);
+    return demoAccount(actor, res.operation_id);
+  }
   const row = await sandboxRow(actor);
   assert(row.customer_id && row.virtual_account_id, "usd_account_pending", 409);
   const units = usdToBaseUnits(input.amount_usd);

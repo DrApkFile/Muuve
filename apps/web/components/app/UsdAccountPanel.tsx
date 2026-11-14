@@ -5,6 +5,7 @@ import { Check, Copy, ExternalLink, RefreshCw } from "lucide-react";
 import { api, type UsdAccount } from "@/lib/api";
 import { messageFor } from "@/lib/errors";
 import { formatUsd } from "@/lib/format";
+import { waitForOperation } from "@/lib/solana";
 import { Button } from "@/components/ui/button";
 import { Field, Notice, Spinner, inputClass } from "./kit";
 
@@ -19,6 +20,7 @@ export function UsdAccountPanel({ onCredited }: { onCredited(): void }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState("100");
+  const [added, setAdded] = useState<string | null>(null);
 
   async function run(label: string, call: () => Promise<UsdAccount>) {
     setBusy(label);
@@ -56,10 +58,17 @@ export function UsdAccountPanel({ onCredited }: { onCredited(): void }) {
 
   return (
     <div className="flex flex-col gap-5">
-      {account.sandbox && (
-        <p className="m-0 text-sm text-ink/60">
-          Test setup: identity checks and deposits are simulated. No real dollars move.
-        </p>
+      {account.demo ? (
+        <Notice tone="peach" className="m-0">
+          <strong className="font-semibold">Demo account.</strong> These details are made up and
+          can&apos;t receive money. Simulate a deposit below to add test dollars.
+        </Notice>
+      ) : (
+        account.sandbox && (
+          <p className="m-0 text-sm text-ink/60">
+            Test setup: identity checks and deposits are simulated. No real dollars move.
+          </p>
+        )
       )}
 
       {account.status === "none" && (
@@ -171,9 +180,19 @@ export function UsdAccountPanel({ onCredited }: { onCredited(): void }) {
               className="flex items-end gap-2"
               onSubmit={(e) => {
                 e.preventDefault();
-                void run("deposit", () =>
-                  api<UsdAccount>("/api/usd-account/sandbox/deposit", { amount_usd: amount }),
-                );
+                void run("deposit", async () => {
+                  const res = await api<UsdAccount>("/api/usd-account/sandbox/deposit", {
+                    amount_usd: amount,
+                  });
+                  // Demo: the deposit is a test-dollar top-up; wait for it to land.
+                  if (res.operation_id) {
+                    const state = await waitForOperation(res.operation_id);
+                    if (state === "failed") throw new Error("funding_failed");
+                    onCredited();
+                    setAdded(amount);
+                  }
+                  return res;
+                });
               }}
             >
               <Field label="Simulate a deposit ($)" className="flex-1">
@@ -216,6 +235,11 @@ export function UsdAccountPanel({ onCredited }: { onCredited(): void }) {
         </div>
       )}
 
+      {added && (
+        <Notice tone="sage" className="m-0">
+          ${added} added to your balance.
+        </Notice>
+      )}
       {account.sync_error && (
         <p className="m-0 text-[13px] text-ink/50">
           Couldn&apos;t reach Bridge just now; showing the last known status.

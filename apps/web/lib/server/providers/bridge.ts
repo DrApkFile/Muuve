@@ -6,6 +6,11 @@ import { assert, AppError } from "../errors";
 
 export type BridgeEnv = "sandbox" | "production";
 
+/** No key yet: the app shows a labelled demo account instead (devnet only). */
+export function bridgeConfigured() {
+  return !!process.env.BRIDGE_API_KEY && !!process.env.BRIDGE_ENV;
+}
+
 export function bridgeEnv(): BridgeEnv {
   const env = process.env.BRIDGE_ENV;
   assert(env === "sandbox" || env === "production", "usd_accounts_not_configured", 503);
